@@ -2,65 +2,59 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="form card px-0 col-10 col-md-6 mt-5">
-        <h2 class="form--heading text-center pb-4 mt-5 mb-4">Login</h2>
+        <h2 class="form--heading text-center pb-4 mt-5 mb-4">Sign Up</h2>
         <div class="card-body">
           <form class="px-md-5">
             <div class="form-group mb-4">
               <label
                 class="form--label"
-                for="loginEmail"
+                for="signUpEmail"
               >
                 Email
               </label>
               <input
                 class="form--input form-control form-control-lg"
+                v-bind:class="{ 'is-invalid': emailIsInvalid }"
                 type="email"
-                id="loginEmail"
+                id="signUpEmail"
                 placeholder="jd@gmail.com"
               >
+              <div class="invalid-feedback">
+                This email is already taken.
+              </div>
             </div>
             <div class="form-group mb-4">
-              <label
-                class="form--label"
-                for="loginPassword"
-              >
-                Password
-              </label>
+              <label class="form--label" for="signUpPassword">Password</label>
               <input
                 class="form--input form-control form-control-lg"
+                v-bind:class="{ 'is-invalid': passwordIsInvalid }"
                 type="password"
-                id="loginPassword"
+                id="signUpPassword"
                 placeholder="6 or more charachters"
               >
-            </div>
-            <div class="row justify-content-between mb-5 px-3">
-              <div class="form-check">
-                <input
-                  class="form--checkbox form-check-input"
-                  type="checkbox"
-                  value
-                  id="rememberMeCheckbox"
-                >
-                <label
-                  class="form-check-label"
-                  for="rememberMeCheckbox"
-                >
-                  Remember Me
-                </label>
+              <div class="invalid-feedback">
+                The password must be 6 or more charachters.
               </div>
-              <a
-                class="form--forgot-password"
-                href="#"
-              >
-              Forgot password?
-              </a>
             </div>
-            <button class="form--button btn btn-info btn-lg d-block mx-auto mb-5">LOG IN</button>
+            <div class="form-group mb-4">
+              <label class="form--label" for="confirmSignUpPassword">Confirm Password</label>
+              <input
+                class="form--input form-control form-control-lg"
+                v-bind:class="{ 'is-invalid': passwordDoNotMatch }"
+                type="password"
+                id="confirmSignUpPassword"
+                placeholder="6 or more charachters"
+              >
+              <div class="invalid-feedback">
+                Your confirm password should match.
+              </div>
+            </div>
+            <button class="form--button btn btn-info btn-lg d-block mx-auto mb-5">SIGN UP</button>
           </form>
         </div>
       </div>
-      <p class="col-12 text-center mt-5">Don't have an account?
-        <router-link class="sign-up-link" to="/signup">Sign Up</router-link>
+      <p class="col-12 text-center mt-5">Already have an account?
+        <router-link class="login-link" to="/login">Login</router-link>
       </p>
     </div>
   </div>
@@ -68,7 +62,14 @@
 
 <script>
 export default {
-  name: "LoginForm"
+  name: "SignUpForm",
+  data() {
+    return {
+      emailIsInvalid: true,
+      passwordIsInvalid: true,
+      passwordDoNotMatch: true
+    }
+  }
 };
 </script>
 
@@ -106,7 +107,7 @@ export default {
     padding-bottom: 10px;
 
     &:hover {
-      background: rgb(29, 112, 168);
+      background: #1d70a8;
     }
   }
 
@@ -115,8 +116,7 @@ export default {
   }
 }
 
-.sign-up-link,
-.form--forgot-password {
+.login-link {
   color: #1c6392;
   font-weight: 700;
 }

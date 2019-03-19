@@ -1,23 +1,29 @@
 <template>
   <div>
-    <login-form />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import LoginForm from './components/LoginForm'
+
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    LoginForm
+  },
+  data() {
+    return {
+      isAuthenticated: false
+    };
   }
-}
+};
 </script>
 
 <style lang="scss">
-// @import './assets/scss/main.scss';
- body {
-   background-color: #E7EEF1;
- }
+
+body {
+  background: #e7eef1;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+}
 </style>
