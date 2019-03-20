@@ -18,12 +18,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-
-body {
-  background: #e7eef1;
-  font-family: "Roboto", sans-serif;
-  color: #707070;
-}
-</style>

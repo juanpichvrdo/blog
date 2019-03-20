@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from './store';
 import HomePage from './views/HomePage.vue';
 import SignUpPage from './views/SignUpPage.vue';
 import LoginPage from './views/LoginPage.vue';
@@ -27,23 +28,13 @@ const router = new Router({
       name: 'signup',
       component: SignUpPage,
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
-    // },
   ],
 });
 
 router.beforeEach((to, from, next) => {
-  let isLoggedIn = false;
-
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (isLoggedIn) {
-      next()
+    if (store.getters.isAuthenticated) {
+      next();
     } else {
       next({
         path: '/login',

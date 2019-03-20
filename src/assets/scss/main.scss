@@ -1,1 +1,57 @@
+// @import '/bootstrap/dist/css/bootstrap.min.css';
+
 $bg-color: #E7EEF1;
+
+body {
+  background-color: $bg-color;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+}
+
+.form {
+  box-shadow: 1px 7px 10px rgba(0, 0, 0, 0.2);
+
+  &--container {
+    background-color: white;
+  }
+
+  &--heading {
+    color: #1c6392;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+  }
+
+  &--container {
+    background-color: white;
+  }
+
+  &--heading {
+    color: #1c6392;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+  }
+
+  &--label {
+    color: #727272;
+    font-weight: 700;
+  }
+
+  &--input {
+    font-size: 0.8rem;
+    padding: 25px 15px;
+
+    &::placeholder {
+      opacity: 0.6;
+    }
+  }
+
+  &--button {
+    background: #1c6392;
+    width: 70%;
+    font-size: 1.2rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    &:hover {
+      background: #1d70a8;
+    }
+  }
+}
