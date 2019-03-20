@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HomePage from './views/HomePage.vue'
-import SignUpPage from './views/SignUpPage.vue'
-import LoginPage from './views/LoginPage.vue'
+import HomePage from './views/HomePage.vue';
+import SignUpPage from './views/SignUpPage.vue';
+import LoginPage from './views/LoginPage.vue';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -14,6 +14,8 @@ export default new Router({
       path: '/',
       name: 'home',
       component: HomePage,
+      meta: { requiresAuth: true },
+
     },
     {
       path: '/login',
@@ -35,3 +37,22 @@ export default new Router({
     // },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  let isLoggedIn = false;
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (isLoggedIn) {
+      next()
+    } else {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath },
+      });
+    }
+  } else {
+    next()
+  }
+});
+
+export default router;

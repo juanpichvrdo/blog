@@ -4,7 +4,10 @@
       <div class="form card px-0 col-10 col-md-6 mt-5">
         <h2 class="form--heading text-center pb-4 mt-5 mb-4">Login</h2>
         <div class="card-body">
-          <form class="px-md-5">
+          <form
+            class="px-md-5"
+            @submit.prevent="processForm"
+          >
             <div class="form-group mb-4">
               <label
                 class="form--label"
@@ -17,6 +20,8 @@
                 type="email"
                 id="loginEmail"
                 placeholder="jd@gmail.com"
+                name="email"
+                v-model="email"
               >
             </div>
             <div class="form-group mb-4">
@@ -31,6 +36,8 @@
                 type="password"
                 id="loginPassword"
                 placeholder="6 or more charachters"
+                name="password"
+                v-model="password"
               >
             </div>
             <div class="row justify-content-between mb-5 px-3">
@@ -60,15 +67,34 @@
         </div>
       </div>
       <p class="col-12 text-center mt-5">Don't have an account?
-        <router-link class="sign-up-link" to="/signup">Sign Up</router-link>
+        <router-link
+          class="sign-up-link"
+          to="/signup"
+        >
+          Sign Up
+        </router-link>
       </p>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
-  name: "LoginForm"
+  name: "LoginForm",
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    processForm() {
+      axios.get(`http://localhost:3000/users?email=${this.email}&password=${this.password}`)
+        .then((result) => console.log(result))
+    }
+  }
 };
 </script>
 
