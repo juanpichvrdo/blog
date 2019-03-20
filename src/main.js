@@ -1,12 +1,22 @@
 import Vue from 'vue';
-import App from './App.vue';
 import VeeValidate from 'vee-validate';
+import App from './App.vue';
 import router from './router';
 import store from './store';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+require('toastr/build/toastr.css');
+
+
+Vue.use(VeeValidate, {
+  classes: true,
+  classNames: {
+    valid: 'is-valid',
+    invalid: 'is-invalid',
+  },
+});
 
 Vue.config.productionTip = false;
+
 Vue.use(VeeValidate);
 
 new Vue({

@@ -4,7 +4,11 @@
       <div class="form card px-0 col-10 col-md-6 mt-5">
         <h2 class="form--heading text-center pb-4 mt-5 mb-4">Sign Up</h2>
         <div class="card-body">
-          <form class="px-md-5">
+          <form
+            class="px-md-5"
+            @submit.prevent="validateForm"
+            novalidate
+          >
             <div class="form-group mb-4">
               <label
                 class="form--label"
@@ -13,40 +17,47 @@
                 Email
               </label>
               <input
+                v-validate="'required|email'"
                 class="form--input form-control form-control-lg"
-                v-bind:class="{ 'is-invalid': emailIsInvalid }"
                 type="email"
                 id="signUpEmail"
                 placeholder="jd@gmail.com"
+                name="email"
+                v-model="email"
               >
               <div class="invalid-feedback">
-                This email is already taken.
+                {{ errors.first('email') }}
               </div>
             </div>
             <div class="form-group mb-4">
               <label class="form--label" for="signUpPassword">Password</label>
               <input
+                v-validate="'required|min:6'"
                 class="form--input form-control form-control-lg"
-                v-bind:class="{ 'is-invalid': passwordIsInvalid }"
                 type="password"
                 id="signUpPassword"
-                placeholder="6 or more charachters"
+                placeholder="6 or more characters"
+                ref="password"
+                name="password"
+                v-model="password"
               >
               <div class="invalid-feedback">
-                The password must be 6 or more charachters.
+                {{ errors.first('password') }}
               </div>
             </div>
             <div class="form-group mb-4">
               <label class="form--label" for="confirmSignUpPassword">Confirm Password</label>
               <input
+                v-validate="'required|min:6|confirmed:password'"
                 class="form--input form-control form-control-lg"
-                v-bind:class="{ 'is-invalid': passwordDoNotMatch }"
+                name="password_confirmation"
                 type="password"
                 id="confirmSignUpPassword"
-                placeholder="6 or more charachters"
+                placeholder="6 or more characters"
+                data-vv-as="password"
               >
               <div class="invalid-feedback">
-                Your confirm password should match.
+                {{ errors.first('password_confirmation') }}
               </div>
             </div>
             <button class="form--button btn btn-info btn-lg d-block mx-auto mb-5">SIGN UP</button>
@@ -61,13 +72,32 @@
 </template>
 
 <script>
+import axios from 'axios';
+import router from '../router.js'
+
 export default {
   name: "SignUpForm",
   data() {
     return {
-      emailIsInvalid: true,
-      passwordIsInvalid: true,
-      passwordDoNotMatch: true
+      email: '',
+      password: '',
+    }
+  },
+  methods: {
+    validateForm() {
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.processForm();
+          return;
+        }
+        // toastr.error('I do not think that word means what you think it means.', 'Inconceivable!')
+      })
+    },
+    processForm() {
+      axios.post('http://localhost:3000/users', {
+        email: this.email,
+        password: this.password
+      }).then(response => console.log(response))
     }
   }
 };

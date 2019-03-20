@@ -7,27 +7,35 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     authenticated: false,
-    cookie: Cookies.get('authenticated')
+    cookie: Cookies.get('authenticated') || null
   },
   getters: {
     isAuthenticated: state => {
-      if (state.cookie === 'true') {
+      if (state.cookie || state.authenticated) {
         return true;
-      } else if (state.authenticated) {
-        return true
-      } else {
-        return false;
       }
+      return false;
     },
   },
   mutations: {
     authenticateUser(state) {
       state.authenticated = true;
+      if (state.cookie) {
+        state.authenticated = true;
+      }
     },
+    logoutUser(state) {
+      state.authenticated = false;
+      state.cookie = null;
+    }
   },
   actions: {
     authenticateUser({ commit }, user) {
       commit('authenticateUser');
     },
+    logoutUser({ commit }) {
+      Cookies.remove('authenticated');
+      commit('logoutUser');
+    }
   },
 });

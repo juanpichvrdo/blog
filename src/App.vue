@@ -5,16 +5,9 @@
 </template>
 
 <script>
-
+require('bootstrap/dist/css/bootstrap.min.css');
 
 export default {
   name: 'app',
-  components: {
-  },
-  data() {
-    return {
-      isAuthenticated: false
-    };
-  }
 };
 </script>

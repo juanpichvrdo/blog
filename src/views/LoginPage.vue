@@ -4,10 +4,15 @@
       <div class="form card px-0 col-10 col-md-6 mt-5">
         <h2 class="form--heading text-center pb-4 mt-5 mb-4">Login</h2>
         <div class="card-body">
-          <form class="px-md-5" @submit.prevent="processForm">
+          <form
+            class="px-md-5"
+            @submit.prevent="validateForm"
+            novalidate
+          >
             <div class="form-group mb-4">
               <label class="form--label" for="loginEmail">Email</label>
               <input
+                v-validate="'required|email'"
                 class="form--input form-control form-control-lg"
                 type="email"
                 id="loginEmail"
@@ -15,17 +20,26 @@
                 name="email"
                 v-model="email"
               >
+              <div class="invalid-feedback">
+                {{ errors.first('email') }}
+              </div>
             </div>
+
             <div class="form-group mb-4">
               <label class="form--label" for="loginPassword">Password</label>
               <input
+                v-validate="'required|min:6'"
                 class="form--input form-control form-control-lg"
                 type="password"
                 id="loginPassword"
-                placeholder="6 or more charachters"
+                placeholder="6 or more characters"
                 name="password"
                 v-model="password"
+
               >
+              <div class="invalid-feedback">
+                {{ errors.first('password') }}
+              </div>
             </div>
             <div class="row justify-content-between mb-5 px-3">
               <div class="form-check">
@@ -54,8 +68,10 @@
 <script>
 import axios from 'axios';
 import Cookies from 'js-cookie'
-import { mapActions, mapGetters } from 'vuex'
+import toastr from 'toastr'
+import { mapActions } from 'vuex'
 import router from '../router.js'
+window.Cookies = Cookies;
 
 export default {
   name: "LoginForm",
@@ -67,19 +83,32 @@ export default {
     }
   },
   methods: {
+    validateForm() {
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.processForm();
+          return;
+        }
+        // toastr.error('I do not think that word means what you think it means.', 'Inconceivable!')
+      })
+    },
     processForm() {
-      axios.get(`http://localhost:3000/users?email=${this.email}&password=${this.password}`)
-        .then((result) => result.data[0])
-        .then(user => {
-          if (user) {
-            if (this.rememberMe) {
-              Cookies.set('authenticated', 'true');
-            }
-            this.$store.dispatch('authenticateUser', { ...user })
-            router.push('/');
+      axios
+        .get(`http://localhost:3000/users?email=${this.email}&password=${this.password}`)
+        .then(({ result: data }) => {
+          if (data) {
+            return data;
           } else {
-            console.log('User does not exist')
+            // Throw error message
           }
+        })
+        .then(user => {
+            if (this.rememberMe) {
+              Cookies.set('authenticated', true)
+            };
+
+            this.$store.dispatch('authenticateUser', user);
+            router.push('/');
         })
     }
   }
