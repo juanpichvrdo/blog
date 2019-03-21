@@ -4,11 +4,8 @@
       <div class="form card px-0 col-10 col-md-6 mt-5">
         <h2 class="form--heading text-center pb-4 mt-5 mb-4">Login</h2>
         <div class="card-body">
-          <form
-            class="px-md-5"
-            @submit.prevent="validateForm"
-            novalidate
-          >
+          <form class="px-md-5" @submit.prevent="validateForm" novalidate>
+            <alert-message v-if="showError" @closeMessage="showError = false"></alert-message>
             <div class="form-group mb-4">
               <label class="form--label" for="loginEmail">Email</label>
               <input
@@ -20,9 +17,7 @@
                 name="email"
                 v-model="email"
               >
-              <div class="invalid-feedback">
-                {{ errors.first('email') }}
-              </div>
+              <div class="invalid-feedback">{{ errors.first('email') }}</div>
             </div>
 
             <div class="form-group mb-4">
@@ -35,11 +30,8 @@
                 placeholder="6 or more characters"
                 name="password"
                 v-model="password"
-
               >
-              <div class="invalid-feedback">
-                {{ errors.first('password') }}
-              </div>
+              <div class="invalid-feedback">{{ errors.first('password') }}</div>
             </div>
             <div class="row justify-content-between mb-5 px-3">
               <div class="form-check">
@@ -58,7 +50,8 @@
           </form>
         </div>
       </div>
-      <p class="col-12 text-center mt-5">Don't have an account?
+      <p class="col-12 text-center mt-5">
+        Don't have an account?
         <router-link class="sign-up-link" to="/signup">Sign Up</router-link>
       </p>
     </div>
@@ -66,21 +59,25 @@
 </template>
 
 <script>
-import axios from 'axios';
-import Cookies from 'js-cookie';
-// import { ErrorBag } from 'vee-validate';
-import router from '../router';
+import axios from "axios";
+import Cookies from "js-cookie";
+import router from "../router";
 
+import AlertMessage from '../components/AlertMessage'
 // window.Cookies = Cookies;
 
 export default {
-  name: 'LoginForm',
+  name: "LoginForm",
   data() {
     return {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       rememberMe: false,
+      showError: false
     };
+  },
+  components: {
+    AlertMessage
   },
   methods: {
     validateForm() {
@@ -99,18 +96,18 @@ export default {
           console.log(user);
           if (user) {
             if (this.rememberMe) {
-              Cookies.set('id', user.id);
+              Cookies.set("id", user.id);
             }
-            this.$store.dispatch('authenticateUser', user);
-            router.push('/');
+            this.$store.dispatch("authenticateUser", user);
+            router.push("/");
           } else {
-            console.log('User does not exist');
+            this.showError = true;
+            console.log("User does not exist");
           }
         });
-    },
-  },
+    }
+  }
 };
-
 </script>
 
 <style lang="scss">
