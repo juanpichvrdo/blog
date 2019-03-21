@@ -1,8 +1,32 @@
 <template>
-  <div class="">
-    <h4><a href="#">{{ title }}</a></h4>
-    <p>Written by: <a href="#">{{ author }}</a></p>
-    <p></p>
+  <div class="container">
+    <h4>
+      <a href="#">{{ title }}</a>
+    </h4>
+    <p>
+      Written by: <a href="#">{{ author }}</a>
+    </p>
+    <p>
+      Published on: <a href="#">{{ convertedPublishingDate }}</a>
+    </p>
+    <p class="container">
+      {{ resumedBody }}...
+    </p>
+    <div class="row justify-content-around">
+      <p>
+        comments: <a href="#">{{ comments }}</a>
+      </p>
+      <p>
+        {{ likes }} likes
+      </p>
+    </div>
+      <p
+        v-if="edited"
+        class="text-center"
+      >
+        Edited
+      </p>
+    <hr>
   </div>
 </template>
 
@@ -17,6 +41,14 @@ export default {
     comments: Number,
     likes: Number,
     edited: Boolean
+  },
+  computed: {
+    resumedBody() {
+      return this.body.substring(0, 201);
+    },
+    convertedPublishingDate() {
+      return new Date(this.publishingDate).toDateString()
+    }
   }
 }
 </script>

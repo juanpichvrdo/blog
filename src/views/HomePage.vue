@@ -1,12 +1,14 @@
 <template>
   <div class="home-page container mt-5">
-    <h1>Home Page</h1>
-    <button
-      class="btn btn-warning"
-      @click="onLogout"
-    >
-      Log Out
-    </button>
+    <div class="row justify-content-between">
+      <h1>Home Page</h1>
+      <button
+        class="btn btn-warning"
+        @click="onLogout"
+      >
+        Log Out
+      </button>
+    </div>
     <post-list class="mt-5"></post-list>
   </div>
 </template>
