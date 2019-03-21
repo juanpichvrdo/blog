@@ -1,32 +1,30 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    authenticated: false,
-    cookie: Cookies.get('authenticated') || null,
+    cookie: Cookies.get('id') || null,
     user: {},
   },
   getters: {
-    isAuthenticated: state => {
-      if (state.cookie || state.authenticated) {
+    isAuthenticated: (state) => {
+      if (state.cookie || !!Object.keys(state.user).length) {
         return true;
       }
       return false;
     },
   },
   mutations: {
-    authenticateUser(state) {
-      state.authenticated = true;
-      if (state.cookie) {
-        state.authenticated = true;
-      }
-    },
+    // authenticateUser(state) {
+    //   if (state.cookie) {
+    //     state.authenticated = true;
+    //   }
+    // },
     logoutUser(state) {
-      state.authenticated = false;
+      state.user = {};
       state.cookie = null;
     },
     setUser(state, user) {
@@ -35,11 +33,11 @@ export default new Vuex.Store({
   },
   actions: {
     authenticateUser({ commit }, user) {
-      commit('authenticateUser');
+      // commit('authenticateUser');
       commit('setUser', user);
     },
     logoutUser({ commit }) {
-      Cookies.remove('authenticated');
+      Cookies.remove('id');
       commit('logoutUser');
     }
   },
