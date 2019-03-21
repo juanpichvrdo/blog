@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     cookie: Cookies.get('id') || null,
     user: {},
+    posts: []
   },
   getters: {
     isAuthenticated: (state) => {
@@ -16,6 +17,7 @@ export default new Vuex.Store({
       }
       return false;
     },
+    allPosts: state => state.posts
   },
   mutations: {
     logoutUser(state) {
@@ -25,6 +27,9 @@ export default new Vuex.Store({
     setUser(state, user) {
       state.user = user;
     },
+    setPosts(state, posts) {
+      state.posts = posts
+    },
   },
   actions: {
     authenticateUser({ commit }, user) {
@@ -33,6 +38,9 @@ export default new Vuex.Store({
     logoutUser({ commit }) {
       Cookies.remove('id');
       commit('logoutUser');
+    },
+    setPosts({ commit }, posts) {
+      commit('setPosts', posts)
     }
   },
 });

@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     validateForm() {
-      this.$validator.validateAll().then((result) => {
+      this.$validator.validateAll().then(result => {
         if (result) {
           this.checkEmail();
         }
@@ -95,7 +95,8 @@ export default {
       axios.post('http://localhost:3000/users', {
         email: this.email,
         password: this.password
-      }).then((user) => {
+      }).then(result => {
+        const user = result.config.data
           console.log(user);
           if (user) {
             this.$store.dispatch('authenticateUser', user);

@@ -68,9 +68,10 @@
 <script>
 import axios from 'axios';
 import Cookies from 'js-cookie';
+// import { ErrorBag } from 'vee-validate';
 import router from '../router';
 
-window.Cookies = Cookies;
+// window.Cookies = Cookies;
 
 export default {
   name: 'LoginForm',
@@ -83,7 +84,7 @@ export default {
   },
   methods: {
     validateForm() {
-      this.$validator.validateAll().then((result) => {
+      this.$validator.validateAll().then(result => {
         if (result) {
           this.processForm();
         }
@@ -103,7 +104,6 @@ export default {
             this.$store.dispatch('authenticateUser', user);
             router.push('/');
           } else {
-            // Throw error message
             console.log('User does not exist');
           }
         });
