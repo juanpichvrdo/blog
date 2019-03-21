@@ -67,52 +67,52 @@
 
 <script>
 import axios from 'axios';
-import Cookies from 'js-cookie'
-import toastr from 'toastr'
-import { mapActions } from 'vuex'
-import router from '../router.js'
+import Cookies from 'js-cookie';
+// import toastr from 'toastr';
+// import { mapActions } from 'vuex';
+import router from '../router';
+
 window.Cookies = Cookies;
 
 export default {
-  name: "LoginForm",
+  name: 'LoginForm',
   data() {
     return {
       email: '',
       password: '',
-      rememberMe: false
-    }
+      rememberMe: false,
+    };
   },
   methods: {
     validateForm() {
       this.$validator.validateAll().then((result) => {
         if (result) {
           this.processForm();
-          return;
         }
         // toastr.error('I do not think that word means what you think it means.', 'Inconceivable!')
-      })
+      });
     },
     processForm() {
       axios
         .get(`http://localhost:3000/users?email=${this.email}&password=${this.password}`)
-        .then(({ result: data }) => {
-          if (data) {
-            return data;
-          } else {
-            // Throw error message
-          }
-        })
-        .then(user => {
+        .then(({ data }) => {
+          const user = data[0];
+          console.log(user);
+          if (user) {
             if (this.rememberMe) {
-              Cookies.set('authenticated', true)
-            };
-
+              Cookies.set('authenticated', true);
+            }
             this.$store.dispatch('authenticateUser', user);
             router.push('/');
-        })
-    }
-  }
+          } else {
+            // Throw error message
+            console.log('User does not exist');
+          }
+        });
+    },
+  },
 };
+
 </script>
 
 <style lang="scss">

@@ -30,12 +30,12 @@
               </div>
             </div>
             <div class="form-group mb-4">
-              <label class="form--label" for="signUpPassword">Password</label>
+              <label class="form--label" for="signup-password">Password</label>
               <input
                 v-validate="'required|min:6'"
                 class="form--input form-control form-control-lg"
                 type="password"
-                id="signUpPassword"
+                id="signup-password"
                 placeholder="6 or more characters"
                 ref="password"
                 name="password"
@@ -46,7 +46,7 @@
               </div>
             </div>
             <div class="form-group mb-4">
-              <label class="form--label" for="confirmSignUpPassword">Confirm Password</label>
+              <label class="form--label" for="confirmsign-up-password">Confirm Password</label>
               <input
                 v-validate="'required|min:6|confirmed:password'"
                 class="form--input form-control form-control-lg"

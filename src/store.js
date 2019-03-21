@@ -7,7 +7,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     authenticated: false,
-    cookie: Cookies.get('authenticated') || null
+    cookie: Cookies.get('authenticated') || null,
+    user: {},
   },
   getters: {
     isAuthenticated: state => {
@@ -27,11 +28,15 @@ export default new Vuex.Store({
     logoutUser(state) {
       state.authenticated = false;
       state.cookie = null;
-    }
+    },
+    setUser(state, user) {
+      state.user = user;
+    },
   },
   actions: {
     authenticateUser({ commit }, user) {
       commit('authenticateUser');
+      commit('setUser', user);
     },
     logoutUser({ commit }) {
       Cookies.remove('authenticated');
