@@ -11,18 +11,13 @@ export default new Vuex.Store({
   },
   getters: {
     isAuthenticated: (state) => {
-      if (state.cookie || !!Object.keys(state.user).length) {
+      if (state.cookie || Object.keys(state.user).length) {
         return true;
       }
       return false;
     },
   },
   mutations: {
-    // authenticateUser(state) {
-    //   if (state.cookie) {
-    //     state.authenticated = true;
-    //   }
-    // },
     logoutUser(state) {
       state.user = {};
       state.cookie = null;
@@ -33,7 +28,6 @@ export default new Vuex.Store({
   },
   actions: {
     authenticateUser({ commit }, user) {
-      // commit('authenticateUser');
       commit('setUser', user);
     },
     logoutUser({ commit }) {

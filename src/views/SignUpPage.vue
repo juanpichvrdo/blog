@@ -73,7 +73,7 @@
 
 <script>
 import axios from 'axios';
-import router from '../router.js'
+import router from '../router.js';
 
 export default {
   name: "SignUpForm",
@@ -87,17 +87,36 @@ export default {
     validateForm() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          this.processForm();
-          return;
+          this.checkEmail();
         }
-        // toastr.error('I do not think that word means what you think it means.', 'Inconceivable!')
       })
     },
     processForm() {
       axios.post('http://localhost:3000/users', {
         email: this.email,
         password: this.password
-      }).then(response => console.log(response))
+      }).then((user) => {
+          console.log(user);
+          if (user) {
+            this.$store.dispatch('authenticateUser', user);
+            router.push('/');
+          } else {
+            // Throw error message
+            console.log('Error creating user');
+          }
+      })
+    },
+    checkEmail() {
+      const emailExist = axios
+        .get(`http://localhost:3000/users/?email=${this.email}`)
+        .then(({ data }) => {
+          const user = data[0];
+          if (user) {
+            console.log('That email is already taken');
+          } else {
+            this.processForm();
+          }
+        })
     }
   }
 };

@@ -68,8 +68,6 @@
 <script>
 import axios from 'axios';
 import Cookies from 'js-cookie';
-// import toastr from 'toastr';
-// import { mapActions } from 'vuex';
 import router from '../router';
 
 window.Cookies = Cookies;
