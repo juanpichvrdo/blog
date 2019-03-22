@@ -1,28 +1,26 @@
 <template>
-  <div class="home-page container mt-5">
-    <div class="row justify-content-between">
-      <h1>Home Page</h1>
-      <button
-        class="btn btn-warning"
-        @click="onLogout"
-      >
-        Log Out
-      </button>
+  <div class="home-page">
+    <navigation-bar @logOut="onLogout"></navigation-bar>
+    <div class="hero-section p-3 p-md-4 px-md-5">
+      <h1 class="hero-section--heading p-3 p-md-4 px-md-5 display-4">Welcome to Our Blog</h1>
     </div>
-    <post-list class="mt-5"></post-list>
+    <div class="post-list mt-5">
+      <post-list class="mt-5"></post-list>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-// import { mapActions } from 'vuex';
 import router from '../router';
+import NavigationBar from '../components/NavigationBar';
 
 import PostList from '../components/PostList';
 
 export default {
   name: 'HomePage',
   components: {
+    NavigationBar,
     PostList
   },
   methods: {
@@ -45,6 +43,24 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.home-page {
+  .hero-section {
+    background-size: cover;
+    position: relative;
+    background-position: center;
+    background-image:
+      linear-gradient(
+        rgba(117, 112, 112, 0.555),
+        rgba(128, 120, 120, 0.575)
+      ),
+    url('../assets/hero-background.png');
+
+    &--heading {
+      color: white;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+  }
+}
 
 </style>

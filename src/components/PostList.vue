@@ -1,5 +1,6 @@
 <template>
-  <div class="post-list container">
+  <div class="post-list">
+    <h3>All posts</h3>
     <individual-post
       v-for="post in allPosts"
       :key="post.id"

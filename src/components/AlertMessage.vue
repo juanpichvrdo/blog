@@ -1,10 +1,16 @@
 <template>
   <div
-    class="alert--message alert alert-danger alert-dismissible fade show container"
+    class="alert--message alert alert-danger"
     role="alert"
   >
-    <strong>Wrong user name or password</strong>
-    <button @click="$emit('closeMessage')" type="button" class="close">
+    <strong>
+      <slot></slot>
+    </strong>
+    <button
+      @click="$emit('closeMessage')"
+      type="button"
+      class="close"
+    >
       <span>&times;</span>
     </button>
   </div>
@@ -12,8 +18,7 @@
 
 <script>
 export default {
-  name: 'AlertMessage',
-
+  name: "AlertMessage"
 };
 </script>
 

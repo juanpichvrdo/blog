@@ -4,10 +4,24 @@
       <div class="form card px-0 col-10 col-md-6 mt-5">
         <h2 class="form--heading text-center pb-4 mt-5 mb-4">Login</h2>
         <div class="card-body">
-          <form class="px-md-5" @submit.prevent="validateForm" novalidate>
-            <alert-message v-if="showError" @closeMessage="showError = false"></alert-message>
+          <form
+            class="px-md-5"
+            @submit.prevent="validateForm"
+            novalidate
+          >
+            <alert-message
+              v-if="showError"
+              @closeMessage="showError = false"
+            >
+              Wrong user name or password.
+            </alert-message>
             <div class="form-group mb-4">
-              <label class="form--label" for="loginEmail">Email</label>
+              <label
+                class="form--label"
+                for="loginEmail"
+              >
+                Email
+              </label>
               <input
                 v-validate="'required|email'"
                 class="form--input form-control form-control-lg"
@@ -17,7 +31,9 @@
                 name="email"
                 v-model="email"
               >
-              <div class="invalid-feedback">{{ errors.first('email') }}</div>
+              <div class="invalid-feedback">
+                {{ errors.first('email') }}
+              </div>
             </div>
 
             <div class="form-group mb-4">
@@ -31,7 +47,9 @@
                 name="password"
                 v-model="password"
               >
-              <div class="invalid-feedback">{{ errors.first('password') }}</div>
+              <div class="invalid-feedback">
+                {{ errors.first('password') }}
+              </div>
             </div>
             <div class="row justify-content-between mb-5 px-3">
               <div class="form-check">
@@ -64,7 +82,6 @@ import Cookies from "js-cookie";
 import router from "../router";
 
 import AlertMessage from '../components/AlertMessage'
-// window.Cookies = Cookies;
 
 export default {
   name: "LoginForm",
@@ -85,7 +102,6 @@ export default {
         if (result) {
           this.processForm();
         }
-        // toastr.error('I do not think that word means what you think it means.', 'Inconceivable!')
       });
     },
     processForm() {
@@ -102,7 +118,6 @@ export default {
             router.push("/");
           } else {
             this.showError = true;
-            console.log("User does not exist");
           }
         });
     }

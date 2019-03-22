@@ -9,6 +9,12 @@
             @submit.prevent="validateForm"
             novalidate
           >
+            <alert-message
+              v-if="errorMessage"
+              @closeMessage="errorMessage = ''"
+            >
+              {{ errorMessage }}
+            </alert-message>
             <div class="form-group mb-4">
               <label
                 class="form--label"
@@ -75,13 +81,19 @@
 import axios from 'axios';
 import router from '../router.js';
 
+import AlertMessage from '../components/AlertMessage'
+
 export default {
   name: "SignUpForm",
   data() {
     return {
       email: '',
       password: '',
+      errorMessage: ''
     }
+  },
+  components: {
+    AlertMessage
   },
   methods: {
     validateForm() {
@@ -102,8 +114,7 @@ export default {
             this.$store.dispatch('authenticateUser', user);
             router.push('/');
           } else {
-            // Throw error message
-            console.log('Error creating user');
+            this.errorMessage = 'Error creating user';
           }
       })
     },
@@ -113,7 +124,7 @@ export default {
         .then(({ data }) => {
           const user = data[0];
           if (user) {
-            console.log('That email is already taken');
+            this.errorMessage = 'That email is taken';
           } else {
             this.processForm();
           }
