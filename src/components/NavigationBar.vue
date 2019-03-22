@@ -1,10 +1,10 @@
 <template>
-  <nav class="navigation navbar py-sm-3 px-md-5">
+  <nav class="navigation navbar py-0 px-3 px-md-1">
     <div class="container-fluid">
-      <a href="#" class="navigation--brand display-4 navbar-brand">Random Logo</a>
-      <div class="navigation--user d-flex align-items-center">
-          <a class="navigation--user-active mr-4" href="#">BLOG</a>
-          <img class="mx-3" src="../assets/user-1.png" alt="User profile image">
+      <a href="#" class="navigation--brand display-4 navbar-brand py-sm-3 px-md-5">Random Logo</a>
+      <div class="navigation--user d-flex align-items-center pr-2 pr-md-5">
+          <a class="navigation--user-active mr-4 py-4 px-3" href="#">BLOG</a>
+          <img class="mx-3 py-sm-3" src="../assets/user-1.png" alt="User profile image">
           <div class="navigation--user-profile">
             <p class="navigation--user-message">Welcome, John Doe</p>
             <a class="navigation--user-logout"  href="#" @click="$emit('logOut')">Logout</a>
@@ -38,7 +38,7 @@ export default {
 
     &-active {
       color: $white-color;
-      border-bottom: 4px solid $white-color;
+      border-bottom: 5px solid $white-color;
 
       &:hover {
         text-decoration: none;

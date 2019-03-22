@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="">
     <h4>
       <a href="#">{{ title }}</a>
     </h4>

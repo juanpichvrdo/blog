@@ -11,12 +11,7 @@ export default new Vuex.Store({
     posts: []
   },
   getters: {
-    isAuthenticated: (state) => {
-      if (state.cookie || Object.keys(state.user).length) {
-        return true;
-      }
-      return false;
-    },
+    isAuthenticated: (state) => state.cookie || Object.keys(state.user).length,
     allPosts: state => state.posts
   },
   mutations: {
