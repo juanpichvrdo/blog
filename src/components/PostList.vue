@@ -1,6 +1,6 @@
 <template>
-  <div class="post-list p-3 p-md-4 px-md-5">
-    <h3 class="post-list--heading">All posts</h3>
+  <div class="post-list container py-3 py-md-4">
+    <h2 class="post-list--heading">All posts</h2>
     <hr>
     <individual-post
       v-for="post in allPosts"
@@ -34,6 +34,9 @@ export default {
 
 <style lang="scss">
   .post-list {
+    padding-left: 100px;
+    padding-right: 100px;
+
     &--heading {
       font-family: Georgia, 'Times New Roman', Times, serif;
       font-weight: 600;

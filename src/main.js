@@ -8,10 +8,11 @@ import "./config/"
 require('toastr/build/toastr.css');
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(faSearch)
+library.add(faArrowRight);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

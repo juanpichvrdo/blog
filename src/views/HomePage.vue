@@ -1,15 +1,15 @@
 <template>
   <div class="home-page">
     <navigation-bar @logOut="onLogout"></navigation-bar>
-    <div class="hero-section p-2 p-md-4 px-md-5">
+    <div class="hero-section py-3 py-md-5">
       <h1 class="hero-section--heading p-2 p-md-4 px-md-5 display-4 font-weight">Welcome to Our Blog</h1>
     </div>
     <div class="container-fluid">
       <div class="row">
-        <div class="post-list p-2 p-md-4 px-md-5 col-8">
+        <div class="post-list container p-2 p-md-4 px-md-5 col-lg-7 order-last order-lg-first">
           <post-list></post-list>
         </div>
-        <aside class="sidebar col-4">
+        <aside class="sidebar col-lg-5 order-first order-lg-last">
           <search-posts></search-posts>
         </aside>
       </div>
@@ -54,7 +54,10 @@ export default {
 
 <style lang="scss">
 .home-page {
+  background-color: $white-color;
   .hero-section {
+    padding-left: 100px;
+    padding-right: 100px;
     background-size: cover;
     position: relative;
     background-position: center;
@@ -67,16 +70,16 @@ export default {
     &--heading {
       color: white;
       font-family: Georgia, "Times New Roman", Times, serif;
-      font-weight: 500;
+      font-weight: 700;
     }
   }
 
   .post-list {
-    background-color: white;
+    // background-color: white;
   }
 
   aside {
-    background-color: #F1F9FF;
+    background-color: #EBEEF1;
   }
 }
 </style>

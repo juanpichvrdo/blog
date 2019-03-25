@@ -1,13 +1,11 @@
 <template>
-  <div class="search-posts p-2 p-md-4 p-md-5">
-    <h4 class="search-posts--heading mb-3">Search for posts</h4>
+  <div class="py-5 search-posts">
+    <h3 class="search-posts--heading mb-3">Search for posts</h3>
     <form class="search-posts--form">
       <div class="input-group mb-3">
-        <!-- <div class="input-group-prepend pl-2 bg-white"> -->
-          <span class="search-posts--icon">
-            <font-awesome-icon class="input-group-addon" icon="search"/>
-          </span>
-        <!-- </div> -->
+        <span class="search-posts--icon">
+          <font-awesome-icon class="input-group-addon" icon="search"/>
+        </span>
         <input type="text" class="search-posts--input form-control py-4" placeholder="Search">
 
         <div class="input-group-append">
@@ -20,12 +18,15 @@
 
 <script>
 export default {
-  name: 'SearchPosts',
+  name: "SearchPosts"
 };
 </script>
 
 <style lang="scss">
 .search-posts {
+  padding-left: 100px;
+  padding-right: 100px;
+
   &--heading {
     font-weight: 600;
   }
@@ -34,8 +35,9 @@ export default {
   }
 
   &--input {
-    border: none;
-    padding-left: 50px;
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+    padding-left: 40px;
     position: relative;
   }
 
@@ -47,9 +49,8 @@ export default {
   &--icon {
     position: absolute;
     top: 25%;
-    left: 20px;
+    left: 15px;
     z-index: 5;
-    // padding: 13px 0 0 0;
   }
 }
 </style>

@@ -112,8 +112,8 @@ export default {
           console.log(user);
           if (user) {
             if (this.rememberMe) {
+              }
               Cookies.set("id", user.id);
-            }
             this.$store.dispatch("authenticateUser", user);
             router.push("/");
           } else {

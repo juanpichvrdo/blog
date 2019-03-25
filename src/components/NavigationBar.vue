@@ -1,5 +1,5 @@
 <template>
-  <nav class="navigation navbar py-0 px-3 px-md-1">
+  <nav class="navigation navbar py-0 ">
     <div class="container-fluid">
       <a href="#" class="navigation--brand display-4 navbar-brand py-sm-3 px-md-5">Random Logo</a>
       <div class="navigation--user d-flex align-items-center pr-2 pr-md-5">
@@ -24,6 +24,8 @@ export default {
 .navigation {
   color: $white-color;
   background-color: $navy-color;
+  padding-left: 100px;
+  padding-right: 100px;
 
   &--brand {
     color: $white-color;
@@ -55,6 +57,7 @@ export default {
 
     &-message {
       margin-bottom: 0;
+      font-weight: 300;
     }
   }
 }
