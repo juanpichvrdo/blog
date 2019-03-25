@@ -1,6 +1,6 @@
 <template>
   <div class="individual-post">
-    <div class="container px-5 py-3 mb-2">
+    <div class="container-fluid px-4 py-3 mb-2">
       <h4 class="individual-post--heading mb-3 mb-lg-5">
         <a class="individual-post--heading--link" href="#">{{ title }}</a>
       </h4>

@@ -1,12 +1,12 @@
 <template>
   <div class="home-page">
     <navigation-bar @logOut="onLogout"></navigation-bar>
-    <div class="hero-section py-3 py-md-5">
+    <div class="hero-section py-5 py-md-5">
       <h1 class="hero-section--heading p-2 p-md-4 px-md-5 display-4 font-weight">Welcome to Our Blog</h1>
     </div>
     <div class="container-fluid">
       <div class="row">
-        <div class="post-list container p-2 p-md-4 px-md-5 col-lg-7 order-last order-lg-first">
+        <div class="post-list py-2 py-md-4 px-md-5 col-lg-7 order-last order-lg-first">
           <post-list></post-list>
         </div>
         <aside class="sidebar col-lg-5 order-first order-lg-last">
@@ -21,7 +21,7 @@
 import router from "../router";
 
 import NavigationBar from "../components/NavigationBar";
-import SearchPosts from "../components/SearchPosts"
+import SearchPosts from "../components/SearchPosts";
 import PostList from "../components/PostList";
 
 export default {
@@ -66,6 +66,16 @@ export default {
       ),
       url("../assets/hero-background.png");
 
+    @media only screen and (max-width: 1024px) {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+
+    @media only screen and (max-width: 800px) {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+
     &--heading {
       color: white;
       font-family: Georgia, "Times New Roman", Times, serif;
@@ -74,7 +84,7 @@ export default {
   }
 
   aside {
-    background-color: #EBEEF1;
+    background-color: #ebeef1;
   }
 }
 </style>

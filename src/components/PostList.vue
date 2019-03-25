@@ -1,5 +1,5 @@
 <template>
-  <div class="post-list container py-3 py-md-4">
+  <div class="post-list py-3 py-md-4">
     <h2 class="post-list--heading">All posts</h2>
     <hr>
     <individual-post
@@ -33,14 +33,24 @@ export default {
 </script>
 
 <style lang="scss">
-  .post-list {
-    padding-left: 100px;
-    padding-right: 100px;
+.post-list {
+  padding-left: 100px;
+  padding-right: 100px;
 
-    &--heading {
-      font-family: Georgia, 'Times New Roman', Times, serif;
-      font-weight: 600;
-      color: $navy-color;
-    }
+  @media only screen and (max-width: 1600px) {
+    padding-left: 50px;
+    padding-right: 50px;
   }
+
+  @media only screen and (max-width: 1250px) {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  &--heading {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-weight: 600;
+    color: $navy-color;
+  }
+}
 </style>

@@ -7,7 +7,6 @@
           <font-awesome-icon class="input-group-addon" icon="search"/>
         </span>
         <input type="text" class="search-posts--input form-control py-4" placeholder="Search">
-
         <div class="input-group-append">
           <button class="search-posts--button btn text-white" type="button">GO!</button>
         </div>
@@ -27,6 +26,16 @@ export default {
   padding-left: 100px;
   padding-right: 100px;
 
+  @media only screen and (max-width: 1600px) {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+  @media only screen and (max-width: 1250px) {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
   &--heading {
     font-weight: 600;
   }
@@ -44,6 +53,14 @@ export default {
   &--button {
     background-color: $orange-color;
     padding: 10px 50px;
+
+    @media only screen and (max-width: 1600px) {
+      padding: 10px 35px;
+    }
+
+    @media only screen and (max-width: 1250px) {
+      padding: 10px 25px;
+    }
   }
 
   &--icon {
