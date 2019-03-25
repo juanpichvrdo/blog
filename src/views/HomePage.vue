@@ -18,7 +18,6 @@
 </template>
 
 <script>
-// import axios from "axios";
 import router from "../router";
 
 import NavigationBar from "../components/NavigationBar";
@@ -44,7 +43,7 @@ export default {
       if (posts.length) {
         this.$store.dispatch("setPosts", posts);
       } else {
-        // There's no posts
+        // There are no posts
         console.log("no data /:");
       }
     });
@@ -72,10 +71,6 @@ export default {
       font-family: Georgia, "Times New Roman", Times, serif;
       font-weight: 700;
     }
-  }
-
-  .post-list {
-    // background-color: white;
   }
 
   aside {

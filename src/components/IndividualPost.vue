@@ -5,7 +5,7 @@
         <a class="individual-post--heading--link" href="#">{{ title }}</a>
       </h4>
       <p v-if="edited">Edited</p>
-      <p class="individual-post--body">{{ resumedBody }}...</p>
+      <p v-html="resumedBody" class="individual-post--body"></p>
     </div>
     <div class="d-flex align-items-center justify-content-between">
       <div class="d-flex align-items-center">
@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import truncate from 'html-truncate';
+
 export default {
   name: "IndividualPost",
   props: {
@@ -52,7 +54,7 @@ export default {
   },
   computed: {
     resumedBody() {
-      return this.body.substring(0, 201);
+      return truncate(this.body, 200)
     },
     convertedPublishingDate() {
       return new Date(this.publishingDate).toDateString();

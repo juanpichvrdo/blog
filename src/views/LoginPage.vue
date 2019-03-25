@@ -77,7 +77,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import Cookies from "js-cookie";
 import router from "../router";
 
@@ -87,8 +86,8 @@ export default {
   name: "LoginForm",
   data() {
     return {
-      email: "",
-      password: "",
+      email: localStorage.getItem('email') || "",
+      password: localStorage.getItem('password') || "",
       rememberMe: false,
       showError: false
     };
@@ -106,13 +105,18 @@ export default {
     },
     processForm() {
       axios
-        .get(`http://localhost:3000/users?email=${this.email}&password=${this.password}`)
+        .get(`/users?email=${this.email}&password=${this.password}`)
         .then(({ data }) => {
           const user = data[0];
           console.log(user);
           if (user) {
             if (this.rememberMe) {
-              }
+              localStorage.setItem('email', this.email);
+              localStorage.setItem('password', this.password);
+            } else {
+              localStorage.removeItem('email');
+              localStorage.removeItem('password');
+            }
               Cookies.set("id", user.id);
             this.$store.dispatch("authenticateUser", user);
             router.push("/");

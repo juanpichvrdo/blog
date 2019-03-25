@@ -78,7 +78,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import router from '../router.js';
 
 import AlertMessage from '../components/AlertMessage'
@@ -104,7 +103,7 @@ export default {
       })
     },
     processForm() {
-      axios.post('http://localhost:3000/users', {
+      axios.post('/users', {
         email: this.email,
         password: this.password
       }).then(result => {
@@ -120,7 +119,7 @@ export default {
     },
     checkEmail() {
       const emailExist = axios
-        .get(`http://localhost:3000/users/?email=${this.email}`)
+        .get(`/users/?email=${this.email}`)
         .then(({ data }) => {
           const user = data[0];
           if (user) {
