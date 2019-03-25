@@ -12,13 +12,6 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomePage,
-      meta: { requiresAuth: true },
-
-    },
-    {
       path: '/login',
       name: 'login',
       component: LoginPage,
@@ -27,6 +20,12 @@ const router = new Router({
       path: '/signup',
       name: 'signup',
       component: SignUpPage,
+    },
+    {
+      path: '/',
+      name: 'home',
+      component: HomePage,
+      meta: { requiresAuth: true },
     },
   ],
 });

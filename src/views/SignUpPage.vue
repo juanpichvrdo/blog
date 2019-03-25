@@ -66,6 +66,74 @@
                 {{ errors.first('password_confirmation') }}
               </div>
             </div>
+            <hr>
+            <div class="form-group mb-4">
+              <label
+                class="form--label"
+                for="signUpUsername"
+              >
+                Username
+              </label>
+              <input
+                v-validate="'required'"
+                class="form--input form-control form-control-lg"
+                type="text"
+                id="signUpUsername"
+                placeholder="Username"
+                name="username"
+                v-model="username"
+              >
+              <div class="invalid-feedback">
+                {{ errors.first('username') }}
+              </div>
+            </div>
+            <div class="form-group mb-4">
+              <label class="form--label" for="name">
+                Name
+              </label>
+              <input
+                v-validate="'required'"
+                class="form--input form-control form-control-lg"
+                type="text"
+                id="name"
+                placeholder="Name"
+                name="name"
+                v-model="name"
+              >
+              <div class="invalid-feedback">
+                {{ errors.first('name') }}
+              </div>
+            </div>
+            <div class="form-group mb-4">
+              <label class="form--label" for="last-name">Last Name</label>
+              <input
+                v-validate="'required'"
+                class="form--input form-control form-control-lg"
+                name="last-name"
+                type="text"
+                id="last-name"
+                placeholder="Last Name"
+                v-model="lastName"
+              >
+              <div class="invalid-feedback">
+                {{ errors.first('last-name') }}
+              </div>
+            </div>
+            <div class="form-group mb-4">
+              <label class="form--label" for="description">Description</label>
+              <input
+                v-validate="'required'"
+                class="form--input form-control form-control-lg"
+                name="description"
+                type="text"
+                id="description"
+                placeholder="Description"
+                v-model="description"
+              >
+              <div class="invalid-feedback">
+                {{ errors.first('description') }}
+              </div>
+            </div>
             <button class="form--button btn btn-info btn-lg d-block mx-auto mb-5">SIGN UP</button>
           </form>
         </div>
@@ -88,6 +156,11 @@ export default {
     return {
       email: '',
       password: '',
+      username: '',
+      name: '',
+      lastName: '',
+      description: '',
+      dbUsername: '',
       errorMessage: ''
     }
   },
@@ -105,7 +178,11 @@ export default {
     processForm() {
       axios.post('/users', {
         email: this.email,
-        password: this.password
+        password: this.password,
+        username: this.username,
+        name: this.name,
+        lastName: this.lastName,
+        description: this.description,
       }).then(result => {
         const user = result.config.data
           console.log(user);
@@ -118,7 +195,7 @@ export default {
       })
     },
     checkEmail() {
-      const emailExist = axios
+      axios
         .get(`/users/?email=${this.email}`)
         .then(({ data }) => {
           const user = data[0];
@@ -128,7 +205,7 @@ export default {
             this.processForm();
           }
         })
-    }
+    },
   }
 };
 </script>
