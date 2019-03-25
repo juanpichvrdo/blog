@@ -4,6 +4,7 @@ import store from './store';
 import HomePage from './views/HomePage.vue';
 import SignUpPage from './views/SignUpPage.vue';
 import LoginPage from './views/LoginPage.vue';
+import CreatePost from './views/CreatePost.vue'
 
 Vue.use(Router);
 
@@ -20,6 +21,11 @@ const router = new Router({
       path: '/signup',
       name: 'signup',
       component: SignUpPage,
+    },
+    {
+      path: '/create-post',
+      name: 'createPost',
+      component: CreatePost,
     },
     {
       path: '/',

@@ -1,6 +1,12 @@
 <template>
   <div class="post-list py-3 py-md-4">
     <h2 class="post-list--heading">All posts</h2>
+    <router-link
+      to="/create-post"
+      class="btn btn-success"
+      >
+        Create Post
+      </router-link>
     <hr>
     <individual-post
       v-for="post in allPosts"

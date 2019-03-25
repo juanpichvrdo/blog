@@ -40,9 +40,6 @@ export default {
     font-weight: 600;
   }
 
-  &--form {
-  }
-
   &--input {
     border-top-left-radius: 5px !important;
     border-bottom-left-radius: 5px !important;
