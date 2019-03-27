@@ -110,7 +110,8 @@ export default {
           author: this.getUser.username,
           publishingDate: Date.now(),
           userId: this.getUser.id,
-          likes: 0
+          likes: 0,
+          commentCount: 0
         })
         .then(result => {
           console.log(result);

@@ -12,7 +12,7 @@
       :author="post.author"
       :publishingDate="post.publishingDate"
       :content="post.content"
-      :comments="post.comments"
+      :commentCount="post.commentCount"
       :likes="post.likes"
       :edited="post.edited"
       :id="post.id"

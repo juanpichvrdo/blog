@@ -1,6 +1,7 @@
 <template>
   <div class="post-page container mt-5">
-    <h1 class="post-page--title">{{ post.title }}</h1>
+    <router-link to="/" class>Go home</router-link>
+    <h1 class="display-4 post-page--title">{{ post.title }}</h1>
     <div class="d-flex align-items-center">
       <a href="#">
         <img src="../assets/user-2.png" alt="User profile picture">

@@ -18,7 +18,6 @@
             <a class="individual-post--author--link" href="#">{{ author }}</a>
           </p>
           <p class="individual-post--published mb-0 smaller-font">
-            <!-- <a class="individual-post--published--date" href="#"></a> -->
             <router-link
               :to="`/posts/${id}`"
               class="individual-post--published--date"
@@ -34,7 +33,9 @@
 
     <div class="mt-4 row justify-content-between">
       <p>
-        <a href="#">{{ comments }} comments</a>
+        <router-link
+          :to="`/posts/${id}`"
+        >{{ commentCount }} {{`comment${commentCount === 1 ? '' : 's'}`}}</router-link>
       </p>
       <p>{{ likes }} likes</p>
     </div>
@@ -55,7 +56,8 @@ export default {
     comments: Number,
     likes: Number,
     edited: Boolean,
-    id: String
+    id: String,
+    commentCount: Number
   },
   computed: {
     resumedBody() {

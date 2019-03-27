@@ -7,8 +7,22 @@
       <button @click="newCommentBody = ''" class="btn btn-lg btn-danger">Cancel</button>
     </div>
     <div v-for="comment in comments" :key="comment.id" class="comments--individual-comment my-5">
-      <div v-html="comment.body"></div>
-      <p>{{ comment.likes }}</p>
+      <div class="d-flex align-items-center">
+        <a href="#">
+          <img src="../assets/user-2.png" alt="User profile picture">
+        </a>
+        <div class="ml-3">
+          <p class="post-page--author mb-1 smaller-font">
+            <a class="post-page--author--link" href="#">{{ comment.author.username }}</a>
+            says
+          </p>
+          <p
+            class="post-page--published mb-0 smaller-font"
+          >{{ new Date(comment.datePublished).toDateString() }}</p>
+        </div>
+      </div>
+      <div class="mt-3" v-html="comment.body"></div>
+      <p>{{ comment.likes }} likes</p>
       <hr>
     </div>
   </div>
@@ -16,6 +30,7 @@
 
 <script>
 import { VueEditor } from "vue2-editor";
+import { mapGetters } from "vuex";
 
 export default {
   name: "CommentsSection",
@@ -25,11 +40,26 @@ export default {
   data() {
     return {
       comments: [],
-      newCommentBody: ""
+      newCommentBody: "",
+      commentCount: 0
     };
+  },
+  watch: {
+    comments(newData, oldData) {
+      this.commentCount = newData.length;
+      axios.patch(`/posts/${this.postID}`, {
+        commentCount: this.commentCount
+      });
+    }
   },
   created() {
     this.getComments();
+  },
+  computed: {
+    ...mapGetters(["getUser"]),
+    convertedPublishingDate(date) {
+      return new Date(date).toDateString();
+    }
   },
   props: {
     postID: String
@@ -43,14 +73,17 @@ export default {
         });
     },
     submitComment() {
-      axios
-        .post("/comments", {
-          body: this.newCommentBody,
-          postID: this.postID,
-          likes: 0,
-          datePublished: Date.now()
-        })
-        .then(comment => this.comments.push(comment.data));
+      if (this.newCommentBody.length > 0) {
+        axios
+          .post("/comments", {
+            body: this.newCommentBody,
+            postID: this.postID,
+            likes: 0,
+            datePublished: Date.now(),
+            author: this.getUser
+          })
+          .then(comment => this.comments.push(comment.data));
+      }
     }
   }
 };
