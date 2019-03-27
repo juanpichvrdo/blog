@@ -4,7 +4,8 @@ import store from './store';
 import HomePage from './views/HomePage.vue';
 import SignUpPage from './views/SignUpPage.vue';
 import LoginPage from './views/LoginPage.vue';
-import CreatePost from './views/CreatePost.vue'
+import CreatePost from './views/CreatePost.vue';
+import PostPage from './views/PostPage.vue';
 
 Vue.use(Router);
 
@@ -23,9 +24,16 @@ const router = new Router({
       component: SignUpPage,
     },
     {
+      path: '/posts/:id',
+      name: 'postPage',
+      component: PostPage,
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/create-post',
       name: 'createPost',
       component: CreatePost,
+      meta: { requiresAuth: true },
     },
     {
       path: '/',
@@ -47,7 +55,7 @@ router.beforeEach((to, from, next) => {
       });
     }
   } else {
-    next()
+    next();
   }
 });
 

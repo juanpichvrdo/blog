@@ -2,10 +2,10 @@
   <div class="individual-post">
     <div class="container-fluid px-4 py-3 mb-2">
       <h4 class="individual-post--heading mb-3 mb-lg-5">
-        <a class="individual-post--heading--link" href="#">{{ title }}</a>
+        <router-link :to="`/posts/${id}`">{{ title }}</router-link>
       </h4>
       <p v-if="edited">Edited</p>
-      <p v-html="resumedBody" class="individual-post--body"></p>
+      <div v-html="resumedBody" class="individual-post--body"></div>
     </div>
     <div class="d-flex align-items-center justify-content-between">
       <div class="d-flex align-items-center">
@@ -18,13 +18,18 @@
             <a class="individual-post--author--link" href="#">{{ author }}</a>
           </p>
           <p class="individual-post--published mb-0 smaller-font">
-            <a class="individual-post--published--date" href="#">{{ convertedPublishingDate }}</a>
+            <!-- <a class="individual-post--published--date" href="#"></a> -->
+            <router-link
+              :to="`/posts/${id}`"
+              class="individual-post--published--date"
+            >{{ convertedPublishingDate }}</router-link>
           </p>
         </div>
       </div>
-      <a class="individual-post--read-more" href="#">READ MORE
+      <router-link :to="`/posts/${id}`" class="individual-post--read-more">
+        READ MORE
         <font-awesome-icon class="ml-2" icon="arrow-right"/>
-      </a>
+      </router-link>
     </div>
 
     <div class="mt-4 row justify-content-between">
@@ -38,7 +43,7 @@
 </template>
 
 <script>
-import truncate from 'html-truncate';
+import truncate from "html-truncate";
 
 export default {
   name: "IndividualPost",
@@ -49,11 +54,12 @@ export default {
     content: String,
     comments: Number,
     likes: Number,
-    edited: Boolean
+    edited: Boolean,
+    id: String
   },
   computed: {
     resumedBody() {
-      return truncate(this.content, 200)
+      return truncate(this.content, 200);
     },
     convertedPublishingDate() {
       return new Date(this.publishingDate).toDateString();
@@ -66,13 +72,12 @@ export default {
 .individual-post {
   &--heading {
     &--link {
-      color: #707070;
+      color: $navy-color;
       font-weight: 600;
 
       &:hover {
-        color: #707070;
+        color: #1d70a8;
       }
-
     }
   }
 
@@ -81,7 +86,7 @@ export default {
       color: #707070;
 
       &:hover {
-        color: #707070;
+        background: #1d70a8;
       }
     }
   }

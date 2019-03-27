@@ -2,12 +2,7 @@
   <div class="post-list py-3 py-md-4">
     <div class="d-flex justify-content-between align-items-center">
       <h2 class="post-list--heading">All posts</h2>
-      <router-link
-        to="/create-post"
-        class="post-list--create-post btn btn-success"
-      >
-        Create Post
-      </router-link>
+      <router-link to="/create-post" class="post-list--create-post btn btn-success">Create Post</router-link>
     </div>
     <hr>
     <individual-post
@@ -20,6 +15,7 @@
       :comments="post.comments"
       :likes="post.likes"
       :edited="post.edited"
+      :id="post.id"
     ></individual-post>
   </div>
 </template>
@@ -47,6 +43,7 @@ export default {
       axios.get("/posts").then(({ data: posts }) => {
         if (posts.length) {
           this.posts = posts;
+          this.$store.dispatch("setPosts", posts);
         } else {
           // There are no posts
           console.log("no data /:");

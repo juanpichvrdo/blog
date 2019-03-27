@@ -1,44 +1,66 @@
 <template>
   <div class="create-post form p-5 container mt-5">
-    <h1 class="form--heading create-post--heading display-4 mb-3 text-center">Create Post</h1>
-    <form @submit.prevent novalidate>
-      <div class="form-group">
-        <label class="form--label create-post--label" for="title">Title</label>
-        <input
-          v-validate="'required'"
-          type="text"
-          class="form-control form-control-lg"
-          id="title"
-          placeholder="Post Title"
-          name="title"
-          v-model="title"
-        >
-        <div class="invalid-feedback">{{ errors.first('title') }}</div>
-      </div>
-      <vue-editor name="content" v-model="content"></vue-editor>
-      <div class="invalid-feedback">{{ errors.first('content') }}</div>
-      <div class="row d-flex justify-content-between align-items-center mt-5">
-        <div class="form-check">
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <a
+          @click="activeTab = 'create'"
+          class="nav-link create-post--tabs"
+          :class="{active: activeTab === 'create'}"
+          href="#"
+        >Create</a>
+      </li>
+      <li class="nav-item">
+        <a
+          @click="activeTab = 'view'"
+          class="nav-link create-post--tabs"
+          :class="{active: activeTab === 'view'}"
+          href="#"
+        >View</a>
+      </li>
+    </ul>
+    <div v-if="activeTab === 'create'">
+      <h1 class="form--heading create-post--heading display-5 mt-5 mb-3 text-center">Create Post</h1>
+      <form @submit.prevent novalidate>
+        <div class="form-group">
+          <label class="form--label create-post--label" for="title">Title</label>
           <input
-            class="form--checkbox create-post--checkbox form-check-input"
-            type="checkbox"
-            id="allowCommentsCheckbox"
-            value="allowComments"
-            v-model="allowComments"
+            v-validate="'required'"
+            type="text"
+            class="form-control form-control-lg"
+            id="title"
+            placeholder="Post Title"
+            name="title"
+            v-model="title"
           >
-          <label
-            class="form-check-label create-post--label"
-            for="allowCommentsCheckbox"
-          >Allow comments</label>
+          <div class="invalid-feedback">{{ errors.first('title') }}</div>
         </div>
-        <div class="create-post--buttons">
-          <button @click="validateForm" class="mx-3 px-5 btn btn-large btn-success">Create</button>
-          <button class="mx-3 px-5 btn btn-large btn-warning">Draft</button>
-          <button @click="$router.push('/')" class="mx-3 px-5 btn btn-large btn-danger">Cancel</button>
+        <vue-editor name="content" v-model="content"></vue-editor>
+        <div class="invalid-feedback">{{ errors.first('content') }}</div>
+        <div class="row d-flex justify-content-between align-items-center mt-5">
+          <div class="form-check">
+            <input
+              class="form--checkbox create-post--checkbox form-check-input"
+              type="checkbox"
+              id="allowCommentsCheckbox"
+              value="allowComments"
+              v-model="allowComments"
+            >
+            <label
+              class="form-check-label create-post--label"
+              for="allowCommentsCheckbox"
+            >Allow comments</label>
+          </div>
+          <div class="create-post--buttons">
+            <button @click="validateForm" class="mx-3 px-5 btn btn-large btn-success">Create</button>
+            <button class="mx-3 px-5 btn btn-large btn-warning">Draft</button>
+            <button @click="$router.push('/')" class="mx-3 px-5 btn btn-large btn-danger">Cancel</button>
+          </div>
         </div>
-      </div>
-    </form>
-    <div class="mt-5" v-html="content"></div>
+      </form>
+    </div>
+    <div v-else class="mt-5" v-html="content">
+      <h2>{{ title }}</h2>
+    </div>
   </div>
 </template>
 
@@ -54,6 +76,7 @@ export default {
   },
   data() {
     return {
+      activeTab: "create",
       title: "",
       content: "",
       allowComments: true
@@ -79,7 +102,8 @@ export default {
           allowComments: this.allowComments,
           author: this.getUser.username,
           publishingDate: Date.now(),
-          userId: this.getUser.id
+          userId: this.getUser.id,
+          likes: 0
         })
         .then(result => {
           console.log(result);
@@ -102,6 +126,10 @@ export default {
 <style lang="scss">
 .create-post {
   background-color: $white-color;
+
+  &--tabs {
+    color: $navy-color;
+  }
 
   &--heading {
     border-bottom: none;
