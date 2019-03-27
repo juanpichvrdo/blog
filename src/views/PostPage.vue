@@ -14,12 +14,22 @@
       </div>
     </div>
     <div v-html="post.content" class="post-page--content mt-5"></div>
+    <div class="mt-5" v-if="post.allowComments">
+      <hr>
+      <comments-section class="mt-5" :postID="post.id"></comments-section>
+    </div>
   </div>
 </template>
 
 <script>
+import CommentsSection from "../components/CommentsSection";
+import { VueEditor } from "vue2-editor";
+
 export default {
   name: "PostPage",
+  components: {
+    CommentsSection
+  },
   data() {
     return {
       postID: this.$route.params.id,

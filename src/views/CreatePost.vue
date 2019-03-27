@@ -11,11 +11,11 @@
       </li>
       <li class="nav-item">
         <a
-          @click="activeTab = 'view'"
+          @click="activeTab = 'preview'"
           class="nav-link create-post--tabs"
-          :class="{active: activeTab === 'view'}"
+          :class="{active: activeTab === 'preview'}"
           href="#"
-        >View</a>
+        >Preview</a>
       </li>
     </ul>
     <div v-if="activeTab === 'create'">
@@ -58,8 +58,15 @@
         </div>
       </form>
     </div>
-    <div v-else class="mt-5" v-html="content">
-      <h2>{{ title }}</h2>
+    <div v-else class="preview">
+      <div v-if="title || content">
+        <h2 class="mt-5">{{ title }}</h2>
+        <hr v-if="title">
+        <div class="mt-5" v-html="content"></div>
+      </div>
+      <div v-else class="mt-5">
+        <h5>Nothing to preview. Start writing content!</h5>
+      </div>
     </div>
   </div>
 </template>
