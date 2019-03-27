@@ -1,13 +1,13 @@
 <template>
   <div class="create-post form p-5 container mt-5">
-    <h1 class="form--heading display-4 mb-5 text-center">Create Post</h1>
-    <form @submit.prevent="validateForm" novalidate>
+    <h1 class="form--heading create-post--heading display-4 mb-3 text-center">Create Post</h1>
+    <form @submit.prevent novalidate>
       <div class="form-group">
-        <label for="title">Title</label>
+        <label class="form--label create-post--label" for="title">Title</label>
         <input
           v-validate="'required'"
           type="text"
-          class="form-control"
+          class="form-control form-control-lg"
           id="title"
           placeholder="Post Title"
           name="title"
@@ -15,26 +15,26 @@
         >
         <div class="invalid-feedback">{{ errors.first('title') }}</div>
       </div>
-      <vue-editor
-        name="content"
-        v-model="content"
-      ></vue-editor>
+      <vue-editor name="content" v-model="content"></vue-editor>
       <div class="invalid-feedback">{{ errors.first('content') }}</div>
       <div class="row d-flex justify-content-between align-items-center mt-5">
         <div class="form-check">
           <input
-            class="form--checkbox form-check-input"
+            class="form--checkbox create-post--checkbox form-check-input"
             type="checkbox"
             id="allowCommentsCheckbox"
             value="allowComments"
             v-model="allowComments"
           >
-          <label class="form-check-label" for="allowCommentsCheckbox">Allow comments</label>
+          <label
+            class="form-check-label create-post--label"
+            for="allowCommentsCheckbox"
+          >Allow comments</label>
         </div>
         <div class="create-post--buttons">
           <button @click="validateForm" class="mx-3 px-5 btn btn-large btn-success">Create</button>
           <button class="mx-3 px-5 btn btn-large btn-warning">Draft</button>
-          <button class="mx-3 px-5 btn btn-large btn-danger">Cancel</button>
+          <button @click="$router.push('/')" class="mx-3 px-5 btn btn-large btn-danger">Cancel</button>
         </div>
       </div>
     </form>
@@ -44,7 +44,8 @@
 
 <script>
 import { VueEditor } from "vue2-editor";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
+import router from "../router.js";
 
 export default {
   name: "createPost",
@@ -59,35 +60,40 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getUsername'])
+    ...mapGetters(["getUser"])
   },
   methods: {
     validateForm() {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.processPost();
+          console.log(this.content);
         }
       });
     },
     processPost() {
-      axios.post('/posts', {
-        title: this.title,
-        content: this.content,
-        allowComments: this.allowComments,
-        author: this.getUsername,
-        publishingDate: Date.now()
-      }).then(result => {
-        console.log(result)
-        // const user = result.config.data
-        //   console.log(user);
-        //   if (user) {
-        //     this.$store.dispatch('authenticateUser', user);
-        //     Cookies.set("id", user.id);
-        //     router.push('/');
-        //   } else {
-        //     this.errorMessage = 'Error creating user';
-        //   }
-      })
+      axios
+        .post("/posts", {
+          title: this.title,
+          content: this.content,
+          allowComments: this.allowComments,
+          author: this.getUser.username,
+          publishingDate: Date.now(),
+          userId: this.getUser.id
+        })
+        .then(result => {
+          console.log(result);
+          router.push("/");
+          // const user = result.config.data
+          //   console.log(user);
+          //   if (user) {
+          //     this.$store.dispatch('authenticateUser', user);
+          //     Cookies.set("id", user.id);
+          //     router.push('/');
+          //   } else {
+          //     this.errorMessage = 'Error creating user';
+          //   }
+        });
     }
   }
 };
@@ -96,5 +102,17 @@ export default {
 <style lang="scss">
 .create-post {
   background-color: $white-color;
+
+  &--heading {
+    border-bottom: none;
+  }
+
+  &--label {
+    font-size: 1.2rem;
+  }
+
+  &--checkbox {
+    margin-top: 6px;
+  }
 }
 </style>

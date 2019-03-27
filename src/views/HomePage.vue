@@ -37,17 +37,17 @@ export default {
       router.push("/login");
     }
   },
-  created() {
-    axios.get("/posts").then(({ data: posts }) => {
-      console.log(posts);
-      if (posts.length) {
-        this.$store.dispatch("setPosts", posts);
-      } else {
-        // There are no posts
-        console.log("no data /:");
-      }
-    });
-  }
+  // created() {
+  //   axios.get("/posts").then(({ data: posts }) => {
+  //     console.log(posts);
+  //     if (posts.length) {
+  //       this.$store.dispatch("setPosts", posts);
+  //     } else {
+  //       // There are no posts
+  //       console.log("no data /:");
+  //     }
+  //   });
+  // }
 };
 </script>
 

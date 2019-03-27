@@ -8,12 +8,11 @@ export default new Vuex.Store({
   state: {
     cookie: Cookies.get('id') || null,
     user: {},
-    posts: []
   },
   getters: {
     isAuthenticated: (state) => state.cookie || Object.keys(state.user).length,
     allPosts: state => state.posts,
-    getUsername: state => state.user.username
+    getUser: state => state.user,
   },
   mutations: {
     logoutUser(state) {

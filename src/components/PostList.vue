@@ -1,20 +1,22 @@
 <template>
   <div class="post-list py-3 py-md-4">
-    <h2 class="post-list--heading">All posts</h2>
-    <router-link
-      to="/create-post"
-      class="btn btn-success"
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="post-list--heading">All posts</h2>
+      <router-link
+        to="/create-post"
+        class="post-list--create-post btn btn-success"
       >
         Create Post
       </router-link>
+    </div>
     <hr>
     <individual-post
-      v-for="post in allPosts"
+      v-for="post in posts"
       :key="post.id"
       :title="post.title"
       :author="post.author"
       :publishingDate="post.publishingDate"
-      :body="post.body"
+      :content="post.content"
       :comments="post.comments"
       :likes="post.likes"
       :edited="post.edited"
@@ -29,11 +31,28 @@ import IndividualPost from "./IndividualPost";
 
 export default {
   name: "PostList",
+  data() {
+    return {
+      posts: []
+    };
+  },
   components: {
     IndividualPost
   },
-  computed: {
-    ...mapGetters(["allPosts"])
+  created() {
+    this.getPosts();
+  },
+  methods: {
+    getPosts() {
+      axios.get("/posts").then(({ data: posts }) => {
+        if (posts.length) {
+          this.posts = posts;
+        } else {
+          // There are no posts
+          console.log("no data /:");
+        }
+      });
+    }
   }
 };
 </script>
@@ -57,6 +76,9 @@ export default {
     font-family: Georgia, "Times New Roman", Times, serif;
     font-weight: 600;
     color: $navy-color;
+  }
+
+  &--create-post {
   }
 }
 </style>

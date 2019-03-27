@@ -22,7 +22,6 @@
           </p>
         </div>
       </div>
-
       <a class="individual-post--read-more" href="#">READ MORE
         <font-awesome-icon class="ml-2" icon="arrow-right"/>
       </a>
@@ -47,14 +46,14 @@ export default {
     title: String,
     author: String,
     publishingDate: Number,
-    body: String,
+    content: String,
     comments: Number,
     likes: Number,
     edited: Boolean
   },
   computed: {
     resumedBody() {
-      return truncate(this.body, 200)
+      return truncate(this.content, 200)
     },
     convertedPublishingDate() {
       return new Date(this.publishingDate).toDateString();

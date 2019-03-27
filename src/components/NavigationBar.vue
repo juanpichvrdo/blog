@@ -6,7 +6,7 @@
           <a class="navigation--user-active mr-4 py-4 px-3" href="#">BLOG</a>
           <img class="mx-3 py-sm-3" src="../assets/user-1.png" alt="User profile image">
           <div class="navigation--user-profile">
-            <p class="navigation--user-message">Welcome, {{ getUsername }}</p>
+            <p class="navigation--user-message">Welcome, {{ getUser.username }}</p>
             <a class="navigation--user-logout"  href="#" @click="$emit('logOut')">Logout</a>
         </div>
       </div>
@@ -20,7 +20,7 @@ import { mapGetters } from 'vuex';
 export default {
   name: "NavigationBar",
   computed: {
-    ...mapGetters(['getUsername'])
+    ...mapGetters(['getUser'])
   }
 };
 </script>
