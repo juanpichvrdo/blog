@@ -37,7 +37,7 @@
           :to="`/posts/${id}`"
         >{{ commentCount }} {{`comment${commentCount === 1 ? '' : 's'}`}}</router-link>
       </p>
-      <p>{{ likes }} likes</p>
+      <p>{{ likedBy.length }} likes</p>
     </div>
     <hr>
   </div>
@@ -55,7 +55,7 @@ export default {
     publishingDate: String,
     content: String,
     comments: Number,
-    likes: Number,
+    likedBy: Array,
     edited: Boolean,
     id: String,
     commentCount: Number

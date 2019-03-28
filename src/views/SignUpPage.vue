@@ -150,7 +150,8 @@ export default {
           username: this.username,
           name: this.name,
           lastName: this.lastName,
-          description: this.description
+          description: this.description,
+          likedPosts: []
         })
         .then(response => {
           const user = response.data;

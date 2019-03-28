@@ -15,7 +15,9 @@
       </div>
     </div>
     <div v-html="post.content" class="post-page--content mt-5"></div>
+    <p>{{ likes }} likes</p>
     <div class="mt-5" v-if="isAuthenticated">
+      <button @click="giveLike" :disabled="alreadyLiked" class="btn btn-info">Give like</button>
       <div v-if="post.allowComments">
         <hr>
         <comments-section class="mt-5" :postID="post.id"></comments-section>
@@ -42,7 +44,9 @@ export default {
   data() {
     return {
       postID: this.$route.params.id,
-      post: {}
+      post: {},
+      alreadyLiked: false,
+      likes: 0
     };
   },
   created() {
@@ -52,7 +56,7 @@ export default {
     convertedPublishingDate() {
       return moment(this.post.publishingDate).format("MMMM DD, YYYY - LT");
     },
-    ...mapGetters(["isAuthenticated"])
+    ...mapGetters(["isAuthenticated", "getUser"])
   },
   methods: {
     getPost() {
@@ -61,10 +65,36 @@ export default {
         console.log(post);
         if (post.length) {
           this.post = post[0];
+          this.likes = post[0].likedBy.length;
           // this.$store.dispatch("setPosts", posts);
         } else {
           // There is no post
           console.log("no data /:");
+        }
+      });
+    },
+    giveLike() {
+      this.getUser.likedPosts.push(this.postID);
+      this.post.likedBy.push(this.getUser.id);
+
+      axios.get(`/users/${this.getUser.id}`).then(({ data: user }) => {
+        if (user.likedPosts.find(likedPost => this.postID === likedPost)) {
+          // Remove like
+          console.log("Already liked");
+        } else {
+          axios
+            .patch(`/users/${this.getUser.id}`, {
+              likedPosts: this.getUser.likedPosts
+            })
+            .then(result => console.log(result));
+
+          axios
+            .patch(`/posts/${this.postID}`, {
+              likedBy: this.post.likedBy
+            })
+            .then(({ data: post }) => (this.likes = post.likedBy.length));
+
+          this.alreadyLiked = true;
         }
       });
     }

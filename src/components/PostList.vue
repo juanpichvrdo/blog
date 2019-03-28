@@ -18,7 +18,7 @@
         :publishingDate="post.publishingDate"
         :content="post.content"
         :commentCount="post.commentCount"
-        :likes="post.likes"
+        :likedBy="post.likedBy"
         :edited="post.edited"
         :id="post.id"
       ></individual-post>
