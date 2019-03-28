@@ -117,15 +117,6 @@ export default {
         .then(result => {
           console.log(result);
           router.push("/");
-          // const user = result.config.data
-          //   console.log(user);
-          //   if (user) {
-          //     this.$store.dispatch('authenticateUser', user);
-          //     Cookies.set("id", user.id);
-          //     router.push('/');
-          //   } else {
-          //     this.errorMessage = 'Error creating user';
-          //   }
         });
     }
   }

@@ -15,15 +15,22 @@
       </div>
     </div>
     <div v-html="post.content" class="post-page--content mt-5"></div>
-    <div class="mt-5" v-if="post.allowComments">
-      <hr>
-      <comments-section class="mt-5" :postID="post.id"></comments-section>
+    <div class="mt-5" v-if="isAuthenticated">
+      <div v-if="post.allowComments">
+        <hr>
+        <comments-section class="mt-5" :postID="post.id"></comments-section>
+      </div>
+    </div>
+    <div v-else class>
+      <router-link to="/login">Login to comment</router-link>
     </div>
   </div>
 </template>
 
 <script>
 import moment from "moment";
+import { mapGetters } from "vuex";
+
 import { VueEditor } from "vue2-editor";
 import CommentsSection from "../components/CommentsSection";
 
@@ -44,7 +51,8 @@ export default {
   computed: {
     convertedPublishingDate() {
       return moment(this.post.publishingDate).format("MMMM DD, YYYY - LT");
-    }
+    },
+    ...mapGetters(["isAuthenticated"])
   },
   methods: {
     getPost() {

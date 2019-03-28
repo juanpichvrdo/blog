@@ -27,7 +27,7 @@ const router = new Router({
       path: '/posts/:id',
       name: 'postPage',
       component: PostPage,
-      meta: { requiresAuth: true },
+      // meta: { requiresAuth: true },
     },
     {
       path: '/create-post',
@@ -39,7 +39,7 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: HomePage,
-      meta: { requiresAuth: true },
+      // meta: { requiresAuth: true },
     },
   ],
 });

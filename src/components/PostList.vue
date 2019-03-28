@@ -2,7 +2,11 @@
   <div class="post-list py-3 py-md-4">
     <div class="d-flex justify-content-between align-items-center">
       <h2 class="post-list--heading">All posts</h2>
-      <router-link to="/create-post" class="post-list--create-post btn btn-success">Create Post</router-link>
+      <router-link
+        v-if="isAuthenticated"
+        to="/create-post"
+        class="post-list--create-post btn btn-success"
+      >Create Post</router-link>
     </div>
     <hr>
     <div v-if="posts.length">
@@ -32,6 +36,12 @@ import IndividualPost from "./IndividualPost";
 
 export default {
   name: "PostList",
+  created() {
+    this.getPosts();
+  },
+  computed: {
+    ...mapGetters(["isAuthenticated"])
+  },
   data() {
     return {
       posts: []
@@ -40,9 +50,7 @@ export default {
   components: {
     IndividualPost
   },
-  created() {
-    this.getPosts();
-  },
+
   methods: {
     getPosts() {
       axios.get("/posts").then(({ data: posts }) => {
