@@ -112,7 +112,8 @@ export default {
           publishingDate: moment(),
           userId: this.getUser.id,
           likes: 0,
-          commentCount: 0
+          commentCount: 0,
+          likedBy: []
         })
         .then(result => {
           console.log(result);

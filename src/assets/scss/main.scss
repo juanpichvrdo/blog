@@ -1,14 +1,15 @@
 // @import '/bootstrap/dist/css/bootstrap.min.css';
 
-$bg-auth-color: #E7EEF1;
-$navy-color: #1C6392;
-$light-blue-color: #70B1DD;
+$bg-auth-color: #e7eef1;
+$navy-color: #1c6392;
+$light-blue-color: #70b1dd;
 $white-color: #fff;
-$orange-color: #F39C12;
+$orange-color: #f39c12;
+$red-color: #dd1e1e;
 
 body {
   background-color: $bg-auth-color;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: #707070;
 }
 
@@ -57,6 +58,6 @@ body {
 }
 
 .navigation--user--link {
-      // color: $light-blue;
-      color: #70B1DD;
-    }
+  // color: $light-blue;
+  color: #70b1dd;
+}

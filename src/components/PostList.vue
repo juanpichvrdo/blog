@@ -21,6 +21,8 @@
         :likedBy="post.likedBy"
         :edited="post.edited"
         :id="post.id"
+        :userId="post.userId"
+        @postDeleted="getPosts"
       ></individual-post>
     </div>
     <div v-else>
@@ -55,6 +57,7 @@ export default {
     getPosts() {
       axios.get("/posts").then(({ data: posts }) => {
         if (posts.length) {
+          console.log(posts);
           this.posts = posts;
           this.$store.dispatch("setPosts", posts);
         } else {

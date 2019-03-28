@@ -3,16 +3,17 @@ import VeeValidate from 'vee-validate';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import "./config/"
+import './config/';
 
 require('toastr/build/toastr.css');
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSearch, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faArrowRight, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faSearch)
+library.add(faSearch);
 library.add(faArrowRight);
+library.add(faTimes);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
