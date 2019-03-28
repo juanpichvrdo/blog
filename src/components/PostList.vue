@@ -5,18 +5,23 @@
       <router-link to="/create-post" class="post-list--create-post btn btn-success">Create Post</router-link>
     </div>
     <hr>
-    <individual-post
-      v-for="post in posts"
-      :key="post.id"
-      :title="post.title"
-      :author="post.author"
-      :publishingDate="post.publishingDate"
-      :content="post.content"
-      :commentCount="post.commentCount"
-      :likes="post.likes"
-      :edited="post.edited"
-      :id="post.id"
-    ></individual-post>
+    <div v-if="posts.length">
+      <individual-post
+        v-for="post in posts"
+        :key="post.id"
+        :title="post.title"
+        :author="post.author"
+        :publishingDate="post.publishingDate"
+        :content="post.content"
+        :commentCount="post.commentCount"
+        :likes="post.likes"
+        :edited="post.edited"
+        :id="post.id"
+      ></individual-post>
+    </div>
+    <div v-else>
+      <h4 class="text-center">There are no posts</h4>
+    </div>
   </div>
 </template>
 

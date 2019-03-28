@@ -45,13 +45,14 @@
 
 <script>
 import truncate from "html-truncate";
+import moment from "moment";
 
 export default {
   name: "IndividualPost",
   props: {
     title: String,
     author: String,
-    publishingDate: Number,
+    publishingDate: String,
     content: String,
     comments: Number,
     likes: Number,
@@ -64,7 +65,7 @@ export default {
       return truncate(this.content, 200);
     },
     convertedPublishingDate() {
-      return new Date(this.publishingDate).toDateString();
+      return moment(this.publishingDate).format("MMMM DD, YYYY - LT");
     }
   }
 };

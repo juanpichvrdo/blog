@@ -1,0 +1,28 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    },
+    {
+      "title": "Test",
+      "content": "<h3>Lorem ipsum</h3><p><br></p><p>dolor sit amet consectetur adipisicing elit. Distinctio nihil deleniti dicta unde sunt, sint adipisci aperiam molestiae eum saepe?</p>",
+      "allowComments": true,
+      "publishingDate": 1553778715687,
+      "likes": 0,
+      "commentCount": 1,
+      "id": 2
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

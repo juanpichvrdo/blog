@@ -16,6 +16,7 @@
     "html-truncate": "^1.2.2",
     "i": "^0.3.6",
     "js-cookie": "^2.2.0",
+    "moment": "^2.24.0",
     "npm": "^6.9.0",
     "toastr": "^2.1.4",
     "vee-validate": "^2.2.0",

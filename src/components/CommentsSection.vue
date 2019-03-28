@@ -16,9 +16,7 @@
             <a class="post-page--author--link" href="#">{{ comment.author.username }}</a>
             says
           </p>
-          <p
-            class="post-page--published mb-0 smaller-font"
-          >{{ new Date(comment.datePublished).toDateString() }}</p>
+          <p class="post-page--published mb-0 smaller-font">{{ getDate(comment.datePublished) }}</p>
         </div>
       </div>
       <div class="mt-3" v-html="comment.body"></div>
@@ -29,6 +27,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 
@@ -57,8 +56,8 @@ export default {
   },
   computed: {
     ...mapGetters(["getUser"]),
-    convertedPublishingDate(date) {
-      return new Date(date).toDateString();
+    convertedPublishingDate() {
+      return moment(this.publishingDate).format("MMMM DD, YYYY - LT");
     }
   },
   props: {
@@ -84,6 +83,9 @@ export default {
           })
           .then(comment => this.comments.push(comment.data));
       }
+    },
+    getDate(date) {
+      return moment(date).format("MMMM DD, YYYY - LT");
     }
   }
 };

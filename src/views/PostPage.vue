@@ -23,8 +23,9 @@
 </template>
 
 <script>
-import CommentsSection from "../components/CommentsSection";
+import moment from "moment";
 import { VueEditor } from "vue2-editor";
+import CommentsSection from "../components/CommentsSection";
 
 export default {
   name: "PostPage",
@@ -42,7 +43,7 @@ export default {
   },
   computed: {
     convertedPublishingDate() {
-      return new Date(this.post.publishingDate).toDateString();
+      return moment(this.post.publishingDate).format("MMMM DD, YYYY - LT");
     }
   },
   methods: {

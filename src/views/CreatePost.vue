@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import router from "../router.js";
@@ -108,7 +109,7 @@ export default {
           content: this.content,
           allowComments: this.allowComments,
           author: this.getUser.username,
-          publishingDate: Date.now(),
+          publishingDate: moment(),
           userId: this.getUser.id,
           likes: 0,
           commentCount: 0
