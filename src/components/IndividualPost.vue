@@ -93,9 +93,14 @@ export default {
   },
   methods: {
     deletePost() {
-      axios
-        .delete(`/posts/${this.id}`)
-        .then(result => this.$emit("postDeleted"));
+      // axios.patch(`/users/${this.getUser.id}`, {
+      //   deletedPost: [...this.getUser.deletedPost, this.id]
+      // });
+
+      axios.delete(`/posts/${this.id}`).then(result => {
+        console.log(result);
+        this.$emit("postDeleted");
+      });
     }
   }
 };

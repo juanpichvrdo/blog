@@ -1,7 +1,10 @@
 <template>
   <nav class="navigation navbar py-0">
     <div class="container-fluid d-flex flex-column flex-sm-row">
-      <a href="#" class="navigation--brand display-4 navbar-brand py-3 py-sm-3 px-md-5">Random Logo</a>
+      <router-link
+        class="navigation--brand display-4 navbar-brand py-3 py-sm-3 px-md-5"
+        to="/"
+      >Random Logo</router-link>
       <div class="navigation--user d-flex align-items-center pr-2 pr-md-5">
         <a class="navigation--user-active mr-4 py-4 px-3" href="#">BLOG</a>
         <div v-if="isAuthenticated" class="d-flex align-items-center">

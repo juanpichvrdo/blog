@@ -151,7 +151,10 @@ export default {
           name: this.name,
           lastName: this.lastName,
           description: this.description,
-          likedPosts: []
+          likedPosts: [],
+          publishedPosts: [],
+          deletedPosts: [],
+          draftedPosts: []
         })
         .then(response => {
           const user = response.data;

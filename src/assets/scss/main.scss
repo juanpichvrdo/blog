@@ -1,4 +1,5 @@
 // @import '/bootstrap/dist/css/bootstrap.min.css';
+$breadcrumb-divider: quote('>');
 
 $bg-auth-color: #e7eef1;
 $navy-color: #1c6392;
@@ -58,6 +59,12 @@ body {
 }
 
 .navigation--user--link {
-  // color: $light-blue;
-  color: #70b1dd;
+  color: $light-blue-color;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: '>';
+  font-size: 2.5rem;
+  color: $light-blue-color;
+  margin: 0 1rem;
 }
