@@ -5,12 +5,10 @@
         <h4 class="individual-post--heading mb-3 mb-lg-5">
           <router-link :to="`/posts/${id}`">{{ title }}</router-link>
         </h4>
-        <font-awesome-icon
-          @click="deletePost"
-          v-show="showDelete && isAuthor"
-          class="individual-post--icon"
-          icon="times"
-        />
+        <div class="d-flex align-items-center" v-if="showDelete && isAuthor">
+          <button class="btn btn-info mr-3">Edit</button>
+          <font-awesome-icon @click="deletePost" class="individual-post--icon" icon="times"/>
+        </div>
       </div>
 
       <p v-if="edited">Edited</p>

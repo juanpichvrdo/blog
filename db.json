@@ -1,28 +1,103 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    },
-    {
       "title": "Test",
-      "content": "<h3>Lorem ipsum</h3><p><br></p><p>dolor sit amet consectetur adipisicing elit. Distinctio nihil deleniti dicta unde sunt, sint adipisci aperiam molestiae eum saepe?</p>",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam architecto, enim est corporis, explicabo doloremque incidunt exercitationem quis nostrum iure quisquam commodi possimus adipisci aspernatur quaerat veritatis? Vel perferendis, quod impedit ullam veniam labore, illum non porro voluptates eaque dolorem?</p><p><br></p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam architecto, enim est corporis, explicabo doloremque incidunt exercitationem quis nostrum iure quisquam commodi possimus adipisci aspernatur quaerat veritatis? Vel perferendis, quod impedit ullam veniam labore, illum non porro voluptates eaque dolorem?</p><p><br></p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam architecto, enim est corporis, explicabo doloremque incidunt exercitationem quis nostrum iure quisquam commodi possimus adipisci aspernatur quaerat veritatis? Vel perferendis, quod impedit ullam veniam labore, illum non porro voluptates eaque dolorem?</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam architecto, enim est corporis, explicabo doloremque incidunt exercitationem quis nostrum iure quisquam commodi possimus adipisci aspernatur quaerat veritatis? Vel perferendis, quod impedit ullam veniam labore, illum non porro voluptates eaque dolorem?</p>",
       "allowComments": true,
-      "publishingDate": 1553778715687,
+      "author": "Manuel123",
+      "publishingDate": "2019-03-29T22:07:02.645Z",
+      "userId": 1,
       "likes": 0,
-      "commentCount": 1,
-      "id": 2
+      "commentCount": 0,
+      "edited": false,
+      "state": "published",
+      "id": 1
     }
   ],
   "comments": [
     {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "body": "<p>ipsum dolor sit amet consectetur adipisicing elit. Veniam architecto, enim est corporis, explicabo doloremque incidunt exercitationem quis nostrum iure qu</p><p><br></p>",
+      "postID": 1,
+      "likes": 0,
+      "datePublished": 1553888063919,
+      "authorID": 1,
+      "id": 1
+    },
+    {
+      "body": "<p>ipsum dolor sit amet consectetur adipisicing elit. Veniam architecto, enim est corporis, explicabo doloremque incidunt exercitationem quis nostrum iure qu</p><p><br></p>",
+      "postID": 1,
+      "likes": 0,
+      "datePublished": 1553888066361,
+      "authorID": 1,
+      "id": 2
+    },
+    {
+      "body": "<p>ipsum dolor sit amet consectetur adipisicing elit. Veniam architecto, enim est corporis, explicabo doloremque incidunt exercitationem quis nostrum iure qu</p><p><br></p>",
+      "postID": 1,
+      "likes": 0,
+      "datePublished": 1553888066528,
+      "authorID": 1,
+      "id": 3
+    },
+    {
+      "body": "<p>ipsum dolor sit amet consectetur adipisicing elit. Veniam architecto, enim est corporis, explicabo doloremque incidunt exercitationem quis nostrum iure qu</p><p><br></p>",
+      "postID": 1,
+      "likes": 0,
+      "datePublished": 1553888066687,
+      "authorID": 1,
+      "id": 4
+    },
+    {
+      "body": "<p>ipsum dolor sit amet consectetur adipisicing elit. Veniam architecto, enim est corporis, explicabo doloremque incidunt exercitationem quis nostrum iure qu</p><p><br></p>",
+      "postID": 1,
+      "likes": 0,
+      "datePublished": 1553888069103,
+      "authorID": 1,
+      "id": 5
+    },
+    {
+      "body": "<p>tEST</p>",
+      "postID": 1,
+      "likes": 0,
+      "datePublished": 1553888346847,
+      "authorID": 1,
+      "id": 6
+    },
+    {
+      "body": "<p>tEST</p>",
+      "postID": 1,
+      "likes": 0,
+      "datePublished": 1553888353743,
+      "authorID": 1,
+      "id": 7
     }
   ],
-  "profile": {
-    "name": "typicode"
-  }
+  "users": [
+    {
+      "email": "test@gmail.com",
+      "password": "123456",
+      "username": "Manuel123",
+      "name": "Manuel",
+      "lastName": "Martinez",
+      "description": "Baseball player",
+      "id": 1
+    },
+    {
+      "email": "test1@gmail.com",
+      "password": "123456",
+      "username": "Fulano123",
+      "name": "Fulano",
+      "lastName": "Perez",
+      "description": "Random",
+      "id": 2
+    }
+  ],
+  "posts_likes": [
+    {
+      "postID": "1",
+      "userID": 2,
+      "id": 1
+    }
+  ],
+  "comments_likes": []
 }

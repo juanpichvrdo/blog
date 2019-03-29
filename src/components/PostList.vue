@@ -90,8 +90,5 @@ export default {
     font-weight: 600;
     color: $navy-color;
   }
-
-  &--create-post {
-  }
 }
 </style>
