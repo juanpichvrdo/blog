@@ -34,7 +34,7 @@
             <div v-html="post.content" class="post-page--content mt-5"></div>
             <div v-if="isAuthenticated" class="d-flex align-items-center mt-5">
               <p class="mb-0 mr-3">{{ likes }} likes</p>
-              <button @click="giveLike" disabled="alreadyLiked" class="btn btn-info">Give like</button>
+              <button @click="toggleLike" class="btn btn-info">Toggle Like</button>
               <p class="mb-0 ml-3">{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</p>
             </div>
             <div v-if="isAuthenticated && post.allowComments">
@@ -71,7 +71,8 @@ export default {
       post: {},
       likes: 0,
       alreadyLiked: false,
-      comments: 0
+      comments: 0,
+      userLike: null
     };
   },
   created() {
@@ -98,24 +99,41 @@ export default {
         }
       });
     },
-    giveLike() {
-      axios
-        .post(`/posts_likes`, {
-          postID: this.postID,
-          userID: this.getUser.id
-        })
-        .then(({ data: like }) => {
+    toggleLike() {
+      if (this.alreadyLiked) {
+        axios.delete(`/posts_likes/${this.userLike}`).then(result => {
+          this.alreadyLiked = false;
           this.getLikes();
         });
+      } else {
+        axios
+          .post(`/posts_likes`, {
+            postID: this.postID,
+            userID: this.getUser.id
+          })
+          .then(({ data: like }) => {
+            console.log(like);
+            this.getLikes();
+          });
+      }
     },
     getLikes() {
       axios
         .get(`/posts_likes/?postID=${this.postID}`)
         .then(({ data: likesArray }) => {
           this.likes = likesArray.length;
-          console.log(this.likes);
+          this.getLike();
           if (likesArray.find(like => like.userID === this.getUser.id)) {
             this.alreadyLiked = true;
+          }
+        });
+    },
+    getLike() {
+      axios
+        .get(`posts_likes/?postID=${this.postID}&userID=${this.getUser.id}`)
+        .then(({ data }) => {
+          if (data.length) {
+            this.userLike = data[0].id;
           }
         });
     },
