@@ -55,7 +55,7 @@
       </div>
       <p class="col-12 text-center mt-5">
         Don't have an account?
-        <router-link class="sign-up-link" to="/signup">Sign Up</router-link>
+        <router-link class="sign-up-link" to="/sign-up">Sign Up</router-link>
       </p>
     </div>
   </div>

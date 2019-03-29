@@ -1,15 +1,18 @@
 import Vue from 'vue';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSearch, faArrowRight, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
 import VeeValidate from 'vee-validate';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import './config/';
+import './config';
 
 require('toastr/build/toastr.css');
-
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSearch, faArrowRight, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(faSearch);
 library.add(faArrowRight);

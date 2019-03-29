@@ -7,7 +7,7 @@
         </h4>
         <font-awesome-icon
           @click="deletePost"
-          v-if="showDelete && isAuthor"
+          v-show="showDelete && isAuthor"
           class="individual-post--icon"
           icon="times"
         />

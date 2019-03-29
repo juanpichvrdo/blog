@@ -113,7 +113,8 @@ export default {
           userId: this.getUser.id,
           likes: 0,
           commentCount: 0,
-          likedBy: []
+          edited: false,
+          state: "published"
         })
         .then(result => {
           console.log(result);

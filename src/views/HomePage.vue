@@ -1,6 +1,5 @@
 <template>
   <div class="home-page">
-    <navigation-bar></navigation-bar>
     <div class="hero-section py-5 py-md-5">
       <h1 class="hero-section--heading p-2 p-md-4 px-md-5 display-4 font-weight">Welcome to Our Blog</h1>
     </div>
@@ -20,14 +19,12 @@
 <script>
 import router from "../router";
 
-import NavigationBar from "../components/NavigationBar";
 import SearchPosts from "../components/SearchPosts";
 import PostList from "../components/PostList";
 
 export default {
   name: "HomePage",
   components: {
-    NavigationBar,
     PostList,
     SearchPosts
   }

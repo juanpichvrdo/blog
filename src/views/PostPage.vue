@@ -1,6 +1,5 @@
 <template>
   <div class="post-page">
-    <NavigationBar/>
     <div class="container-fluid">
       <div class="row">
         <div class="post-page--body">
@@ -56,13 +55,11 @@ import moment from "moment";
 import { mapGetters } from "vuex";
 
 import { VueEditor } from "vue2-editor";
-import NavigationBar from "../components/NavigationBar";
 import CommentsSection from "../components/CommentsSection";
 
 export default {
   name: "PostPage",
   components: {
-    NavigationBar,
     CommentsSection
   },
   data() {
@@ -94,8 +91,7 @@ export default {
           this.post = post[0];
           // this.$store.dispatch("setPosts", posts);
         } else {
-          // There is no post
-          console.log("no data /:");
+          // No post
         }
       });
     },
@@ -112,7 +108,6 @@ export default {
             userID: this.getUser.id
           })
           .then(({ data: like }) => {
-            console.log(like);
             this.getLikes();
           });
       }
