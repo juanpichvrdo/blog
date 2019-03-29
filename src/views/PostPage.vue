@@ -1,44 +1,66 @@
 <template>
   <div class="post-page">
     <navigation-bar></navigation-bar>
-    <div class="container">
-      <!-- <router-link to="/" class>Go home</router-link> -->
-      <nav class="post-page--breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item d-flex align-items-center">
-            <router-link class="post-page--link" to="/">ALL POSTS</router-link>
-          </li>
-          <li class="breadcrumb-item active d-flex align-items-center">
-            <router-link class="post-page--link" to="/">{{ post.title.toUpperCase() }}</router-link>
-          </li>
-        </ol>
-      </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="post-page--body col-lg-7 order-last order-lg-first">
+          <nav class="post-page--breadcrumb">
+            <ol class="breadcrumb pb-0 mb-0">
+              <li class="breadcrumb-item d-flex align-items-center">
+                <router-link class="post-page--link" to="/">ALL POSTS</router-link>
+              </li>
+              <li class="breadcrumb-item active d-flex align-items-center">
+                <router-link class="post-page--link post-page--link--breadcrumb" to>{{ post.title }}</router-link>
+              </li>
+            </ol>
+          </nav>
 
-      <h1 class="post-page--title display-4">{{ post.title }}</h1>
-      <div class="d-flex align-items-center mb-5">
-        <a href="#">
-          <img src="../assets/user-2.png" alt="User profile picture">
-        </a>
-        <div class="ml-3">
-          <p class="post-page--author mb-0 smaller-font">
-            Written by:
-            <a href="#" class="post-page--link">{{ post.author }}</a>
-          </p>
-          <p class="post-page--published mb-0 smaller-font">{{ convertedPublishingDate }}</p>
+          <div class="px-3">
+            <h1 class="post-page--title display-4">{{ post.title }}</h1>
+            <div class="d-flex align-items-center mb-4">
+              <a href="#">
+                <img src="../assets/user-2.png" alt="User profile picture">
+              </a>
+              <div class="ml-3">
+                <p class="post-page--author mb-0 smaller-font">
+                  Written by:
+                  <a href="#" class="post-page--link">{{ post.author }}</a>
+                </p>
+                <p class="post-page--published mb-0 smaller-font">{{ convertedPublishingDate }}</p>
+              </div>
+            </div>
+            <hr>
+            <div v-html="post.content" class="post-page--content mt-5 px-3"></div>
+            <div class="d-flex align-items-center mt-5">
+              <p class="mb-0 mr-3">{{ likes }} likes</p>
+              <button @click="giveLike" :disabled="alreadyLiked" class="btn btn-info">Give like</button>
+            </div>
+            <div v-if="isAuthenticated && post.allowComments">
+              <hr>
+              <comments-section :postID="post.id"></comments-section>
+            </div>
+            <div v-else class>
+              <router-link to="/login">Login to comment</router-link>
+            </div>
+          </div>
         </div>
-      </div>
-      <hr>
-      <div v-html="post.content" class="post-page--content mt-5 px-2"></div>
-      <div class="d-flex align-items-center mt-5">
-        <p class="mb-0 mr-3">{{ likes }} likes</p>
-        <button @click="giveLike" :disabled="alreadyLiked" class="btn btn-info">Give like</button>
-      </div>
-      <div class="mt-5" v-if="isAuthenticated && post.allowComments">
-        <hr>
-        <comments-section class="mt-5" :postID="post.id"></comments-section>
-      </div>
-      <div v-else class>
-        <router-link to="/login">Login to comment</router-link>
+        <aside class="post-page--search col-lg-5 order-first order-lg-last">
+          <div class="py-5 search-posts">
+            <h3 class="search-posts--heading post-page--search--heading mb-5">Search</h3>
+            <form class="search-posts--form">
+              <div class="input-group mb-3">
+                <span class="search-posts--icon">
+                  <font-awesome-icon class="input-group-addon" icon="search"/>
+                </span>
+                <input
+                  type="text"
+                  class="search-posts--input form-control py-4"
+                  placeholder="Search"
+                >
+              </div>
+            </form>
+          </div>
+        </aside>
       </div>
     </div>
   </div>
@@ -125,10 +147,33 @@ export default {
 .post-page {
   background-color: $white-color;
 
+  &--body {
+    padding-left: 180px;
+    padding-right: 180px;
+
+    @media only screen and (max-width: 1500px) {
+      padding-left: 65px;
+      padding-right: 65px;
+    }
+
+    @media only screen and (max-width: 1200px) {
+      padding-left: 45px;
+      padding-right: 45px;
+    }
+
+    @media only screen and (max-width: 800px) {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+
   &--link,
   &--published {
     color: $light-blue-color;
-    font-weight: 300;
+
+    &--breadcrumb {
+      text-transform: uppercase;
+    }
   }
 
   &--breadcrumb {
@@ -141,6 +186,16 @@ export default {
     color: $navy-color;
     font-family: Georgia, "Times New Roman", Times, serif;
     font-weight: 700;
+  }
+
+  &--search {
+    background-color: #ebeef1;
+
+    &--heading {
+      font-family: Georgia, "Times New Roman", Times, serif;
+      color: $navy-color;
+      font-weight: 600;
+    }
   }
 }
 </style>
