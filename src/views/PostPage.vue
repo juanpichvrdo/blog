@@ -1,9 +1,9 @@
 <template>
   <div class="post-page">
-    <navigation-bar></navigation-bar>
+    <NavigationBar/>
     <div class="container-fluid">
       <div class="row">
-        <div class="post-page--body col-lg-7 order-last order-lg-first">
+        <div class="post-page--body">
           <nav class="post-page--breadcrumb">
             <ol class="breadcrumb pb-0 mb-0">
               <li class="breadcrumb-item d-flex align-items-center">
@@ -15,7 +15,7 @@
             </ol>
           </nav>
 
-          <div class="px-3">
+          <div class="px-xl-5">
             <h1 class="post-page--title display-4">{{ post.title }}</h1>
             <div class="d-flex align-items-center mb-4">
               <a href="#">
@@ -29,38 +29,23 @@
                 <p class="post-page--published mb-0 smaller-font">{{ convertedPublishingDate }}</p>
               </div>
             </div>
+
             <hr>
-            <div v-html="post.content" class="post-page--content mt-5 px-3"></div>
-            <div class="d-flex align-items-center mt-5">
+            <div v-html="post.content" class="post-page--content mt-5"></div>
+            <div v-if="isAuthenticated" class="d-flex align-items-center mt-5">
               <p class="mb-0 mr-3">{{ likes }} likes</p>
-              <button @click="giveLike" :disabled="alreadyLiked" class="btn btn-info">Give like</button>
+              <button @click="giveLike" disabled="alreadyLiked" class="btn btn-info">Give like</button>
+              <p class="mb-0 ml-3">{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</p>
             </div>
             <div v-if="isAuthenticated && post.allowComments">
               <hr>
-              <comments-section :postID="post.id"></comments-section>
+              <CommentsSection :postID="post.id"/>
             </div>
-            <div v-else class>
+            <div v-else class="text-center my-5">
               <router-link to="/login">Login to comment</router-link>
             </div>
           </div>
         </div>
-        <aside class="post-page--search col-lg-5 order-first order-lg-last">
-          <div class="py-5 search-posts">
-            <h3 class="search-posts--heading post-page--search--heading mb-5">Search</h3>
-            <form class="search-posts--form">
-              <div class="input-group mb-3">
-                <span class="search-posts--icon">
-                  <font-awesome-icon class="input-group-addon" icon="search"/>
-                </span>
-                <input
-                  type="text"
-                  class="search-posts--input form-control py-4"
-                  placeholder="Search"
-                >
-              </div>
-            </form>
-          </div>
-        </aside>
       </div>
     </div>
   </div>
@@ -84,29 +69,28 @@ export default {
     return {
       postID: this.$route.params.id,
       post: {},
-      likes: 0
+      likes: 0,
+      alreadyLiked: false,
+      comments: 0
     };
   },
   created() {
     this.getPost();
+    this.getLikes();
+    this.getComments();
   },
   computed: {
     convertedPublishingDate() {
       return moment(this.post.publishingDate).format("MMMM DD, YYYY - LT");
     },
-    // alreadyLiked() {
-    //   return
-    // },
+
     ...mapGetters(["isAuthenticated", "getUser"])
   },
   methods: {
     getPost() {
-      // console.log(this.post)
       axios.get(`/posts?id=${this.postID}`).then(({ data: post }) => {
-        console.log(post);
         if (post.length) {
           this.post = post[0];
-          this.likes = post[0].likedBy.length;
           // this.$store.dispatch("setPosts", posts);
         } else {
           // There is no post
@@ -115,29 +99,32 @@ export default {
       });
     },
     giveLike() {
-      this.getUser.likedPosts.push(this.postID);
-      this.post.likedBy.push(this.getUser.id);
-
-      axios.get(`/users/${this.getUser.id}`).then(({ data: user }) => {
-        if (user.likedPosts.find(likedPost => this.postID === likedPost)) {
-          // Remove like
-          console.log("Already liked");
-        } else {
-          axios
-            .patch(`/users/${this.getUser.id}`, {
-              likedPosts: this.getUser.likedPosts
-            })
-            .then(result => console.log(result));
-
-          axios
-            .patch(`/posts/${this.postID}`, {
-              likedBy: this.post.likedBy
-            })
-            .then(({ data: post }) => (this.likes = post.likedBy.length));
-
-          this.alreadyLiked = true;
-        }
-      });
+      axios
+        .post(`/posts_likes`, {
+          postID: this.postID,
+          userID: this.getUser.id
+        })
+        .then(({ data: like }) => {
+          this.getLikes();
+        });
+    },
+    getLikes() {
+      axios
+        .get(`/posts_likes/?postID=${this.postID}`)
+        .then(({ data: likesArray }) => {
+          this.likes = likesArray.length;
+          console.log(this.likes);
+          if (likesArray.find(like => like.userID === this.getUser.id)) {
+            this.alreadyLiked = true;
+          }
+        });
+    },
+    getComments() {
+      axios
+        .get(`/comments/?postID=${this.postID}`)
+        .then(({ data: commentsArray }) => {
+          this.comments = commentsArray.length;
+        });
     }
   }
 };
@@ -146,10 +133,11 @@ export default {
 <style lang="scss">
 .post-page {
   background-color: $white-color;
+  min-height: 100vh;
 
   &--body {
-    padding-left: 180px;
-    padding-right: 180px;
+    padding-left: 150px;
+    padding-right: 150px;
 
     @media only screen and (max-width: 1500px) {
       padding-left: 65px;
@@ -162,8 +150,21 @@ export default {
     }
 
     @media only screen and (max-width: 800px) {
-      padding-left: 15px;
-      padding-right: 15px;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  }
+
+  &--content {
+    padding-right: 12rem;
+    @media only screen and (max-width: 1300px) {
+      padding-right: 8rem;
+    }
+    @media only screen and (max-width: 1100px) {
+      padding-right: 4rem;
+    }
+    @media only screen and (max-width: 550px) {
+      padding-right: 2rem;
     }
   }
 

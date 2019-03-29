@@ -11,7 +11,7 @@
           <img class="mx-3 py-sm-3" src="../assets/user-1.png" alt="User profile image">
           <div class="navigation--user-profile">
             <p class="navigation--user-message">Welcome, {{ getUser.username }}</p>
-            <a class="navigation--user-logout" href="#" @click="$emit('logOut')">Logout</a>
+            <a class="navigation--user-logout" href="#" @click="onLogout">Logout</a>
           </div>
         </div>
         <div v-else class="ml-5">
@@ -24,11 +24,18 @@
 
 <script>
 import { mapGetters } from "vuex";
+import router from "../router";
 
 export default {
   name: "NavigationBar",
   computed: {
     ...mapGetters(["getUser", "isAuthenticated"])
+  },
+  methods: {
+    onLogout() {
+      this.$store.dispatch("logoutUser");
+      router.push("/login");
+    }
   }
 };
 </script>

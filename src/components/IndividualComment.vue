@@ -28,8 +28,17 @@ import moment from "moment";
 
 export default {
   name: "IndividualComment",
+  data() {
+    return {
+      author: {}
+    };
+  },
+  created() {
+    this.getAuthorData();
+  },
+
   props: {
-    author: Object,
+    authorID: Number,
     datePublished: Number,
     body: String,
     likes: Number
@@ -37,6 +46,11 @@ export default {
   methods: {
     getDate(date) {
       return moment(date).format("MMMM DD, YYYY - LT");
+    },
+    getAuthorData() {
+      axios
+        .get(`/users/${this.authorID}`)
+        .then(({ data: author }) => (this.author = author));
     }
   }
 };

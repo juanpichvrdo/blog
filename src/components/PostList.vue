@@ -18,7 +18,6 @@
         :publishingDate="post.publishingDate"
         :content="post.content"
         :commentCount="post.commentCount"
-        :likedBy="post.likedBy"
         :edited="post.edited"
         :id="post.id"
         :userId="post.userId"
@@ -26,7 +25,7 @@
       ></individual-post>
     </div>
     <div v-else>
-      <h4 class="text-center">There are no posts</h4>
+      <h4 class="text-center mt-5">There are no posts</h4>
     </div>
   </div>
 </template>
@@ -74,6 +73,7 @@ export default {
 .post-list {
   padding-left: 100px;
   padding-right: 100px;
+  min-height: 100vh;
 
   @media only screen and (max-width: 1600px) {
     padding-left: 50px;

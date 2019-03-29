@@ -19,15 +19,14 @@ const router = new Router({
       component: LoginPage,
     },
     {
-      path: '/signup',
-      name: 'signup',
+      path: '/sign-up',
+      name: 'signUp',
       component: SignUpPage,
     },
     {
       path: '/posts/:id',
       name: 'postPage',
       component: PostPage,
-      // meta: { requiresAuth: true },
     },
     {
       path: '/create-post',
@@ -39,7 +38,6 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: HomePage,
-      // meta: { requiresAuth: true },
     },
   ],
 });

@@ -42,11 +42,9 @@
 
     <div class="mt-4 row justify-content-between">
       <p>
-        <router-link
-          :to="`/posts/${id}`"
-        >{{ commentCount }} {{`comment${commentCount === 1 ? '' : 's'}`}}</router-link>
+        <router-link :to="`/posts/${id}`">{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</router-link>
       </p>
-      <p>{{ likedBy.length }} likes</p>
+      <p>{{ likes }} likes</p>
     </div>
     <hr>
   </div>
@@ -61,7 +59,9 @@ export default {
   name: "IndividualPost",
   data() {
     return {
-      showDelete: false
+      showDelete: false,
+      likes: 0,
+      comments: 0
     };
   },
   props: {
@@ -69,11 +69,9 @@ export default {
     author: String,
     publishingDate: String,
     content: String,
-    likedBy: Array,
     edited: Boolean,
-    id: String,
-    commentCount: Number,
-    userId: String
+    id: Number,
+    userId: Number
   },
   computed: {
     ...mapGetters(["getUser"]),
@@ -91,6 +89,10 @@ export default {
       }
     }
   },
+  created() {
+    this.getLikes();
+    this.getComments();
+  },
   methods: {
     deletePost() {
       // axios.patch(`/users/${this.getUser.id}`, {
@@ -101,6 +103,20 @@ export default {
         console.log(result);
         this.$emit("postDeleted");
       });
+    },
+    getLikes() {
+      axios
+        .get(`/posts_likes/?postID=${this.id}`)
+        .then(({ data: likesArray }) => {
+          this.likes = likesArray.length;
+        });
+    },
+    getComments() {
+      axios
+        .get(`/comments/?postID=${this.id}`)
+        .then(({ data: commentsArray }) => {
+          this.comments = commentsArray.length;
+        });
     }
   }
 };

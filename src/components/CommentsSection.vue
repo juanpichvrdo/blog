@@ -14,12 +14,12 @@
       </div>
     </div>
 
-    <h4 class="comments--heading mt-5">User comments</h4>
+    <h4 v-if="comments.length" class="comments--heading mt-5">User comments</h4>
     <hr class="mb-4">
     <individual-comment
       v-for="comment in comments"
       :key="comment.id"
-      :author="comment.author"
+      :authorID="comment.authorID"
       :datePublished="comment.datePublished"
       :body="comment.body"
       :likes="comment.likes"
@@ -42,17 +42,8 @@ export default {
   data() {
     return {
       comments: [],
-      newCommentBody: "",
-      commentCount: 0
+      newCommentBody: ""
     };
-  },
-  watch: {
-    comments(newData, oldData) {
-      this.commentCount = newData.length;
-      axios.patch(`/posts/${this.postID}`, {
-        commentCount: this.commentCount
-      });
-    }
   },
   created() {
     this.getComments();
@@ -61,7 +52,7 @@ export default {
     ...mapGetters(["getUser"])
   },
   props: {
-    postID: String
+    postID: Number
   },
   methods: {
     getComments() {
@@ -79,7 +70,7 @@ export default {
             postID: this.postID,
             likes: 0,
             datePublished: Date.now(),
-            author: this.getUser
+            authorID: this.getUser.id
           })
           .then(comment => this.comments.push(comment.data));
       }
