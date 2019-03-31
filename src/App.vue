@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavigationBar/>
+    <NavigationBar v-if="showNavbar"/>
     <router-view/>
   </div>
 </template>
@@ -10,9 +10,23 @@ import NavigationBar from "./components/NavigationBar";
 import Cookies from "js-cookie";
 
 export default {
-  name: "app",
+  name: "App",
   components: {
     NavigationBar
+  },
+  data() {
+    return {
+      showNavbar: true
+    };
+  },
+  watch: {
+    $route() {
+      if (this.$route.path === "/login" || this.$route.path === "/sign-up") {
+        this.showNavbar = false;
+      } else {
+        this.showNavbar = true;
+      }
+    }
   },
   created() {
     console.log(this.$route.name);
@@ -24,6 +38,11 @@ export default {
           this.$store.dispatch("authenticateUser", user);
         }
       });
+    }
+    if (this.$route.path === "/login" || this.$route.path === "/sign-up") {
+      this.showNavbar = false;
+    } else {
+      this.showNavbar = true;
     }
   }
 };
