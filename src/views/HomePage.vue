@@ -5,12 +5,9 @@
     </div>
     <div class="container-fluid">
       <div class="row">
-        <div class="post-list py-2 py-md-4 px-md-5 col-lg-7 order-last order-lg-first">
+        <div class="post-list py-2 py-md-4 px-md-5">
           <post-list></post-list>
         </div>
-        <aside class="sidebar col-lg-5 order-first order-lg-last">
-          <search-posts></search-posts>
-        </aside>
       </div>
     </div>
   </div>

@@ -1,12 +1,11 @@
 <template>
-  <div class="py-5 search-posts">
-    <h3 class="search-posts--heading mb-3">Search for posts</h3>
+  <div class="search-posts">
     <form class="search-posts--form">
-      <div class="input-group mb-3">
+      <div class="input-group">
         <span class="search-posts--icon">
           <font-awesome-icon class="input-group-addon" icon="search"/>
         </span>
-        <input type="text" class="search-posts--input form-control py-4" placeholder="Search">
+        <input type="text" class="search-posts--input form-control" placeholder="Search">
         <div class="input-group-append">
           <button class="search-posts--button btn text-white" type="button">GO!</button>
         </div>
@@ -49,14 +48,14 @@ export default {
 
   &--button {
     background-color: $orange-color;
-    padding: 10px 50px;
+    padding: 0px 50px;
 
     @media only screen and (max-width: 1600px) {
-      padding: 10px 35px;
+      padding: 0px 35px;
     }
 
     @media only screen and (max-width: 1250px) {
-      padding: 10px 25px;
+      padding: 0px 25px;
     }
   }
 
