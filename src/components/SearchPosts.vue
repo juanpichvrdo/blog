@@ -22,18 +22,18 @@ export default {
 
 <style lang="scss">
 .search-posts {
-  padding-left: 100px;
-  padding-right: 100px;
+  // padding-left: 100px;
+  // padding-right: 100px;
 
-  @media only screen and (max-width: 1600px) {
-    padding-left: 50px;
-    padding-right: 50px;
-  }
+  // @media only screen and (max-width: 1600px) {
+  //   padding-left: 50px;
+  //   padding-right: 50px;
+  // }
 
-  @media only screen and (max-width: 1250px) {
-    padding-left: 25px;
-    padding-right: 25px;
-  }
+  // @media only screen and (max-width: 1250px) {
+  //   padding-left: 25px;
+  //   padding-right: 25px;
+  // }
 
   &--heading {
     font-weight: 600;

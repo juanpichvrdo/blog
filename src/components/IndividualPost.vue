@@ -97,10 +97,23 @@ export default {
       //   deletedPost: [...this.getUser.deletedPost, this.id]
       // });
 
-      axios.delete(`/posts/${this.id}`).then(result => {
-        console.log(result);
-        this.$emit("postDeleted");
-      });
+      // axios.delete(`/posts/${this.id}`).then(result => {
+      //   console.log(result);
+      //   this.$emit("postDeleted");
+      // });
+
+      axios
+        .patch(`/posts/${this.id}`, {
+          state: "deleted"
+        })
+        .then(result => {
+          this.$emit("postDeleted");
+          // axios
+          //   .patch(`comments/?postID=${this.id}`, {
+          //     state: "deleted"
+          //   })
+          //   .then(result => console.log(result));
+        });
     },
     getLikes() {
       axios

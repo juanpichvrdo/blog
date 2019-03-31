@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavigationBar v-if="showNavbar"/>
-    <router-view/>
+    <router-view class="app"/>
   </div>
 </template>
 
@@ -29,7 +29,6 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.name);
     const id = Cookies.get("id");
     if (id) {
       axios.get(`/users/?id=${id}`).then(({ data }) => {
@@ -47,3 +46,10 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.app {
+  margin-top: 72px;
+}
+</style>
+

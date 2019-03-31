@@ -4,11 +4,7 @@
       <h1 class="hero-section--heading p-2 p-md-4 px-md-5 display-4 font-weight">Welcome to Our Blog</h1>
     </div>
     <div class="container-fluid">
-      <div class="row">
-        <div class="post-list py-2 py-md-4 px-md-5">
-          <post-list></post-list>
-        </div>
-      </div>
+      <PostList/>
     </div>
   </div>
 </template>
@@ -22,21 +18,8 @@ import PostList from "../components/PostList";
 export default {
   name: "HomePage",
   components: {
-    PostList,
-    SearchPosts
+    PostList
   }
-
-  // created() {
-  //   axios.get("/posts").then(({ data: posts }) => {
-  //     console.log(posts);
-  //     if (posts.length) {
-  //       this.$store.dispatch("setPosts", posts);
-  //     } else {
-  //       // There are no posts
-  //       console.log("no data /:");
-  //     }
-  //   });
-  // }
 };
 </script>
 

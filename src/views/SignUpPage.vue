@@ -180,6 +180,8 @@ export default {
 
 <style lang="scss">
 .signup-form {
+  margin-top: 0px !important;
+
   .login-link {
     color: #1c6392;
     font-weight: 700;

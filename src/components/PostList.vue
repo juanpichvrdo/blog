@@ -1,5 +1,5 @@
 <template>
-  <div class="post-list py-3 py-md-4">
+  <div class="post-list mt-4 py-3 py-md-4">
     <div class="d-flex justify-content-between align-items-center">
       <h2 class="post-list--heading">All posts</h2>
       <router-link
@@ -9,9 +9,9 @@
       >Create Post</router-link>
     </div>
     <hr>
-    <div v-if="posts.length">
-      <individual-post
-        v-for="post in posts"
+    <div v-if="publishedPosts.length">
+      <IndividualPost
+        v-for="post in publishedPosts"
         :key="post.id"
         :title="post.title"
         :author="post.author"
@@ -22,7 +22,7 @@
         :id="post.id"
         :userId="post.userId"
         @postDeleted="getPosts"
-      ></individual-post>
+      />
     </div>
     <div v-else>
       <h4 class="text-center mt-5">There are no posts</h4>
@@ -37,31 +37,23 @@ import IndividualPost from "./IndividualPost";
 
 export default {
   name: "PostList",
-  created() {
-    this.getPosts();
-  },
-  computed: {
-    ...mapGetters(["isAuthenticated"])
-  },
-  data() {
-    return {
-      posts: []
-    };
-  },
   components: {
     IndividualPost
   },
-
+  computed: {
+    ...mapGetters(["isAuthenticated", "allPosts"]),
+    publishedPosts() {
+      return this.allPosts.filter(post => post.state === "published");
+    }
+  },
+  created() {
+    this.getPosts();
+  },
   methods: {
     getPosts() {
       axios.get("/posts").then(({ data: posts }) => {
         if (posts.length) {
-          console.log(posts);
-          this.posts = posts;
           this.$store.dispatch("setPosts", posts);
-        } else {
-          // There are no posts
-          console.log("no data /:");
         }
       });
     }
@@ -74,6 +66,7 @@ export default {
   padding-left: 100px;
   padding-right: 100px;
   min-height: 100vh;
+  width: 100%;
 
   @media only screen and (max-width: 1600px) {
     padding-left: 50px;

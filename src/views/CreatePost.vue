@@ -3,47 +3,47 @@
     <ul class="nav nav-tabs mb-3">
       <li class="nav-item">
         <a
-          @click="activeTab = 'create'"
-          class="nav-link create-post--tabs"
           :class="{active: activeTab === 'create'}"
+          class="nav-link create-post--tabs"
           href="#"
+          @click="activeTab = 'create'"
         >Create</a>
       </li>
       <li class="nav-item">
         <a
-          @click="activeTab = 'preview'"
-          class="nav-link create-post--tabs"
           :class="{active: activeTab === 'preview'}"
+          class="nav-link create-post--tabs"
           href="#"
+          @click="activeTab = 'preview'"
         >Preview</a>
       </li>
     </ul>
     <div v-if="activeTab === 'create'">
       <h1 class="form--heading create-post--heading display-5 mt-5 mb-3 text-center">Create Post</h1>
-      <form @submit.prevent novalidate>
+      <form novalidate @submit.prevent>
         <div class="form-group">
           <label class="form--label create-post--label" for="title">Title</label>
           <input
             v-validate="'required'"
+            id="title"
+            v-model="title"
             type="text"
             class="form-control form-control-lg"
-            id="title"
             placeholder="Post Title"
             name="title"
-            v-model="title"
           >
           <div class="invalid-feedback">{{ errors.first('title') }}</div>
         </div>
-        <vue-editor name="content" v-model="content"></vue-editor>
+        <VueEditor v-model="content" name="content"/>
         <div class="invalid-feedback">{{ errors.first('content') }}</div>
         <div class="row d-flex justify-content-between align-items-center mt-5">
           <div class="form-check">
             <input
+              id="allowCommentsCheckbox"
+              v-model="allowComments"
               class="form--checkbox create-post--checkbox form-check-input"
               type="checkbox"
-              id="allowCommentsCheckbox"
               value="allowComments"
-              v-model="allowComments"
             >
             <label
               class="form-check-label create-post--label"
@@ -51,9 +51,12 @@
             >Allow comments</label>
           </div>
           <div class="create-post--buttons">
-            <button @click="validateForm" class="mx-3 px-5 btn btn-large btn-success">Create</button>
-            <button class="mx-3 px-5 btn btn-large btn-warning">Draft</button>
-            <button @click="$router.push('/')" class="mx-3 px-5 btn btn-large btn-danger">Cancel</button>
+            <button
+              class="mx-3 px-5 btn btn-large btn-success"
+              @click="validateForm('published')"
+            >Create</button>
+            <button class="mx-3 px-5 btn btn-large btn-warning" @click="validateForm('draft')">Draft</button>
+            <button class="mx-3 px-5 btn btn-large btn-danger" @click="$router.push('/')">Cancel</button>
           </div>
         </div>
       </form>
@@ -62,7 +65,7 @@
       <div v-if="title || content">
         <h2 class="mt-5">{{ title }}</h2>
         <hr v-if="title">
-        <div class="mt-5" v-html="content"></div>
+        <div class="mt-5" v-html="content"/>
       </div>
       <div v-else class="mt-5">
         <h5>Nothing to preview. Start writing content!</h5>
@@ -78,7 +81,7 @@ import { mapGetters } from "vuex";
 import router from "../router.js";
 
 export default {
-  name: "createPost",
+  name: "CreatePost",
   components: {
     VueEditor
   },
@@ -94,15 +97,15 @@ export default {
     ...mapGetters(["getUser"])
   },
   methods: {
-    validateForm() {
+    validateForm(state) {
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.processPost();
+          this.processPost(state);
           console.log(this.content);
         }
       });
     },
-    processPost() {
+    processPost(state) {
       axios
         .post("/posts", {
           title: this.title,
@@ -114,7 +117,7 @@ export default {
           likes: 0,
           commentCount: 0,
           edited: false,
-          state: "published"
+          state: state
         })
         .then(result => {
           console.log(result);

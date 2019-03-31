@@ -3,12 +3,12 @@
     <div class="card comment-form">
       <div class="comment-form--header card-header">Leave a comment</div>
       <div class="card-body p-0">
-        <vue-editor name="content" v-model="newCommentBody"></vue-editor>
+        <VueEditor name="content" v-model="newCommentBody"/>
         <div class="comment-form--buttons d-flex justify-content-end align-items-center">
           <a @click="newCommentBody = ''" class="mr-4 mr-sm-5 comment-form--cancel">Cancel</a>
           <button
-            @click="submitComment"
             class="comment-form--add-comment btn btn-success mr-3"
+            @click="submitComment"
           >Submit</button>
         </div>
       </div>
@@ -16,14 +16,14 @@
 
     <h4 v-if="comments.length" class="comments--heading mt-5">User comments</h4>
     <hr class="mb-4">
-    <individual-comment
+    <IndividualComment
       v-for="comment in comments"
       :key="comment.id"
       :authorID="comment.authorID"
-      :datePublished="comment.datePublished"
+      :date-Published="comment.datePublished"
       :body="comment.body"
       :likes="comment.likes"
-    ></individual-comment>
+    />
   </div>
 </template>
 
@@ -39,21 +39,22 @@ export default {
     VueEditor,
     IndividualComment
   },
+  props: {
+    postID: Number
+  },
   data() {
     return {
       comments: [],
       newCommentBody: ""
     };
   },
-  created() {
-    this.getComments();
-  },
   computed: {
     ...mapGetters(["getUser"])
   },
-  props: {
-    postID: Number
+  created() {
+    this.getComments();
   },
+
   methods: {
     getComments() {
       axios
@@ -70,9 +71,13 @@ export default {
             postID: this.postID,
             likes: 0,
             datePublished: Date.now(),
-            authorID: this.getUser.id
+            authorID: this.getUser.id,
+            state: "published"
           })
-          .then(comment => this.comments.push(comment.data));
+          .then(comment => {
+            this.comments.push(comment.data);
+            this.newCommentBody = "";
+          });
       }
     }
   }

@@ -1,11 +1,13 @@
 <template>
-  <nav class="navigation navbar py-0">
+  <nav class="navigation navbar fixed-top py-0">
     <div class="container-fluid d-flex flex-column flex-sm-row">
-      <router-link
-        class="navigation--brand display-4 navbar-brand py-3 py-sm-3 px-md-5"
-        to="/"
-      >Random Logo</router-link>
-      <SearchPosts/>
+      <div class="d-flex align-items-center">
+        <router-link
+          class="navigation--brand display-4 navbar-brand py-3 py-sm-3 px-md-5"
+          to="/"
+        >Random Logo</router-link>
+        <SearchPosts v-if="isAuthenticated"/>
+      </div>
       <div class="navigation--user d-flex align-items-center pr-2 pr-md-5">
         <a class="navigation--user-active mr-4 py-4 px-3" href="#">BLOG</a>
         <div v-if="isAuthenticated" class="d-flex align-items-center">
@@ -53,13 +55,25 @@ export default {
   padding-left: 100px;
   padding-right: 100px;
 
-  @media only screen and (max-width: 1024px) {
+  @media only screen and (max-width: 1200px) {
     padding-left: 50px;
     padding-right: 50px;
   }
-  @media only screen and (max-width: 800px) {
+  @media only screen and (max-width: 1060px) {
     padding-left: 25px;
     padding-right: 25px;
+  }
+
+  @media only screen and (max-width: 992px) {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  & > div {
+    justify-content: space-between;
+    @media only screen and (max-width: 950px) {
+      justify-content: center;
+    }
   }
 
   &--brand {
