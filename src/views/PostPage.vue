@@ -37,7 +37,7 @@
                                 </p>
                                 <p
                                     class="post-page--published mb-0 smaller-font"
-                                >{{ convertedPublishingDate }}</p>
+                                >{{ post.publishingDate | formatDate }}</p>
                             </div>
                         </div>
 
@@ -66,10 +66,10 @@
 </template>
 
 <script>
-import moment from "moment";
 import { mapGetters } from "vuex";
 
 import CommentsSection from "../components/CommentsSection";
+import { POSTSTATE } from "../helpers";
 
 export default {
     name: "PostPage",
@@ -88,11 +88,11 @@ export default {
     },
     computed: {
         ...mapGetters(["isAuthenticated", "getUser"]),
-        convertedPublishingDate() {
-            return moment(this.post.publishingDate).format(
-                "MMMM DD, YYYY - LT"
-            );
-        },
+        // convertedPublishingDate() {
+        //     return moment(this.post.publishingDate).format(
+        //         "MMMM DD, YYYY - LT"
+        //     );
+
         isAuthor() {
             return this.getUser.id === this.post.userId;
         }
@@ -165,7 +165,7 @@ export default {
         deletePost() {
             axios
                 .patch(`/posts/${this.postID}`, {
-                    state: "deleted"
+                    state: this.POSTSTATE.deleted
                 })
                 .then(() => {
                     this.$router.push("/");

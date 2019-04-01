@@ -35,16 +35,21 @@
 import { mapGetters } from "vuex";
 
 import IndividualPost from "./IndividualPost";
+import { POSTSTATE } from "../helpers";
 
 export default {
     name: "PostList",
     components: {
         IndividualPost
     },
+    // data() {
+    // },
     computed: {
         ...mapGetters(["isAuthenticated", "allPosts"]),
         publishedPosts() {
-            return this.allPosts.filter(post => post.state === "published");
+            return this.allPosts.filter(
+                post => post.state === POSTSTATE.published
+            );
         }
     },
     created() {

@@ -142,7 +142,11 @@ export default {
                     content: this.post.content,
                     allowComments: this.post.allowComments,
                     edited: true,
-                    state: state
+                    state: state,
+                    publishingDate:
+                        this.post.state === "draft"
+                            ? moment().format("YYYY-MM-DD HH:MM:SS")
+                            : this.post.publishingDate
                 })
                 .then(() =>
                     state === "draft"

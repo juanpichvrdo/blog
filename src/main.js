@@ -11,6 +11,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "./config";
+import moment from "moment";
 
 require("toastr/build/toastr.css");
 
@@ -18,6 +19,8 @@ library.add(faSearch);
 library.add(faArrowRight);
 library.add(faTimes);
 library.add(faEdit);
+
+Vue.filter("formatDate", value => moment(value, "YYYY-MM-DD HH:mm:ss").fromNow());
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

@@ -41,7 +41,7 @@
                         <router-link
                             :to="`/posts/${id}`"
                             class="individual-post--published--date"
-                        >{{ convertedPublishingDate }}</router-link>
+                        >{{ publishingDate | formatDate }}</router-link>
                     </p>
                 </div>
             </div>
@@ -65,8 +65,9 @@
 
 <script>
 import truncate from "html-truncate";
-import moment from "moment";
 import { mapGetters } from "vuex";
+import { POSTSTATE } from "../helpers";
+import { posix } from "path";
 
 export default {
     name: "IndividualPost",
@@ -92,9 +93,9 @@ export default {
         resumedBody() {
             return truncate(this.content, 200);
         },
-        convertedPublishingDate() {
-            return moment(this.publishingDate).format("MMMM DD, YYYY - LT");
-        },
+        // convertedPublishingDate() {
+        //     return moment(this.publishingDate).format("MMMM DD, YYYY - LT");
+        // },
         isAuthor() {
             return this.getUser.id === this.userId;
         }
@@ -107,7 +108,7 @@ export default {
         deletePost() {
             axios
                 .patch(`/posts/${this.id}`, {
-                    state: "deleted"
+                    state: POSTSTATE.deleted
                 })
                 .then(() => {
                     this.$emit("postDeleted");
