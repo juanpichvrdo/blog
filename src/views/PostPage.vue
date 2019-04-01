@@ -16,6 +16,13 @@
 
           <div class="px-xl-5">
             <h1 class="post-page--title display-4">{{ post.title }}</h1>
+            <div v-if="isAuthor" class="d-flex align-items-center">
+              <router-link :to="`/edit-post/${postID}`" class="btn btn-info mr-3">Edit</router-link>
+              <div class="d-flex align-items-center" @click="deletePost">
+                Delete Post
+                <font-awesome-icon class="ml-2 individual-post--icon" icon="times"/>
+              </div>
+            </div>
             <div class="d-flex align-items-center mb-4">
               <a href="#">
                 <img src="../assets/user-2.png" alt="User profile picture">
@@ -34,7 +41,10 @@
             <div v-if="isAuthenticated" class="d-flex align-items-center mt-5">
               <p class="mb-0 mr-3">{{ likes }} likes</p>
               <button @click="toggleLike" class="btn btn-info">Toggle Like</button>
-              <p class="mb-0 ml-3">{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</p>
+              <p
+                v-if="post.allowComments"
+                class="mb-0 ml-3"
+              >{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</p>
             </div>
             <div v-if="isAuthenticated && post.allowComments">
               <hr>
@@ -72,26 +82,27 @@ export default {
       userLike: null
     };
   },
+  computed: {
+    ...mapGetters(["isAuthenticated", "getUser"]),
+    convertedPublishingDate() {
+      return moment(this.post.publishingDate).format("MMMM DD, YYYY - LT");
+    },
+    isAuthor() {
+      return this.getUser.id === this.post.userId;
+    }
+  },
   created() {
     this.getPost();
     this.getLikes();
     this.getComments();
   },
-  computed: {
-    convertedPublishingDate() {
-      return moment(this.post.publishingDate).format("MMMM DD, YYYY - LT");
-    },
 
-    ...mapGetters(["isAuthenticated", "getUser"])
-  },
   methods: {
     getPost() {
       axios.get(`/posts?id=${this.postID}`).then(({ data: post }) => {
         if (post.length) {
           this.post = post[0];
           // this.$store.dispatch("setPosts", posts);
-        } else {
-          // No post
         }
       });
     },
@@ -137,6 +148,20 @@ export default {
         .get(`/comments/?postID=${this.postID}`)
         .then(({ data: commentsArray }) => {
           this.comments = commentsArray.length;
+        });
+    },
+    deletePost() {
+      axios
+        .patch(`/posts/${this.postID}`, {
+          state: "deleted"
+        })
+        .then(() => {
+          this.$router.push("/");
+          // axios
+          //   .patch(`comments/?postID=${this.id}`, {
+          //     state: "deleted"
+          //   })
+          //   .then(result => console.log(result));
         });
     }
   }

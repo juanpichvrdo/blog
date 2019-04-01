@@ -1,45 +1,52 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import store from './store';
-import HomePage from './views/HomePage.vue';
-import SignUpPage from './views/SignUpPage.vue';
-import LoginPage from './views/LoginPage.vue';
-import CreatePost from './views/CreatePost.vue';
-import PostPage from './views/PostPage.vue';
+import Vue from "vue";
+import Router from "vue-router";
+import store from "./store";
+import HomePage from "./views/HomePage.vue";
+import SignUpPage from "./views/SignUpPage.vue";
+import LoginPage from "./views/LoginPage.vue";
+import CreatePost from "./views/CreatePost.vue";
+import PostPage from "./views/PostPage.vue";
+import EditPost from "./views/EditPost.vue"
 
 Vue.use(Router);
 
 const router = new Router({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/login',
-      name: 'login',
-      component: LoginPage,
+      path: "/login",
+      name: "login",
+      component: LoginPage
     },
     {
-      path: '/sign-up',
-      name: 'signUp',
-      component: SignUpPage,
+      path: "/sign-up",
+      name: "signUp",
+      component: SignUpPage
     },
     {
-      path: '/posts/:id',
-      name: 'postPage',
-      component: PostPage,
+      path: "/posts/:id",
+      name: "postPage",
+      component: PostPage
     },
     {
-      path: '/create-post',
-      name: 'createPost',
+      path: "/create-post",
+      name: "createPost",
       component: CreatePost,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true }
     },
     {
-      path: '/',
-      name: 'home',
-      component: HomePage,
+      path: "/edit-post/:id",
+      name: "editPost",
+      component: EditPost,
+      meta: { requiresAuth: true }
     },
-  ],
+    {
+      path: "/",
+      name: "home",
+      component: HomePage
+    }
+  ]
 });
 
 router.beforeEach((to, from, next) => {
@@ -48,8 +55,8 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       next({
-        path: '/login',
-        query: { redirect: to.fullPath },
+        path: "/login",
+        query: { redirect: to.fullPath }
       });
     }
   } else {

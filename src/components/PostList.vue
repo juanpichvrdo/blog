@@ -21,6 +21,7 @@
         :edited="post.edited"
         :id="post.id"
         :userId="post.userId"
+        :allowComments="post.allowComments"
         @postDeleted="getPosts"
       />
     </div>

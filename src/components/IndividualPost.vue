@@ -1,18 +1,18 @@
 <template>
-  <div @mouseover="showDelete = true" @mouseleave="showDelete = false" class="individual-post pb-4">
+  <div class="individual-post pb-4" @mouseover="showDelete = true" @mouseleave="showDelete = false">
     <div class="container-fluid px-4 py-3 mb-2">
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between align-items-start">
         <h4 class="individual-post--heading mb-3 mb-lg-5">
           <router-link :to="`/posts/${id}`">{{ title }}</router-link>
         </h4>
-        <div class="d-flex align-items-center" v-if="showDelete && isAuthor">
-          <button class="btn btn-info mr-3">Edit</button>
-          <font-awesome-icon @click="deletePost" class="individual-post--icon" icon="times"/>
+        <div v-if="showDelete && isAuthor" class="d-flex align-items-center">
+          <router-link :to="`/edit-post/${id}`" class="btn btn-info mr-3">Edit</router-link>
+          <font-awesome-icon class="individual-post--icon" icon="times" @click="deletePost"/>
         </div>
       </div>
 
       <p v-if="edited">Edited</p>
-      <div v-html="resumedBody" class="individual-post--body"></div>
+      <div class="individual-post--body" v-html="resumedBody"/>
     </div>
     <div class="d-flex align-items-center justify-content-between">
       <div class="d-flex align-items-center">
@@ -39,7 +39,7 @@
     </div>
 
     <div class="mt-4 row justify-content-between">
-      <p>
+      <p v-if="allowComments">
         <router-link :to="`/posts/${id}`">{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</router-link>
       </p>
       <p>{{ likes }} likes</p>
@@ -69,7 +69,8 @@ export default {
     content: String,
     edited: Boolean,
     id: Number,
-    userId: Number
+    userId: Number,
+    allowComments: Boolean
   },
   computed: {
     ...mapGetters(["getUser"]),
@@ -80,11 +81,7 @@ export default {
       return moment(this.publishingDate).format("MMMM DD, YYYY - LT");
     },
     isAuthor() {
-      if (this.getUser.id === this.userId) {
-        return true;
-      } else {
-        return false;
-      }
+      return this.getUser.id === this.userId;
     }
   },
   created() {
@@ -93,20 +90,11 @@ export default {
   },
   methods: {
     deletePost() {
-      // axios.patch(`/users/${this.getUser.id}`, {
-      //   deletedPost: [...this.getUser.deletedPost, this.id]
-      // });
-
-      // axios.delete(`/posts/${this.id}`).then(result => {
-      //   console.log(result);
-      //   this.$emit("postDeleted");
-      // });
-
       axios
         .patch(`/posts/${this.id}`, {
           state: "deleted"
         })
-        .then(result => {
+        .then(() => {
           this.$emit("postDeleted");
           // axios
           //   .patch(`comments/?postID=${this.id}`, {
