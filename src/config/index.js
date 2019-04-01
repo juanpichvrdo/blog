@@ -1,1 +1,1 @@
-import './axios.js'
+import "./axios.js";

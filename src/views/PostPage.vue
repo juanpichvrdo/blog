@@ -1,240 +1,252 @@
 <template>
-  <div class="post-page">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="post-page--body">
-          <nav class="post-page--breadcrumb">
-            <ol class="breadcrumb pb-0 mb-0">
-              <li class="breadcrumb-item d-flex align-items-center">
-                <router-link class="post-page--link" to="/">ALL POSTS</router-link>
-              </li>
-              <li class="breadcrumb-item active d-flex align-items-center">
-                <router-link class="post-page--link post-page--link--breadcrumb" to>{{ post.title }}</router-link>
-              </li>
-            </ol>
-          </nav>
+    <div class="post-page">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="post-page--body">
+                    <nav class="post-page--breadcrumb">
+                        <ol class="breadcrumb pb-0 mb-0">
+                            <li class="breadcrumb-item d-flex align-items-center">
+                                <router-link class="post-page--link" to="/">ALL POSTS</router-link>
+                            </li>
+                            <li class="breadcrumb-item active d-flex align-items-center">
+                                <router-link
+                                    class="post-page--link post-page--link--breadcrumb"
+                                    to
+                                >{{ post.title }}</router-link>
+                            </li>
+                        </ol>
+                    </nav>
 
-          <div class="px-xl-5">
-            <h1 class="post-page--title display-4">{{ post.title }}</h1>
-            <div v-if="isAuthor" class="d-flex align-items-center">
-              <router-link :to="`/edit-post/${postID}`" class="btn btn-info mr-3">Edit</router-link>
-              <div class="d-flex align-items-center" @click="deletePost">
-                Delete Post
-                <font-awesome-icon class="ml-2 individual-post--icon" icon="times"/>
-              </div>
-            </div>
-            <div class="d-flex align-items-center mb-4">
-              <a href="#">
-                <img src="../assets/user-2.png" alt="User profile picture">
-              </a>
-              <div class="ml-3">
-                <p class="post-page--author mb-0 smaller-font">
-                  Written by:
-                  <a href="#" class="post-page--link">{{ post.author }}</a>
-                </p>
-                <p class="post-page--published mb-0 smaller-font">{{ convertedPublishingDate }}</p>
-              </div>
-            </div>
+                    <div class="px-xl-5">
+                        <h1 class="post-page--title display-4">{{ post.title }}</h1>
+                        <div v-if="isAuthor" class="d-flex align-items-center">
+                            <router-link :to="`/edit-post/${postID}`" class="btn btn-info mr-3">Edit</router-link>
+                            <div class="d-flex align-items-center" @click="deletePost">
+                                Delete Post
+                                <font-awesome-icon class="ml-2 individual-post--icon" icon="times"/>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-4">
+                            <a href="#">
+                                <img src="../assets/user-2.png" alt="User profile picture">
+                            </a>
+                            <div class="ml-3">
+                                <p class="post-page--author mb-0 smaller-font">
+                                    Written by:
+                                    <a href="#" class="post-page--link">{{ post.author }}</a>
+                                </p>
+                                <p
+                                    class="post-page--published mb-0 smaller-font"
+                                >{{ convertedPublishingDate }}</p>
+                            </div>
+                        </div>
 
-            <hr>
-            <div v-html="post.content" class="post-page--content mt-5"></div>
-            <div v-if="isAuthenticated" class="d-flex align-items-center mt-5">
-              <p class="mb-0 mr-3">{{ likes }} likes</p>
-              <button @click="toggleLike" class="btn btn-info">Toggle Like</button>
-              <p
-                v-if="post.allowComments"
-                class="mb-0 ml-3"
-              >{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</p>
+                        <hr>
+                        <div class="post-page--content mt-5" v-html="post.content"/>
+                        <div v-if="isAuthenticated" class="d-flex align-items-center mt-5">
+                            <p class="mb-0 mr-3">{{ likes }} likes</p>
+                            <button class="btn btn-info" @click="toggleLike">Toggle Like</button>
+                            <p
+                                v-if="post.allowComments"
+                                class="mb-0 ml-3"
+                            >{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</p>
+                        </div>
+                        <div v-if="isAuthenticated && post.allowComments">
+                            <hr>
+                            <CommentsSection :postID="post.id"/>
+                        </div>
+                        <div v-else class="text-center my-5">
+                            <router-link to="/login">Login to comment</router-link>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div v-if="isAuthenticated && post.allowComments">
-              <hr>
-              <CommentsSection :postID="post.id"/>
-            </div>
-            <div v-else class="text-center my-5">
-              <router-link to="/login">Login to comment</router-link>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
 import moment from "moment";
 import { mapGetters } from "vuex";
 
-import { VueEditor } from "vue2-editor";
 import CommentsSection from "../components/CommentsSection";
 
 export default {
-  name: "PostPage",
-  components: {
-    CommentsSection
-  },
-  data() {
-    return {
-      postID: this.$route.params.id,
-      post: {},
-      likes: 0,
-      alreadyLiked: false,
-      comments: 0,
-      userLike: null
-    };
-  },
-  computed: {
-    ...mapGetters(["isAuthenticated", "getUser"]),
-    convertedPublishingDate() {
-      return moment(this.post.publishingDate).format("MMMM DD, YYYY - LT");
+    name: "PostPage",
+    components: {
+        CommentsSection
     },
-    isAuthor() {
-      return this.getUser.id === this.post.userId;
-    }
-  },
-  created() {
-    this.getPost();
-    this.getLikes();
-    this.getComments();
-  },
-
-  methods: {
-    getPost() {
-      axios.get(`/posts?id=${this.postID}`).then(({ data: post }) => {
-        if (post.length) {
-          this.post = post[0];
-          // this.$store.dispatch("setPosts", posts);
+    data() {
+        return {
+            postID: this.$route.params.id,
+            post: {},
+            likes: 0,
+            alreadyLiked: false,
+            comments: 0,
+            userLike: null
+        };
+    },
+    computed: {
+        ...mapGetters(["isAuthenticated", "getUser"]),
+        convertedPublishingDate() {
+            return moment(this.post.publishingDate).format(
+                "MMMM DD, YYYY - LT"
+            );
+        },
+        isAuthor() {
+            return this.getUser.id === this.post.userId;
         }
-      });
     },
-    toggleLike() {
-      if (this.alreadyLiked) {
-        axios.delete(`/posts_likes/${this.userLike}`).then(result => {
-          this.alreadyLiked = false;
-          this.getLikes();
-        });
-      } else {
-        axios
-          .post(`/posts_likes`, {
-            postID: this.postID,
-            userID: this.getUser.id
-          })
-          .then(({ data: like }) => {
-            this.getLikes();
-          });
-      }
+    created() {
+        this.getPost();
+        this.getLikes();
+        this.getComments();
     },
-    getLikes() {
-      axios
-        .get(`/posts_likes/?postID=${this.postID}`)
-        .then(({ data: likesArray }) => {
-          this.likes = likesArray.length;
-          this.getLike();
-          if (likesArray.find(like => like.userID === this.getUser.id)) {
-            this.alreadyLiked = true;
-          }
-        });
-    },
-    getLike() {
-      axios
-        .get(`posts_likes/?postID=${this.postID}&userID=${this.getUser.id}`)
-        .then(({ data }) => {
-          if (data.length) {
-            this.userLike = data[0].id;
-          }
-        });
-    },
-    getComments() {
-      axios
-        .get(`/comments/?postID=${this.postID}`)
-        .then(({ data: commentsArray }) => {
-          this.comments = commentsArray.length;
-        });
-    },
-    deletePost() {
-      axios
-        .patch(`/posts/${this.postID}`, {
-          state: "deleted"
-        })
-        .then(() => {
-          this.$router.push("/");
-          // axios
-          //   .patch(`comments/?postID=${this.id}`, {
-          //     state: "deleted"
-          //   })
-          //   .then(result => console.log(result));
-        });
+
+    methods: {
+        getPost() {
+            axios.get(`/posts?id=${this.postID}`).then(({ data: post }) => {
+                if (post.length) {
+                    this.post = post[0];
+                    // this.$store.dispatch("setPosts", posts);
+                }
+            });
+        },
+        toggleLike() {
+            if (this.alreadyLiked) {
+                axios.delete(`/posts_likes/${this.userLike}`).then(() => {
+                    this.alreadyLiked = false;
+                    this.getLikes();
+                });
+            } else {
+                axios
+                    .post(`/posts_likes`, {
+                        postID: this.postID,
+                        userID: this.getUser.id
+                    })
+                    .then(() => {
+                        this.getLikes();
+                    });
+            }
+        },
+        getLikes() {
+            axios
+                .get(`/posts_likes/?postID=${this.postID}`)
+                .then(({ data: likesArray }) => {
+                    this.likes = likesArray.length;
+                    this.getLike();
+                    if (
+                        likesArray.find(like => like.userID === this.getUser.id)
+                    ) {
+                        this.alreadyLiked = true;
+                    }
+                });
+        },
+        getLike() {
+            axios
+                .get(
+                    `posts_likes/?postID=${this.postID}&userID=${
+                        this.getUser.id
+                    }`
+                )
+                .then(({ data }) => {
+                    if (data.length) {
+                        this.userLike = data[0].id;
+                    }
+                });
+        },
+        getComments() {
+            axios
+                .get(`/comments/?postID=${this.postID}`)
+                .then(({ data: commentsArray }) => {
+                    this.comments = commentsArray.length;
+                });
+        },
+        deletePost() {
+            axios
+                .patch(`/posts/${this.postID}`, {
+                    state: "deleted"
+                })
+                .then(() => {
+                    this.$router.push("/");
+                    // axios
+                    //   .patch(`comments/?postID=${this.id}`, {
+                    //     state: "deleted"
+                    //   })
+                    //   .then(result => console.log(result));
+                });
+        }
     }
-  }
 };
 </script>
 
 <style lang="scss">
 .post-page {
-  background-color: $white-color;
-  min-height: 100vh;
+    background-color: $white-color;
+    min-height: 100vh;
 
-  &--body {
-    padding-left: 150px;
-    padding-right: 150px;
+    &--body {
+        padding-left: 150px;
+        padding-right: 150px;
 
-    @media only screen and (max-width: 1500px) {
-      padding-left: 65px;
-      padding-right: 65px;
+        @media only screen and (max-width: 1500px) {
+            padding-left: 65px;
+            padding-right: 65px;
+        }
+
+        @media only screen and (max-width: 1200px) {
+            padding-left: 45px;
+            padding-right: 45px;
+        }
+
+        @media only screen and (max-width: 800px) {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
     }
 
-    @media only screen and (max-width: 1200px) {
-      padding-left: 45px;
-      padding-right: 45px;
+    &--content {
+        padding-right: 12rem;
+        @media only screen and (max-width: 1300px) {
+            padding-right: 8rem;
+        }
+        @media only screen and (max-width: 1100px) {
+            padding-right: 4rem;
+        }
+        @media only screen and (max-width: 550px) {
+            padding-right: 2rem;
+        }
     }
 
-    @media only screen and (max-width: 800px) {
-      padding-left: 30px;
-      padding-right: 30px;
-    }
-  }
+    &--link,
+    &--published {
+        color: $light-blue-color;
 
-  &--content {
-    padding-right: 12rem;
-    @media only screen and (max-width: 1300px) {
-      padding-right: 8rem;
+        &--breadcrumb {
+            text-transform: uppercase;
+        }
     }
-    @media only screen and (max-width: 1100px) {
-      padding-right: 4rem;
-    }
-    @media only screen and (max-width: 550px) {
-      padding-right: 2rem;
-    }
-  }
-
-  &--link,
-  &--published {
-    color: $light-blue-color;
 
     &--breadcrumb {
-      text-transform: uppercase;
+        .breadcrumb {
+            background-color: $white-color;
+        }
     }
-  }
 
-  &--breadcrumb {
-    .breadcrumb {
-      background-color: $white-color;
+    &--title {
+        color: $navy-color;
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-weight: 700;
     }
-  }
 
-  &--title {
-    color: $navy-color;
-    font-family: Georgia, "Times New Roman", Times, serif;
-    font-weight: 700;
-  }
+    &--search {
+        background-color: #ebeef1;
 
-  &--search {
-    background-color: #ebeef1;
-
-    &--heading {
-      font-family: Georgia, "Times New Roman", Times, serif;
-      color: $navy-color;
-      font-weight: 600;
+        &--heading {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            color: $navy-color;
+            font-weight: 600;
+        }
     }
-  }
 }
 </style>
