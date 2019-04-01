@@ -2,7 +2,7 @@
     <div class="post-page">
         <div class="container-fluid">
             <div class="row">
-                <div class="post-page--body">
+                <div class="post-page--body text-center text-md-left">
                     <nav class="post-page--breadcrumb">
                         <ol class="breadcrumb pb-0 mb-0">
                             <li class="breadcrumb-item d-flex align-items-center">
@@ -19,14 +19,24 @@
 
                     <div class="px-xl-5">
                         <h1 class="post-page--title display-4">{{ post.title }}</h1>
-                        <div v-if="isAuthor" class="d-flex align-items-center">
-                            <router-link :to="`/edit-post/${postID}`" class="btn btn-info mr-3">Edit</router-link>
-                            <div class="d-flex align-items-center" @click="deletePost">
+                        <div
+                            v-if="isAuthor"
+                            class="d-flex align-items-center justify-content-center justify-content-md-start my-3"
+                        >
+                            <router-link :to="`/edit-post/${postID}`" class="mr-3">
+                                <font-awesome-icon class="individual-post--edit" icon="edit"/>
+                            </router-link>
+                            <div
+                                class="post-page--delete d-flex align-items-center"
+                                @click="deletePost"
+                            >
                                 Delete Post
                                 <font-awesome-icon class="ml-2 individual-post--icon" icon="times"/>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center mb-4">
+                        <div
+                            class="d-flex align-items-center mb-4 justify-content-center justify-content-md-start"
+                        >
                             <a href="#">
                                 <img src="../assets/user-2.png" alt="User profile picture">
                             </a>
@@ -83,7 +93,8 @@ export default {
             likes: 0,
             alreadyLiked: false,
             comments: 0,
-            userLike: null
+            userLike: null,
+            POSTSTATE
         };
     },
     computed: {
@@ -188,6 +199,7 @@ export default {
     &--body {
         padding-left: 150px;
         padding-right: 150px;
+        width: 100%;
 
         @media only screen and (max-width: 1500px) {
             padding-left: 65px;
@@ -205,16 +217,21 @@ export default {
         }
     }
 
+    &--delete {
+        cursor: pointer;
+
+        &:hover {
+            color: #a12e2e;
+        }
+    }
+
     &--content {
         padding-right: 12rem;
         @media only screen and (max-width: 1300px) {
             padding-right: 8rem;
         }
         @media only screen and (max-width: 1100px) {
-            padding-right: 4rem;
-        }
-        @media only screen and (max-width: 550px) {
-            padding-right: 2rem;
+            padding-right: 0;
         }
     }
 

@@ -3,7 +3,13 @@ import Vue from "vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSearch, faArrowRight, faTimes, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faArrowRight,
+  faTimes,
+  faEdit,
+  faHeart
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import VeeValidate from "vee-validate";
@@ -19,6 +25,7 @@ library.add(faSearch);
 library.add(faArrowRight);
 library.add(faTimes);
 library.add(faEdit);
+library.add(faHeart);
 
 Vue.filter("formatDate", value => moment(value, "YYYY-MM-DD HH:mm:ss").fromNow());
 

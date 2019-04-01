@@ -1,5 +1,5 @@
 <template>
-    <nav class="navigation navbar fixed-top py-0">
+    <nav class="navigation navbar py-0">
         <div class="container-fluid d-flex flex-column flex-sm-row">
             <div class="d-flex align-items-center">
                 <router-link
