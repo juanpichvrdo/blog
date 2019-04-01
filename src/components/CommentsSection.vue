@@ -53,7 +53,6 @@ export default {
             newCommentBody: "",
             customToolbar: [
                 ["bold", "italic", "underline", { color: [] }],
-                // [{ color: [] }],
                 [{ list: "ordered" }, { list: "bullet" }],
                 [
                     { align: "" },
@@ -94,6 +93,7 @@ export default {
                     .then(comment => {
                         this.comments.push(comment.data);
                         this.newCommentBody = "";
+                        this.$emit("commentAdded");
                     });
             } else {
                 console.log("Comment is too short");

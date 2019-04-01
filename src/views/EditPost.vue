@@ -70,7 +70,7 @@
                         >Cancel</button>
                         <button
                             class="mx-3 px-5 btn btn-large btn-danger"
-                            @click="deletePost"
+                            @click="confirmDelete"
                         >Delete</button>
                     </div>
                 </div>
@@ -92,12 +92,14 @@
 <script>
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
+import postMixins from "../utils/mixins";
 
 export default {
     name: "EditPost",
     components: {
         VueEditor
     },
+    mixins: [postMixins],
     data() {
         return {
             postID: this.$route.params.id,
@@ -113,6 +115,25 @@ export default {
         this.getPost();
     },
     methods: {
+        confirmDelete() {
+            this.$swal({
+                title: "Are you sure you want to delete this post?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#1c6392",
+                cancelButtonColor: "#dd1e1e",
+                confirmButtonText: "Yes, delete it!"
+            }).then(result => {
+                if (result.value) {
+                    this.deletePost();
+                    this.$swal(
+                        "Deleted!",
+                        "Your post has been deleted.",
+                        "success"
+                    );
+                }
+            });
+        },
         isAuthor() {
             return this.getUser.id === this.authorID;
         },

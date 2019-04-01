@@ -19,8 +19,13 @@
                     <font-awesome-icon
                         class="individual-post--delete"
                         icon="times"
-                        @click="deletePost"
+                        @click="confirmDelete"
                     />
+                    <!-- <font-awesome-icon
+                        class="individual-post--delete"
+                        icon="times"
+                        @click="deletePost"
+                    />-->
                 </div>
             </div>
 
@@ -67,10 +72,12 @@
 import truncate from "html-truncate";
 import { mapGetters } from "vuex";
 import { POSTSTATE } from "../helpers";
-import { posix } from "path";
+// import { posix } from "path";
+import postMixins from "../utils/mixins";
 
 export default {
     name: "IndividualPost",
+    mixins: [postMixins],
     props: {
         title: String,
         author: String,
@@ -81,6 +88,7 @@ export default {
         userId: Number,
         allowComments: Boolean
     },
+
     data() {
         return {
             showDelete: false,

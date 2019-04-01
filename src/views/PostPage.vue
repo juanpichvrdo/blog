@@ -28,7 +28,7 @@
                             </router-link>
                             <div
                                 class="post-page--delete d-flex align-items-center"
-                                @click="deletePost"
+                                @click="confirmDelete"
                             >
                                 Delete Post
                                 <font-awesome-icon class="ml-2 individual-post--icon" icon="times"/>
@@ -63,7 +63,7 @@
                         </div>
                         <div v-if="isAuthenticated && post.allowComments">
                             <hr>
-                            <CommentsSection :postID="post.id"/>
+                            <CommentsSection @commentAdded="getComments()" :postID="post.id"/>
                         </div>
                         <div v-else class="text-center my-5">
                             <router-link to="/login">Login to comment</router-link>
@@ -80,12 +80,14 @@ import { mapGetters } from "vuex";
 
 import CommentsSection from "../components/CommentsSection";
 import { POSTSTATE } from "../helpers";
+import postMixins from "../utils/mixins";
 
 export default {
     name: "PostPage",
     components: {
         CommentsSection
     },
+    mixins: [postMixins],
     data() {
         return {
             postID: this.$route.params.id,

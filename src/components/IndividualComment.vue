@@ -100,7 +100,6 @@ export default {
                     this.getLikes();
                 });
             } else {
-                debugger;
                 axios
                     .post(`/comments_likes`, {
                         commentID: this.commentID,
@@ -109,7 +108,6 @@ export default {
                     .then(() => {
                         this.getLikes();
                     });
-                debugger;
             }
         }
     }
