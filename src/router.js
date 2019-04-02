@@ -7,6 +7,7 @@ import LoginPage from "./views/LoginPage.vue";
 import CreatePost from "./views/CreatePost.vue";
 import PostPage from "./views/PostPage.vue";
 import EditPost from "./views/EditPost.vue";
+import UserProfile from "./views/UserProfile.vue";
 
 Vue.use(Router);
 
@@ -25,6 +26,11 @@ const router = new Router({
       name: "signUp",
       component: SignUpPage,
       meta: { showNavbar: false }
+    },
+    {
+      path: "/user/:id",
+      name: "userProfile",
+      component: UserProfile
     },
     {
       path: "/posts/:id",

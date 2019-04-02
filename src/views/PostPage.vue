@@ -37,13 +37,17 @@
                         <div
                             class="d-flex align-items-center mb-4 justify-content-center justify-content-md-start"
                         >
-                            <a href="#">
+                            <router-link :to="`/user/${post.userId}`" class="post-page--link">
                                 <img src="../assets/user-2.png" alt="User profile picture">
-                            </a>
+                            </router-link>
+
                             <div class="ml-3">
                                 <p class="post-page--author mb-0 smaller-font">
                                     Written by:
-                                    <a href="#" class="post-page--link">{{ post.author }}</a>
+                                    <router-link
+                                        :to="`/user/${post.userId}`"
+                                        class="post-page--link"
+                                    >{{ post.author }}</router-link>
                                 </p>
                                 <p
                                     class="post-page--published mb-0 smaller-font"
@@ -63,7 +67,7 @@
                         </div>
                         <div v-if="isAuthenticated && post.allowComments">
                             <hr>
-                            <CommentsSection @commentAdded="getComments()" :postID="post.id"/>
+                            <CommentsSection :postID="post.id" @commentAdded="getComments()"/>
                         </div>
                         <div v-else class="text-center my-5">
                             <router-link to="/login">Login to comment</router-link>
@@ -79,7 +83,7 @@
 import { mapGetters } from "vuex";
 
 import CommentsSection from "../components/CommentsSection";
-import { POSTSTATE } from "../helpers";
+import { POSTSTATE } from "../utils/mixins.js";
 import postMixins from "../utils/mixins";
 
 export default {
@@ -101,11 +105,6 @@ export default {
     },
     computed: {
         ...mapGetters(["isAuthenticated", "getUser"]),
-        // convertedPublishingDate() {
-        //     return moment(this.post.publishingDate).format(
-        //         "MMMM DD, YYYY - LT"
-        //     );
-
         isAuthor() {
             return this.getUser.id === this.post.userId;
         }

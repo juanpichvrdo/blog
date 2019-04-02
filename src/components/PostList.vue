@@ -15,13 +15,12 @@
                 :key="post.id"
                 :title="post.title"
                 :author="post.author"
-                :publishingDate="post.publishingDate"
+                :publishing-date="post.publishingDate"
                 :content="post.content"
-                :commentCount="post.commentCount"
                 :edited="post.edited"
                 :id="post.id"
-                :userId="post.userId"
-                :allowComments="post.allowComments"
+                :user-id="post.userId"
+                :allow-comments="post.allowComments"
                 @postDeleted="getPosts"
             />
         </div>
@@ -35,15 +34,13 @@
 import { mapGetters } from "vuex";
 
 import IndividualPost from "./IndividualPost";
-import { POSTSTATE } from "../helpers";
+import { POSTSTATE } from "../utils/helpers.js";
 
 export default {
     name: "PostList",
     components: {
         IndividualPost
     },
-    // data() {
-    // },
     computed: {
         ...mapGetters(["isAuthenticated", "allPosts"]),
         publishedPosts() {

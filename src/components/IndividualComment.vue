@@ -1,12 +1,15 @@
 <template>
     <div class="comment mb-5">
         <div class="d-flex align-items-center">
-            <router-link to class="commet--picture">
+            <router-link :to="`/user/${authorID}`" class="comment--picture">
                 <img src="../assets/user-2.png" alt="User profile picture">
             </router-link>
             <p class="mb-0 ml-3">
-                <router-link to class="comment--author mr-1">{{ author.username }}</router-link>
-                <span class="comment--date">{{ getDate(datePublished) }}</span>
+                <router-link
+                    :to="`/user/${authorID}`"
+                    class="comment--author mr-1"
+                >{{ author.username }}</router-link>
+                <span class="comment--date ml-2">{{ datePublished | formatDate }}</span>
             </p>
         </div>
         <div class="comment--body ml-5 mt-3">
@@ -39,7 +42,7 @@ export default {
     name: "IndividualComment",
     props: {
         authorID: Number,
-        datePublished: Number,
+        datePublished: String,
         body: String,
         commentID: Number
     },
@@ -57,6 +60,7 @@ export default {
     created() {
         this.getAuthorData();
         this.getLikes();
+        console.log(this.datePublished);
     },
     methods: {
         getDate(date) {

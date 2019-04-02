@@ -4,10 +4,10 @@
             <div class="comment-form--header card-header">Leave a comment</div>
             <div class="comment-form--container card-body p-0">
                 <VueEditor
-                    class="comment-form--editor"
                     v-model="newCommentBody"
-                    name="content"
                     :editorToolbar="customToolbar"
+                    class="comment-form--editor"
+                    name="content"
                 />
                 <div class="comment-form--buttons d-flex justify-content-end align-items-center">
                     <a class="mr-4 mr-sm-5 comment-form--cancel" @click="newCommentBody = ''">Cancel</a>
@@ -25,7 +25,7 @@
             v-for="comment in comments"
             :key="comment.id"
             :authorID="comment.authorID"
-            :date-Published="comment.datePublished"
+            :date-published="comment.datePublished"
             :body="comment.body"
             :commentID="comment.id"
         />
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 
@@ -86,7 +87,7 @@ export default {
                         body: this.newCommentBody,
                         postID: this.postID,
                         likes: 0,
-                        datePublished: Date.now(),
+                        datePublished: moment().format("YYYY-MM-DD HH:mm:ss"),
                         authorID: this.getUser.id,
                         state: "published"
                     })

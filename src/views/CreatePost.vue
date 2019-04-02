@@ -87,7 +87,7 @@ import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import router from "../router.js";
-import { POSTSTATE } from "../helpers";
+import { POSTSTATE } from "../utils/helpers.js";
 
 export default {
     name: "CreatePost",

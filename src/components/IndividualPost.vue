@@ -6,12 +6,12 @@
     >
         <div class="container-fluid px-4 py-3 mb-2">
             <div class="d-flex justify-content-between align-items-start">
-                <h3 class="display-4 individual-post--heading mb-3 mb-lg-5">
+                <h2 class="individual-post--heading mb-3 mb-lg-5">
                     <router-link
                         :to="`/posts/${id}`"
                         class="individual-post--heading--link"
                     >{{ title }}</router-link>
-                </h3>
+                </h2>
                 <div v-if="showDelete && isAuthor" class="d-flex align-items-center">
                     <router-link :to="`/edit-post/${id}`" class="mr-3">
                         <font-awesome-icon class="individual-post--edit" icon="edit"/>
@@ -21,11 +21,6 @@
                         icon="times"
                         @click="confirmDelete"
                     />
-                    <!-- <font-awesome-icon
-                        class="individual-post--delete"
-                        icon="times"
-                        @click="deletePost"
-                    />-->
                 </div>
             </div>
 
@@ -34,18 +29,21 @@
         </div>
         <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-                <a href="#">
+                <router-link :to="`/user/${userId}`" class="individual-post--author--link">
                     <img src="../assets/user-2.png" alt="User profile picture">
-                </a>
+                </router-link>
                 <div class="ml-3">
                     <p class="individual-post--author mb-1 smaller-font">
                         Written by:
-                        <a class="individual-post--author--link" href="#">{{ author }}</a>
+                        <router-link
+                            :to="`/user/${userId}`"
+                            class="individual-post--author--link"
+                        >{{ author }}</router-link>
                     </p>
                     <p class="individual-post--published mb-0 smaller-font">
                         <router-link
                             :to="`/posts/${id}`"
-                            class="individual-post--published--date"
+                            class="individual-post--published--date light-blue-color"
                         >{{ publishingDate | formatDate }}</router-link>
                     </p>
                 </div>
@@ -56,10 +54,11 @@
             </router-link>
         </div>
 
-        <div class="mt-4 row justify-content-between">
+        <div class="mt-4 px-4 row justify-content-between">
             <p v-if="allowComments">
                 <router-link
                     :to="`/posts/${id}`"
+                    class="light-blue-color"
                 >{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</router-link>
             </p>
             <p>{{ likes }} likes</p>
@@ -71,8 +70,7 @@
 <script>
 import truncate from "html-truncate";
 import { mapGetters } from "vuex";
-import { POSTSTATE } from "../helpers";
-// import { posix } from "path";
+import { POSTSTATE } from "../utils/helpers.js";
 import postMixins from "../utils/mixins";
 
 export default {
@@ -101,9 +99,6 @@ export default {
         resumedBody() {
             return truncate(this.content, 200);
         },
-        // convertedPublishingDate() {
-        //     return moment(this.publishingDate).format("MMMM DD, YYYY - LT");
-        // },
         isAuthor() {
             return this.getUser.id === this.userId;
         }
@@ -163,24 +158,14 @@ export default {
             color: #707070;
 
             &:hover {
-                background: #1d70a8;
+                color: #1d70a8;
             }
-        }
-    }
-
-    &--published {
-        &--date {
-            color: $light-blue-color;
         }
     }
 
     &--read-more {
         color: $navy-color;
         font-weight: 700;
-    }
-
-    .smaller-font {
-        font-size: 0.9rem;
     }
 
     &--delete {
@@ -196,6 +181,14 @@ export default {
         &:hover {
             color: #555454;
         }
+    }
+
+    .smaller-font {
+        font-size: 0.9rem;
+    }
+
+    .light-blue-color {
+        color: $light-blue-color;
     }
 }
 </style>
