@@ -37,28 +37,28 @@
             </li>
         </ul>
         <div v-if="activeTab === 'created'">
-            <CreatedPostsActivity/>
+            <CreatedPosts/>
         </div>
         <div v-else-if="activeTab === 'commented'">
-            <CommentedPostsActivity/>
+            <CommentedPosts/>
         </div>
         <div v-else-if="activeTab === 'liked'">
-            <LikedPostsActivity/>
+            <LikedPosts/>
         </div>
     </div>
 </template>
 
 <script>
-import CreatedPostsActivity from "../components/CreatedPostsActivity";
-import CommentedPostsActivity from "../components/CommentedPostsActivity";
-import LikedPostsActivity from "../components/LikedPostsActivity";
+import CreatedPosts from "../components/CreatedPosts";
+import CommentedPosts from "../components/CommentedPosts";
+import LikedPosts from "../components/LikedPosts";
 
 export default {
     name: "UserProfile",
     components: {
-        CreatedPostsActivity,
-        CommentedPostsActivity,
-        LikedPostsActivity
+        CreatedPosts,
+        CommentedPosts,
+        LikedPosts
     },
     data() {
         return {

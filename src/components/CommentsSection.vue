@@ -3,9 +3,9 @@
         <div class="card comment-form">
             <div class="comment-form--header card-header">Leave a comment</div>
             <div class="comment-form--container card-body p-0">
-                <VueEditor
+                <vue-editor
                     v-model="newCommentBody"
-                    :editorToolbar="customToolbar"
+                    :editor-toolbar="customToolbar"
                     class="comment-form--editor"
                     name="content"
                 />

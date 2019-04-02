@@ -55,11 +55,11 @@
                     <div class="create-post--buttons">
                         <button
                             class="mx-3 px-5 btn btn-large btn-success"
-                            @click="validateForm(POSTSTATE.published)"
+                            @click="validateForm(POST_STATE.published)"
                         >Create</button>
                         <button
                             class="mx-3 px-5 btn btn-large btn-warning"
-                            @click="validateForm(POSTSTATE.draft)"
+                            @click="validateForm(POST_STATE.draft)"
                         >Draft</button>
                         <button
                             class="mx-3 px-5 btn btn-large btn-danger"
@@ -87,7 +87,7 @@ import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import router from "../router.js";
-import { POSTSTATE } from "../utils/helpers.js";
+import { POST_STATE } from "../utils/helpers.js";
 
 export default {
     name: "CreatePost",
@@ -101,7 +101,7 @@ export default {
             title: "",
             content: "",
             allowComments: true,
-            POSTSTATE
+            POST_STATE
         };
     },
     computed: {
@@ -121,10 +121,10 @@ export default {
                 .post("/posts", {
                     title: this.title,
                     content: this.content,
-                    allowComments: this.allowComments,
+                    allow_comments: this.allowComments,
                     author: this.getUser.username,
                     publishingDate:
-                        state === this.POSTSTATE.published
+                        state === this.POST_STATE.published
                             ? moment().format("YYYY-MM-DD HH:mm:ss")
                             : null,
                     createdDate: moment().format("YYYY-MM-DD HH:mm:ss"),

@@ -10,17 +10,10 @@
         </div>
         <hr>
         <div v-if="publishedPosts.length">
-            <IndividualPost
+            <single-post
                 v-for="post in publishedPosts"
                 :key="post.id"
-                :title="post.title"
-                :author="post.author"
-                :publishing-date="post.publishingDate"
-                :content="post.content"
-                :edited="post.edited"
-                :id="post.id"
-                :user-id="post.userId"
-                :allow-comments="post.allowComments"
+                :post="post"
                 @postDeleted="getPosts"
             />
         </div>
@@ -33,19 +26,19 @@
 <script>
 import { mapGetters } from "vuex";
 
-import IndividualPost from "./IndividualPost";
-import { POSTSTATE } from "../utils/helpers.js";
+import SinglePost from "./SinglePost";
+import { POST_STATE } from "../utils/helpers.js";
 
 export default {
     name: "PostList",
     components: {
-        IndividualPost
+        SinglePost
     },
     computed: {
         ...mapGetters(["isAuthenticated", "allPosts"]),
         publishedPosts() {
             return this.allPosts.filter(
-                post => post.state === POSTSTATE.published
+                post => post.state === POST_STATE.published
             );
         }
     },

@@ -83,7 +83,7 @@
 import { mapGetters } from "vuex";
 
 import CommentsSection from "../components/CommentsSection";
-import { POSTSTATE } from "../utils/mixins.js";
+import { POST_STATE } from "../utils/mixins.js";
 import postMixins from "../utils/mixins";
 
 export default {
@@ -100,7 +100,7 @@ export default {
             alreadyLiked: false,
             comments: 0,
             userLike: null,
-            POSTSTATE
+            POST_STATE
         };
     },
     computed: {
@@ -177,7 +177,7 @@ export default {
         deletePost() {
             axios
                 .patch(`/posts/${this.postID}`, {
-                    state: this.POSTSTATE.deleted
+                    state: this.POST_STATE.deleted
                 })
                 .then(() => {
                     this.$router.push("/");

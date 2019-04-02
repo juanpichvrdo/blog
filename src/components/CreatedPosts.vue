@@ -1,28 +1,17 @@
 <template>
     <div class="container px-5">
-        <IndividualPost
-            v-for="post in publishedPosts"
-            :key="post.id"
-            :title="post.title"
-            :author="post.author"
-            :publishing-date="post.publishingDate"
-            :content="post.content"
-            :edited="post.edited"
-            :id="post.id"
-            :user-id="post.userId"
-            :allow-comments="post.allowComments"
-        />
+        <SinglePost v-for="post in publishedPosts" :key="post.id" :post="post"/>
     </div>
 </template>
 
 <script>
-import IndividualPost from "../components/IndividualPost";
-import { POSTSTATE } from "../utils/helpers.js";
+import SinglePost from "../components/SinglePost";
+import { POST_STATE } from "../utils/helpers.js";
 
 export default {
     name: "CreatedPostsActivity",
     components: {
-        IndividualPost
+        SinglePost
     },
     data() {
         return {
@@ -33,7 +22,7 @@ export default {
     computed: {
         publishedPosts() {
             return this.posts.filter(
-                post => post.state === POSTSTATE.published
+                post => post.state === POST_STATE.published
             );
         }
     },
