@@ -1,14 +1,14 @@
 <template>
     <div class="comment mb-5">
         <div class="d-flex align-items-center">
-            <router-link :to="`/user/${comment.author_id}`" class="comment--picture">
+            <router-link :to="`/user/${comment.user_id}`" class="comment--picture">
                 <img src="../assets/user-2.png" alt="User profile picture">
             </router-link>
             <p class="mb-0 ml-3">
                 <router-link
-                    :to="`/user/${comment.author_id}`"
-                    class="comment--author mr-1"
-                >{{ author.username }}</router-link>
+                    :to="`/user/${comment.user_id}`"
+                    class="comment--user mr-1"
+                >{{ user.username }}</router-link>
                 <span class="comment--date ml-2">{{ comment.date_publish | formatDate }}</span>
             </p>
         </div>
@@ -48,7 +48,7 @@ export default {
     },
     data() {
         return {
-            author: {},
+            user: {},
             alreadyLiked: false,
             userLike: null,
             likes: null
@@ -67,8 +67,8 @@ export default {
         },
         getAuthorData() {
             axios
-                .get(`/users/${this.comment.author_id}`)
-                .then(({ data: author }) => (this.author = author));
+                .get(`/users/${this.comment.user_id}`)
+                .then(({ data: user }) => (this.user = user));
         },
         getLike() {
             axios
@@ -121,7 +121,7 @@ export default {
 
 <style lang="scss">
 .comment {
-    &--author {
+    &--user {
         color: #414141;
     }
 

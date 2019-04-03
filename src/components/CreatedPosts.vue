@@ -1,6 +1,16 @@
 <template>
     <div class="container px-5">
-        <single-post v-for="post in publishedPosts" :key="post.id" :post="post"/>
+        <div v-if="publishedPosts.length">
+            <single-post
+                v-for="post in publishedPosts"
+                :key="post.id"
+                :post="post"
+                @postDeleted="getCreatedPosts"
+            />
+        </div>
+        <div v-else>
+            <h4 class="text-center">User doesn't have any published posts</h4>
+        </div>
     </div>
 </template>
 
@@ -9,7 +19,7 @@ import SinglePost from "../components/SinglePost";
 import { POST_STATE } from "../utils/helpers.js";
 
 export default {
-    name: "CreatedPostsActivity",
+    name: "CreatedPosts",
     components: {
         SinglePost
     },
@@ -21,9 +31,9 @@ export default {
     },
     computed: {
         publishedPosts() {
-            return this.posts.filter(
-                post => post.state === POST_STATE.published
-            );
+            return this.posts
+                .filter(post => post.state === POST_STATE.published)
+                .reverse();
         }
     },
     created() {

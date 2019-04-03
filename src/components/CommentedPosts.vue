@@ -11,7 +11,7 @@ import SinglePost from "../components/SinglePost";
 import { POST_STATE } from "../utils/helpers.js";
 
 export default {
-    name: "CommentedPostsActivity",
+    name: "CommentedPosts",
     components: {
         SinglePost
     },

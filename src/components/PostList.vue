@@ -39,9 +39,9 @@ export default {
     computed: {
         ...mapGetters(["isAuthenticated", "allPosts"]),
         publishedPosts() {
-            return this.allPosts.filter(
-                post => post.state === POST_STATE.published
-            );
+            return this.allPosts
+                .filter(post => post.state === POST_STATE.published)
+                .reverse();
         }
     },
     created() {

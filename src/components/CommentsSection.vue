@@ -21,7 +21,7 @@
 
         <h4 v-if="comments.length" class="comments--heading mt-5">User comments</h4>
         <hr class="mb-4">
-        <single-comment v-for="comment in comments" :key="comment.id" :comment="comment"/>
+        <single-comment v-for="comment in orderedComments" :key="comment.id" :comment="comment"/>
     </div>
 </template>
 
@@ -62,7 +62,10 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["getUser"])
+        ...mapGetters(["getUser"]),
+        orderedComments() {
+            return this.comments.reverse();
+        }
     },
     created() {
         this.getComments();
@@ -83,7 +86,7 @@ export default {
                         body: this.newCommentBody,
                         post_id: this.post_id,
                         date_publish: moment().format("YYYY-MM-DD HH:mm:ss"),
-                        author_id: this.getUser.id,
+                        user_id: this.getUser.id,
                         state: "published"
                     })
                     .then(comment => {

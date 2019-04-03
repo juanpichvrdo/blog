@@ -122,7 +122,7 @@ export default {
                     title: this.title,
                     content: this.content,
                     allow_comments: this.allowComments,
-                    author: this.getUser.username,
+                    user: this.getUser.username,
                     publish_date:
                         state === this.POST_STATE.published
                             ? moment().format("YYYY-MM-DD HH:mm:ss")

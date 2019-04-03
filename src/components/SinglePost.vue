@@ -25,16 +25,16 @@
         </div>
         <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-                <router-link :to="`/user/${post.user_id}`" class="single-post--author--link">
+                <router-link :to="`/user/${post.user_id}`" class="single-post--user--link">
                     <img src="../assets/user-2.png" alt="User profile picture">
                 </router-link>
                 <div class="ml-3">
-                    <p class="single-post--author mb-1 smaller-font">
+                    <p class="single-post--user mb-1 smaller-font">
                         Written by:
                         <router-link
                             :to="`/user/${post.user_id}`"
-                            class="single-post--author--link"
-                        >{{ post.author }}</router-link>
+                            class="single-post--user--link"
+                        >{{ post.user }}</router-link>
                     </p>
                     <p class="single-post--published mb-0 smaller-font">
                         <router-link
@@ -55,7 +55,7 @@
                 <router-link
                     :to="`/posts/${post.id}`"
                     class="light-blue-color"
-                >{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</router-link>
+                >{{ comments }} {{ `comment${comments === 1 ? '' : 's'}` }}</router-link>
             </p>
             <p>{{ likes }} likes</p>
         </div>
@@ -144,7 +144,7 @@ export default {
         }
     }
 
-    &--author {
+    &--user {
         &--link {
             color: #707070;
 

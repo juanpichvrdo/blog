@@ -42,12 +42,12 @@
                             </router-link>
 
                             <div class="ml-3">
-                                <p class="post-page--author mb-0 smaller-font">
+                                <p class="post-page--user mb-0 smaller-font">
                                     Written by:
                                     <router-link
                                         :to="`/user/${post.user_id}`"
                                         class="post-page--link"
-                                    >{{ post.author }}</router-link>
+                                    >{{ post.user }}</router-link>
                                 </p>
                                 <p
                                     class="post-page--published mb-0 smaller-font"
@@ -136,7 +136,7 @@ export default {
             } else {
                 axios
                     .post(`/posts_likes`, {
-                        post_id: this.postID,
+                        post_id: Number(this.postID),
                         user_id: this.getUser.id
                     })
                     .then(() => {
