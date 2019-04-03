@@ -21,14 +21,7 @@
 
         <h4 v-if="comments.length" class="comments--heading mt-5">User comments</h4>
         <hr class="mb-4">
-        <IndividualComment
-            v-for="comment in comments"
-            :key="comment.id"
-            :authorID="comment.authorID"
-            :date-published="comment.datePublished"
-            :body="comment.body"
-            :commentID="comment.id"
-        />
+        <single-comment v-for="comment in comments" :key="comment.id" :comment="comment"/>
     </div>
 </template>
 
@@ -37,16 +30,19 @@ import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 
-import IndividualComment from "./IndividualComment";
+import SingleComment from "./SingleComment";
 
 export default {
     name: "CommentsSection",
     components: {
         VueEditor,
-        IndividualComment
+        SingleComment
     },
     props: {
-        postID: Number
+        post_id: {
+            type: Number,
+            required: true
+        }
     },
     data() {
         return {
@@ -75,7 +71,7 @@ export default {
     methods: {
         getComments() {
             axios
-                .get(`/comments?postID=${this.postID}`)
+                .get(`/comments?post_id=${this.post_id}`)
                 .then(({ data: comments }) => {
                     this.comments = comments;
                 });
@@ -85,10 +81,9 @@ export default {
                 axios
                     .post("/comments", {
                         body: this.newCommentBody,
-                        postID: this.postID,
-                        likes: 0,
-                        datePublished: moment().format("YYYY-MM-DD HH:mm:ss"),
-                        authorID: this.getUser.id,
+                        post_id: this.post_id,
+                        date_publish: moment().format("YYYY-MM-DD HH:mm:ss"),
+                        author_id: this.getUser.id,
                         state: "published"
                     })
                     .then(comment => {

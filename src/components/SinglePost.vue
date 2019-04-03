@@ -21,18 +21,18 @@
             </div>
 
             <p v-if="post.edited">Edited</p>
-            <div class="single-post--body" v-html="post.resumedBody"/>
+            <div class="single-post--body" v-html="resumedBody"/>
         </div>
         <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-                <router-link :to="`/user/${post.userId}`" class="single-post--author--link">
+                <router-link :to="`/user/${post.user_id}`" class="single-post--author--link">
                     <img src="../assets/user-2.png" alt="User profile picture">
                 </router-link>
                 <div class="ml-3">
                     <p class="single-post--author mb-1 smaller-font">
                         Written by:
                         <router-link
-                            :to="`/user/${post.userId}`"
+                            :to="`/user/${post.user_id}`"
                             class="single-post--author--link"
                         >{{ post.author }}</router-link>
                     </p>
@@ -40,7 +40,7 @@
                         <router-link
                             :to="`/posts/${post.id}`"
                             class="single-post--published--date light-blue-color"
-                        >{{ post.publishingDate | formatDate }}</router-link>
+                        >{{ post.publish_date | formatDate }}</router-link>
                     </p>
                 </div>
             </div>
@@ -51,7 +51,7 @@
         </div>
 
         <div class="mt-4 px-4 row justify-content-between">
-            <p v-if="post.allowComments">
+            <p v-if="post.allow_comments">
                 <router-link
                     :to="`/posts/${post.id}`"
                     class="light-blue-color"
@@ -91,7 +91,7 @@ export default {
             return truncate(this.post.content, 200);
         },
         isAuthor() {
-            return this.getUser.id === this.post.userId;
+            return this.getUser.id === this.post.user_id;
         }
     },
     created() {

@@ -37,7 +37,7 @@
                         <div
                             class="d-flex align-items-center mb-4 justify-content-center justify-content-md-start"
                         >
-                            <router-link :to="`/user/${post.userId}`" class="post-page--link">
+                            <router-link :to="`/user/${post.user_id}`" class="post-page--link">
                                 <img src="../assets/user-2.png" alt="User profile picture">
                             </router-link>
 
@@ -45,13 +45,13 @@
                                 <p class="post-page--author mb-0 smaller-font">
                                     Written by:
                                     <router-link
-                                        :to="`/user/${post.userId}`"
+                                        :to="`/user/${post.user_id}`"
                                         class="post-page--link"
                                     >{{ post.author }}</router-link>
                                 </p>
                                 <p
                                     class="post-page--published mb-0 smaller-font"
-                                >{{ post.publishingDate | formatDate }}</p>
+                                >{{ post.publish_date | formatDate }}</p>
                             </div>
                         </div>
 
@@ -61,13 +61,13 @@
                             <p class="mb-0 mr-3">{{ likes }} likes</p>
                             <button class="btn btn-info" @click="toggleLike">Toggle Like</button>
                             <p
-                                v-if="post.allowComments"
+                                v-if="post.allow_comments"
                                 class="mb-0 ml-3"
                             >{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</p>
                         </div>
-                        <div v-if="isAuthenticated && post.allowComments">
+                        <div v-if="isAuthenticated && post.allow_comments">
                             <hr>
-                            <CommentsSection :postID="post.id" @commentAdded="getComments()"/>
+                            <CommentsSection :post_id="post.id" @commentAdded="getComments()"/>
                         </div>
                         <div v-else class="text-center my-5">
                             <router-link to="/login">Login to comment</router-link>
@@ -83,7 +83,7 @@
 import { mapGetters } from "vuex";
 
 import CommentsSection from "../components/CommentsSection";
-import { POST_STATE } from "../utils/mixins.js";
+import { POST_STATE } from "../utils/helpers.js";
 import postMixins from "../utils/mixins";
 
 export default {
@@ -106,7 +106,7 @@ export default {
     computed: {
         ...mapGetters(["isAuthenticated", "getUser"]),
         isAuthor() {
-            return this.getUser.id === this.post.userId;
+            return this.getUser.id === this.post.user_id;
         }
     },
     created() {
@@ -133,8 +133,8 @@ export default {
             } else {
                 axios
                     .post(`/posts_likes`, {
-                        postID: this.postID,
-                        userID: this.getUser.id
+                        post_id: this.postID,
+                        user_id: this.getUser.id
                     })
                     .then(() => {
                         this.getLikes();
@@ -148,7 +148,9 @@ export default {
                     this.likes = likesArray.length;
                     this.getLike();
                     if (
-                        likesArray.find(like => like.userID === this.getUser.id)
+                        likesArray.find(
+                            like => like.user_id === this.getUser.id
+                        )
                     ) {
                         this.alreadyLiked = true;
                     }
@@ -157,7 +159,7 @@ export default {
         getLike() {
             axios
                 .get(
-                    `posts_likes/?postID=${this.postID}&userID=${
+                    `posts_likes/?post_id=${this.postID}&user_id=${
                         this.getUser.id
                     }`
                 )
@@ -169,7 +171,7 @@ export default {
         },
         getComments() {
             axios
-                .get(`/comments/?postID=${this.postID}`)
+                .get(`/comments/?post_id=${this.postID}`)
                 .then(({ data: commentsArray }) => {
                     this.comments = commentsArray.length;
                 });

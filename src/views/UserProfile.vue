@@ -7,7 +7,7 @@
                 class="user-profile--image"
             >
             <div class="d-flex flex-column ml-5">
-                <h1 class="user-profile--name">{{ `${user.name} ${user.lastName}` }}</h1>
+                <h1 class="user-profile--name">{{ `${user.name} ${user.last_name}` }}</h1>
                 <p class="user-profile--description">{{ user.description }}</p>
             </div>
         </div>
@@ -37,13 +37,13 @@
             </li>
         </ul>
         <div v-if="activeTab === 'created'">
-            <CreatedPosts/>
+            <created-posts/>
         </div>
         <div v-else-if="activeTab === 'commented'">
-            <CommentedPosts/>
+            <commented-posts/>
         </div>
         <div v-else-if="activeTab === 'liked'">
-            <LikedPosts/>
+            <liked-posts/>
         </div>
     </div>
 </template>

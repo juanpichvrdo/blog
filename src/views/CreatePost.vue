@@ -123,14 +123,13 @@ export default {
                     content: this.content,
                     allow_comments: this.allowComments,
                     author: this.getUser.username,
-                    publishingDate:
+                    publish_date:
                         state === this.POST_STATE.published
                             ? moment().format("YYYY-MM-DD HH:mm:ss")
                             : null,
-                    createdDate: moment().format("YYYY-MM-DD HH:mm:ss"),
-                    userId: this.getUser.id,
+                    created_date: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    user_id: this.getUser.id,
                     likes: 0,
-                    commentCount: 0,
                     edited: false,
                     state: state
                 })

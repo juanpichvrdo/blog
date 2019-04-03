@@ -1,6 +1,6 @@
 <template>
-    <div class="post-list mt-4 py-3 py-md-4">
-        <div class="d-flex justify-content-between align-items-center">
+    <div class="container-fluid">
+        <div class="m-3 mt-4 m-md-5 d-flex justify-content-between align-items-center">
             <h2 class="post-list--heading">All posts</h2>
             <router-link
                 v-if="isAuthenticated"
@@ -8,17 +8,19 @@
                 class="post-list--create-post btn btn-success"
             >Create Post</router-link>
         </div>
-        <hr>
-        <div v-if="publishedPosts.length">
-            <single-post
-                v-for="post in publishedPosts"
-                :key="post.id"
-                :post="post"
-                @postDeleted="getPosts"
-            />
-        </div>
-        <div v-else>
-            <h4 class="text-center mt-5">There are no posts</h4>
+        <div class="container mt-3">
+            <hr>
+            <div v-if="publishedPosts.length">
+                <single-post
+                    v-for="post in publishedPosts"
+                    :key="post.id"
+                    :post="post"
+                    @postDeleted="getPosts"
+                />
+            </div>
+            <div v-else>
+                <h4 class="text-center mt-5">There are no posts</h4>
+            </div>
         </div>
     </div>
 </template>

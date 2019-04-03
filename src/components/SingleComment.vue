@@ -1,20 +1,20 @@
 <template>
     <div class="comment mb-5">
         <div class="d-flex align-items-center">
-            <router-link :to="`/user/${authorID}`" class="comment--picture">
+            <router-link :to="`/user/${comment.author_id}`" class="comment--picture">
                 <img src="../assets/user-2.png" alt="User profile picture">
             </router-link>
             <p class="mb-0 ml-3">
                 <router-link
-                    :to="`/user/${authorID}`"
+                    :to="`/user/${comment.author_id}`"
                     class="comment--author mr-1"
                 >{{ author.username }}</router-link>
-                <span class="comment--date ml-2">{{ datePublished | formatDate }}</span>
+                <span class="comment--date ml-2">{{ comment.date_publish | formatDate }}</span>
             </p>
         </div>
         <div class="comment--body ml-5 mt-3">
             <div class="comment--body--content">
-                <div class v-html="body"/>
+                <div class v-html="comment.body"/>
             </div>
 
             <div class="comment--body--info d-flex justify-content-end mt-4">
@@ -39,12 +39,12 @@ import moment from "moment";
 import { mapGetters } from "vuex";
 
 export default {
-    name: "IndividualComment",
+    name: "SingleComment",
     props: {
-        authorID: Number,
-        datePublished: String,
-        body: String,
-        commentID: Number
+        comment: {
+            type: Object,
+            required: true
+        }
     },
     data() {
         return {
@@ -60,7 +60,7 @@ export default {
     created() {
         this.getAuthorData();
         this.getLikes();
-        console.log(this.datePublished);
+        console.log(this.comment.date_publish);
     },
     methods: {
         getDate(date) {
@@ -68,13 +68,13 @@ export default {
         },
         getAuthorData() {
             axios
-                .get(`/users/${this.authorID}`)
+                .get(`/users/${this.comment.author_id}`)
                 .then(({ data: author }) => (this.author = author));
         },
         getLike() {
             axios
                 .get(
-                    `comments_likes/?commentID=${this.commentID}&userID=${
+                    `comments_likes/?comment_id=${this.comment.id}&userID=${
                         this.getUser.id
                     }`
                 )
@@ -86,12 +86,14 @@ export default {
         },
         getLikes() {
             axios
-                .get(`/comments_likes/?commentID=${this.commentID}`)
+                .get(`/comments_likes/?comment_id=${this.comment.id}`)
                 .then(({ data: likesArray }) => {
                     this.likes = likesArray.length;
                     this.getLike();
                     if (
-                        likesArray.find(like => like.userID === this.getUser.id)
+                        likesArray.find(
+                            like => like.user_id === this.getUser.id
+                        )
                     ) {
                         this.alreadyLiked = true;
                     }
@@ -106,8 +108,8 @@ export default {
             } else {
                 axios
                     .post(`/comments_likes`, {
-                        commentID: this.commentID,
-                        userID: this.getUser.id
+                        comment_id: this.comment.id,
+                        user_id: this.getUser.id
                     })
                     .then(() => {
                         this.getLikes();
