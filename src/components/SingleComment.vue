@@ -60,7 +60,6 @@ export default {
     created() {
         this.getAuthorData();
         this.getLikes();
-        console.log(this.comment.date_publish);
     },
     methods: {
         getDate(date) {

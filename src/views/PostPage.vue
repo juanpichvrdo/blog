@@ -126,10 +126,13 @@ export default {
         },
         toggleLike() {
             if (this.alreadyLiked) {
-                axios.delete(`/posts_likes/${this.userLike}`).then(() => {
-                    this.alreadyLiked = false;
-                    this.getLikes();
-                });
+                axios
+                    .delete(`/posts_likes/${this.userLike}`)
+                    .then(() => {
+                        this.alreadyLiked = false;
+                        this.getLikes();
+                    })
+                    .catch(err => console.log(err));
             } else {
                 axios
                     .post(`/posts_likes`, {
@@ -143,7 +146,7 @@ export default {
         },
         getLikes() {
             axios
-                .get(`/posts_likes/?postID=${this.postID}`)
+                .get(`/posts_likes/?post_id=${this.postID}`)
                 .then(({ data: likesArray }) => {
                     this.likes = likesArray.length;
                     this.getLike();

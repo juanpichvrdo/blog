@@ -36,7 +36,7 @@
                     >
                     <div class="invalid-feedback">{{ errors.first('title') }}</div>
                 </div>
-                <VueEditor v-model="content" name="content"/>
+                <vue-editor v-model="content" name="content"/>
                 <div class="invalid-feedback">{{ errors.first('content') }}</div>
                 <div class="row d-flex justify-content-between align-items-center mt-5">
                     <div class="form-check">

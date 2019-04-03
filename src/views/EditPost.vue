@@ -40,7 +40,7 @@
                     <div class="form-check">
                         <input
                             id="allowCommentsCheckbox"
-                            v-model="post.allowComments"
+                            v-model="post.allow_comments"
                             class="form--checkbox create-post--checkbox form-check-input"
                             type="checkbox"
                             value="allowComments"
@@ -52,26 +52,22 @@
                     </div>
                     <div class="create-post--buttons">
                         <button
-                            v-if="post.state === 'draft'"
-                            class="mx-3 px-5 btn btn-large btn-success"
-                            @click="validateForm('published')"
-                        >Publish</button>
-                        <button
-                            class="mx-3 px-5 btn btn-large btn-success"
-                            @click="validateForm(post.state)"
-                        >Update</button>
-                        <button
-                            class="mx-3 px-5 btn btn-large btn-warning"
-                            @click="validateForm('draft')"
-                        >Draft</button>
-                        <button
-                            class="mx-3 px-5 btn btn-large btn-danger"
-                            @click="$router.push('/')"
-                        >Cancel</button>
-                        <button
                             class="mx-3 px-5 btn btn-large btn-danger"
                             @click="confirmDelete"
                         >Delete</button>
+                        <button
+                            class="mx-3 px-5 btn btn-large btn-warning"
+                            @click="$router.push('/')"
+                        >Cancel</button>
+                        <button
+                            class="mx-3 px-5 btn btn-large btn-info"
+                            @click="validateForm(post.state)"
+                        >Update</button>
+                        <button
+                            v-if="post.state === POST_STATE.draft"
+                            class="mx-3 px-5 btn btn-large btn-success"
+                            @click="validateForm(POST_STATE.published)"
+                        >Publish</button>
                     </div>
                 </div>
             </form>
@@ -93,6 +89,7 @@
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import postMixins from "../utils/mixins";
+import { POST_STATE } from "../utils/helpers.js";
 
 export default {
     name: "EditPost",
@@ -105,7 +102,8 @@ export default {
             postID: this.$route.params.id,
             post: {},
             activeTab: "edit",
-            authorID: null
+            authorID: null,
+            POST_STATE
         };
     },
     computed: {
@@ -140,7 +138,7 @@ export default {
         getPost() {
             axios.get(`/posts?id=${this.postID}`).then(({ data: post }) => {
                 if (post.length) {
-                    this.authorID = post[0].userId;
+                    this.authorID = post[0].user_id;
                     if (this.isAuthor()) {
                         this.post = post[0];
                     } else {
@@ -161,16 +159,16 @@ export default {
                 .patch(`/posts/${this.postID}`, {
                     title: this.post.title,
                     content: this.post.content,
-                    allowComments: this.post.allowComments,
+                    allow_comments: this.post.allow_comments,
                     edited: true,
                     state: state,
-                    publishingDate:
-                        this.post.state === "draft"
+                    publish_date:
+                        this.post.state === POST_STATE.draft
                             ? moment().format("YYYY-MM-DD HH:MM:SS")
-                            : this.post.publishingDate
+                            : this.post.publish_date
                 })
                 .then(() =>
-                    state === "draft"
+                    state === POST_STATE.draft
                         ? this.$router.push("/")
                         : this.$router.push(`/posts/${this.postID}`)
                 );
@@ -178,7 +176,7 @@ export default {
         deletePost() {
             axios
                 .patch(`/posts/${this.postID}`, {
-                    state: "deleted"
+                    state: POST_STATE.deleted
                 })
                 .then(() => {
                     this.$router.push("/");

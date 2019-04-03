@@ -1,6 +1,6 @@
 <template>
     <div class="container px-5">
-        <SinglePost v-for="post in publishedPosts" :key="post.id" :post="post"/>
+        <single-post v-for="post in publishedPosts" :key="post.id" :post="post"/>
     </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
     methods: {
         getCreatedPosts() {
             axios
-                .get(`/posts?userId=${this.userID}`)
+                .get(`/posts?user_id=${this.userID}`)
                 .then(({ data: posts }) => (this.posts = posts));
         }
     }

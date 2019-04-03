@@ -8,7 +8,7 @@
                         class="single-post--heading--link"
                     >{{ post.title }}</router-link>
                 </h2>
-                <div v-if="showDelete && isAuthor" class="d-flex align-items-center">
+                <div v-if="isAuthor" class="d-flex align-items-center">
                     <router-link :to="`/edit-post/${post.id}`" class="mr-3">
                         <font-awesome-icon class="single-post--edit" icon="edit"/>
                     </router-link>
@@ -115,14 +115,14 @@ export default {
         },
         getLikes() {
             axios
-                .get(`/posts_likes/?postID=${this.post.id}`)
+                .get(`/posts_likes/?post_id=${this.post.id}`)
                 .then(({ data: likesArray }) => {
                     this.likes = likesArray.length;
                 });
         },
         getComments() {
             axios
-                .get(`/comments/?postID=${this.post.id}`)
+                .get(`/comments/?post_id=${this.post.id}`)
                 .then(({ data: commentsArray }) => {
                     this.comments = commentsArray.length;
                 });
