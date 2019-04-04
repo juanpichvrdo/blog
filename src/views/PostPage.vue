@@ -63,7 +63,7 @@
                             <p
                                 v-if="post.allowComments"
                                 class="mb-0 ml-3"
-                            >{{ comments }} {{`comment${comments === 1 ? '' : 's'}`}}</p>
+                            >{{ comments }} {{ `comment${comments === 1 ? '' : 's'}` }}</p>
                         </div>
                         <div v-if="isAuthenticated && post.allowComments">
                             <hr>
@@ -84,7 +84,7 @@ import { mapGetters } from "vuex";
 
 import CommentsSection from "../components/CommentsSection";
 import { POST_STATE } from "../utils/helpers.js";
-import postMixins from "../utils/mixins";
+import { postMixins } from "../utils/mixins";
 
 export default {
     name: "PostPage",

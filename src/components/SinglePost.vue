@@ -67,7 +67,7 @@
 import truncate from "html-truncate";
 import { mapGetters } from "vuex";
 import { POST_STATE } from "../utils/helpers.js";
-import postMixins from "../utils/mixins";
+import { postMixins } from "../utils/mixins";
 
 export default {
     name: "SinglePost",

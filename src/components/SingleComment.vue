@@ -1,45 +1,75 @@
 <template>
-    <div class="comment mb-5">
-        <div class="d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <router-link :to="`/user/${comment.userId}`" class="comment--picture">
-                    <img src="../assets/user-2.png" alt="User profile picture">
-                </router-link>
-                <p class="mb-0 ml-2">
-                    <router-link
-                        :to="`/user/${comment.userId}`"
-                        class="comment--user mr-1"
-                    >{{ user.username }}</router-link>
-                    <span class="comment--date ml-2">{{ comment.datePublish | formatDate }}</span>
-                </p>
-            </div>
-            <div v-if="isAuthor" class="d-flex align-items-center">
-                <font-awesome-icon class="comment--edit mx-2" icon="edit"/>
-
-                <font-awesome-icon
-                    class="comment--delete mx-2"
-                    icon="times"
-                    @click="confimDeleteComment"
-                />
-            </div>
-        </div>
-        <div class="comment--body ml-5 mt-3">
-            <div class="comment--body--content">
-                <div class v-html="comment.body"/>
-            </div>
-
-            <div class="comment--body--info d-flex justify-content-end mt-4">
-                <span class="mx-1 d-flex align-items-center mr-3">
-                    {{ likes }}
+    <div class>
+        <div class="comment mb-5 text-left">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <router-link :to="`/user/${comment.userId}`" class="comment--picture">
+                        <img src="../assets/user-2.png" alt="User profile picture">
+                    </router-link>
+                    <p class="mb-0 ml-2">
+                        <router-link
+                            :to="`/user/${comment.userId}`"
+                            class="comment--user mr-1"
+                        >{{ user.username }}</router-link>
+                        <span class="comment--date ml-2">{{ comment.datePublish | formatDate }}</span>
+                    </p>
+                </div>
+                <div v-if="isAuthor && showEditForm === false" class="d-flex align-items-center">
                     <font-awesome-icon
-                        :class="{ 'red-heart': alreadyLiked }"
-                        class="comment--body--like ml-2"
-                        icon="heart"
-                        @click="toggleLike()"
+                        class="comment--edit mx-2"
+                        icon="edit"
+                        @click="showEditForm = true"
                     />
-                </span>
-                <!-- <span class="mx-1">2 childs</span>
-                <span class="mx-1">Reply</span>-->
+
+                    <font-awesome-icon
+                        class="comment--delete mx-2"
+                        icon="times"
+                        @click="confimDeleteComment"
+                    />
+                </div>
+            </div>
+            <div v-if="showEditForm" class="card comment-form edit-comment ml-5 mt-3">
+                <div class="comment-form--header edit-comment--header card-header">Edit comment</div>
+                <div class="comment-form--container card-body p-0">
+                    <vue-editor
+                        :editor-toolbar="customToolbar"
+                        v-model="comment.body"
+                        class="comment-form--editor"
+                        name="body"
+                    />
+                    <div
+                        class="comment-form--buttons d-flex justify-content-end align-items-center"
+                    >
+                        <a
+                            class="mr-4 mr-sm-5 comment-form--cancel"
+                            @click="showEditForm = false"
+                        >Cancel</a>
+                        <button
+                            class="comment-form--add-comment btn btn-success mr-3"
+                            @click="updateComment"
+                        >Submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div v-else class="comment--body ml-5 mt-3">
+                <div class="comment--body--content">
+                    <div class v-html="comment.body"/>
+                </div>
+
+                <div class="comment--body--info d-flex justify-content-end mt-4">
+                    <span class="mx-1 d-flex align-items-center mr-3">
+                        {{ likes }}
+                        <font-awesome-icon
+                            :class="{ 'red-heart': alreadyLiked }"
+                            class="comment--body--like ml-2"
+                            icon="heart"
+                            @click="toggleLike()"
+                        />
+                    </span>
+                    <!-- <span class="mx-1">2 childs</span>
+                    <span class="mx-1">Reply</span>-->
+                </div>
             </div>
         </div>
     </div>
@@ -47,11 +77,17 @@
 
 <script>
 import moment from "moment";
-import { POST_STATE } from "../utils/helpers.js";
 import { mapGetters } from "vuex";
+import { VueEditor } from "vue2-editor";
+import { POST_STATE } from "../utils/helpers.js";
+import { commentMixins } from "../utils/mixins.js";
 
 export default {
     name: "SingleComment",
+    components: {
+        VueEditor
+    },
+    mixins: [commentMixins],
     props: {
         comment: {
             type: Object,
@@ -63,7 +99,8 @@ export default {
             user: {},
             alreadyLiked: false,
             userLike: null,
-            likes: null
+            likes: null,
+            showEditForm: false
         };
     },
     computed: {
@@ -96,6 +133,13 @@ export default {
                 }
             });
         },
+        updateComment() {
+            axios
+                .patch(`/comments/${this.comment.id}`, {
+                    body: this.comment.body
+                })
+                .then(() => (this.showEditForm = false));
+        },
         deleteComment() {
             axios
                 .patch(`/comments/${this.comment.id}`, {
@@ -103,11 +147,6 @@ export default {
                 })
                 .then(() => {
                     this.$emit("commentDeleted");
-                    // axios
-                    //   .patch(`comments/?postID=${this.post.id}`, {
-                    //     state: "deleted"
-                    //   })
-                    //   .then(result => console.log(result));
                 });
         },
         getDate(date) {
@@ -118,7 +157,6 @@ export default {
                 .get(`/users/${this.comment.userId}`)
                 .then(({ data: user }) => (this.user = user));
         },
-
         getLike() {
             axios
                 .get(
@@ -197,8 +235,17 @@ export default {
     &--delete {
         color: $red-color;
     }
+
+    .edit-comment {
+        &--header {
+            padding: 0.4rem 0.8rem;
+        }
+    }
 }
 .red-heart {
     color: $red-color;
+}
+.comments .comment-form {
+    width: inherit !important;
 }
 </style>

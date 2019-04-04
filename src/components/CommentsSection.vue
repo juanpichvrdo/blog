@@ -37,6 +37,7 @@ import { mapGetters } from "vuex";
 import { POST_STATE } from "../utils/helpers.js";
 
 import SingleComment from "./SingleComment";
+import { commentMixins } from "../utils/mixins.js";
 
 export default {
     name: "CommentsSection",
@@ -44,6 +45,7 @@ export default {
         VueEditor,
         SingleComment
     },
+    mixins: [commentMixins],
     props: {
         postId: {
             type: Number,
@@ -141,11 +143,11 @@ export default {
     background-color: $white-color;
 
     .comment-form {
-        width: 800px;
+        width: 100%;
         margin: 0 auto;
 
         @media only screen and (max-width: 950px) {
-            width: 100%;
+            // width: 100%;
         }
 
         &--header {

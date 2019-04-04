@@ -34,7 +34,7 @@
                     >
                     <div class="invalid-feedback">{{ errors.first('title') }}</div>
                 </div>
-                <VueEditor v-model="post.content" name="content"/>
+                <vue-edit v-model="post.content" name="content"/>
                 <div class="invalid-feedback">{{ errors.first('content') }}</div>
                 <div class="row d-flex justify-content-between align-items-center mt-5">
                     <div class="form-check">
@@ -88,7 +88,7 @@
 <script>
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
-import postMixins from "../utils/mixins";
+import { postMixins } from "../utils/mixins";
 import { POST_STATE } from "../utils/helpers.js";
 
 export default {
@@ -113,25 +113,6 @@ export default {
         this.getPost();
     },
     methods: {
-        confirmDeletePost() {
-            this.$swal({
-                title: "Are you sure you want to delete this post?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#1c6392",
-                cancelButtonColor: "#dd1e1e",
-                confirmButtonText: "Yes, delete it!"
-            }).then(result => {
-                if (result.value) {
-                    this.deletePost();
-                    this.$swal(
-                        "Deleted!",
-                        "Your post has been deleted.",
-                        "success"
-                    );
-                }
-            });
-        },
         isAuthor() {
             return this.getUser.id === this.authorID;
         },

@@ -1,4 +1,4 @@
-const postMixins = {
+export const postMixins = {
   methods: {
     confirmDeletePost() {
       this.$swal({
@@ -18,4 +18,15 @@ const postMixins = {
   }
 };
 
-export default postMixins;
+export const commentMixins = {
+  data() {
+    return {
+      customToolbar: [
+        ["bold", "italic", "underline", { color: [] }],
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ align: "" }, { align: "center" }, { align: "right" }, { align: "justify" }],
+        [{ indent: "-1" }, { indent: "+1" }]
+      ]
+    };
+  }
+};
