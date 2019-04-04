@@ -7,7 +7,7 @@
                 class="user-profile--image"
             >
             <div class="d-flex flex-column ml-5">
-                <h1 class="user-profile--name">{{ `${user.name} ${user.last_name}` }}</h1>
+                <h1 class="user-profile--name">{{ `${user.name} ${user.lastName}` }}</h1>
                 <p class="user-profile--description">{{ user.description }}</p>
             </div>
         </div>

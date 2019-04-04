@@ -40,7 +40,7 @@
                     <div class="form-check">
                         <input
                             id="allowCommentsCheckbox"
-                            v-model="post.allow_comments"
+                            v-model="post.allowComments"
                             class="form--checkbox create-post--checkbox form-check-input"
                             type="checkbox"
                             value="allowComments"
@@ -138,7 +138,7 @@ export default {
         getPost() {
             axios.get(`/posts?id=${this.postID}`).then(({ data: post }) => {
                 if (post.length) {
-                    this.authorID = post[0].user_id;
+                    this.authorID = post[0].userId;
                     if (this.isAuthor()) {
                         this.post = post[0];
                     } else {
@@ -159,13 +159,13 @@ export default {
                 .patch(`/posts/${this.postID}`, {
                     title: this.post.title,
                     content: this.post.content,
-                    allow_comments: this.post.allow_comments,
+                    allowComments: this.post.allowComments,
                     edited: true,
                     state: state,
-                    publish_date:
+                    publishDate:
                         this.post.state === POST_STATE.draft
                             ? moment().format("YYYY-MM-DD HH:MM:SS")
-                            : this.post.publish_date
+                            : this.post.publishDate
                 })
                 .then(() =>
                     state === POST_STATE.draft

@@ -9,7 +9,7 @@
             />
         </div>
         <div v-else>
-            <h4 class="text-center">User doesn't have any published posts</h4>
+            <h4 class="text-center">User doesn't have any liked posts</h4>
         </div>
     </div>
 </template>
@@ -42,8 +42,16 @@ export default {
     methods: {
         getLikedPosts() {
             axios
-                .get(`/users/${this.userID}/posts_likes`)
-                .then(({ data: posts }) => console.log(posts));
+                .get(`/users/${this.userID}/posts_likes?_expand=post`)
+                .then(({ data: comments }) => {
+                    let posts = [];
+                    comments.forEach(comment => {
+                        if (comment.post.state === POST_STATE.published) {
+                            posts.push(comment.post);
+                        }
+                    });
+                    this.posts = _.uniqBy(posts, "id");
+                });
         }
     }
 };

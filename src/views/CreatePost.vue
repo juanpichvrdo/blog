@@ -121,14 +121,14 @@ export default {
                 .post("/posts", {
                     title: this.title,
                     content: this.content,
-                    allow_comments: this.allowComments,
+                    allowComments: this.allowComments,
                     user: this.getUser.username,
-                    publish_date:
+                    publishDate:
                         state === this.POST_STATE.published
                             ? moment().format("YYYY-MM-DD HH:mm:ss")
                             : null,
-                    created_date: moment().format("YYYY-MM-DD HH:mm:ss"),
-                    user_id: this.getUser.id,
+                    createdDate: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    userId: this.getUser.id,
                     likes: 0,
                     edited: false,
                     state: state

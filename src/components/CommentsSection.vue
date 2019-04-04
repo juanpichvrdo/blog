@@ -39,7 +39,7 @@ export default {
         SingleComment
     },
     props: {
-        post_id: {
+        postId: {
             type: Number,
             required: true
         }
@@ -74,7 +74,7 @@ export default {
     methods: {
         getComments() {
             axios
-                .get(`/comments?post_id=${this.post_id}`)
+                .get(`/comments?postId=${this.postId}`)
                 .then(({ data: comments }) => {
                     this.comments = comments;
                 });
@@ -84,9 +84,9 @@ export default {
                 axios
                     .post("/comments", {
                         body: this.newCommentBody,
-                        post_id: this.post_id,
-                        date_publish: moment().format("YYYY-MM-DD HH:mm:ss"),
-                        user_id: this.getUser.id,
+                        postId: this.postId,
+                        datePublish: moment().format("YYYY-MM-DD HH:mm:ss"),
+                        userId: this.getUser.id,
                         state: "published"
                     })
                     .then(comment => {

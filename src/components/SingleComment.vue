@@ -1,15 +1,15 @@
 <template>
     <div class="comment mb-5">
         <div class="d-flex align-items-center">
-            <router-link :to="`/user/${comment.user_id}`" class="comment--picture">
+            <router-link :to="`/user/${comment.userId}`" class="comment--picture">
                 <img src="../assets/user-2.png" alt="User profile picture">
             </router-link>
             <p class="mb-0 ml-3">
                 <router-link
-                    :to="`/user/${comment.user_id}`"
+                    :to="`/user/${comment.userId}`"
                     class="comment--user mr-1"
                 >{{ user.username }}</router-link>
-                <span class="comment--date ml-2">{{ comment.date_publish | formatDate }}</span>
+                <span class="comment--date ml-2">{{ comment.datePublish | formatDate }}</span>
             </p>
         </div>
         <div class="comment--body ml-5 mt-3">
@@ -67,13 +67,13 @@ export default {
         },
         getAuthorData() {
             axios
-                .get(`/users/${this.comment.user_id}`)
+                .get(`/users/${this.comment.userId}`)
                 .then(({ data: user }) => (this.user = user));
         },
         getLike() {
             axios
                 .get(
-                    `comments_likes/?comment_id=${this.comment.id}&userID=${
+                    `comments_likes/?commentId=${this.comment.id}&userID=${
                         this.getUser.id
                     }`
                 )
@@ -85,14 +85,12 @@ export default {
         },
         getLikes() {
             axios
-                .get(`/comments_likes/?comment_id=${this.comment.id}`)
+                .get(`/comments_likes/?commentId=${this.comment.id}`)
                 .then(({ data: likesArray }) => {
                     this.likes = likesArray.length;
                     this.getLike();
                     if (
-                        likesArray.find(
-                            like => like.user_id === this.getUser.id
-                        )
+                        likesArray.find(like => like.userId === this.getUser.id)
                     ) {
                         this.alreadyLiked = true;
                     }
@@ -107,8 +105,8 @@ export default {
             } else {
                 axios
                     .post(`/comments_likes`, {
-                        comment_id: this.comment.id,
-                        user_id: this.getUser.id
+                        commentId: this.comment.id,
+                        userId: this.getUser.id
                     })
                     .then(() => {
                         this.getLikes();

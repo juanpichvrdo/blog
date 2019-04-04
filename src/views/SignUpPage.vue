@@ -159,7 +159,7 @@ export default {
                     password: this.password,
                     username: this.username,
                     name: this.name,
-                    last_name: this.lastName,
+                    lastName: this.lastName,
                     description: this.description
                 })
                 .then(response => {

@@ -1,7 +1,15 @@
 <template>
     <div class="container px-5">
-        <div v-if="publishedPosts.length">
-            <single-post v-for="post in publishedPosts" :key="post.id" :post="post"/>
+        <div v-if="posts.length">
+            <single-post
+                v-for="post in posts"
+                :key="post.id"
+                :post="post"
+                @postDeleted="getCommentedPosts"
+            />
+        </div>
+        <div v-else>
+            <h4 class="text-center">User doesn't have comments</h4>
         </div>
     </div>
 </template>
@@ -21,21 +29,22 @@ export default {
             posts: []
         };
     },
-    computed: {
-        publishedPosts() {
-            return this.posts.filter(
-                post => post.state === POST_STATE.published
-            );
-        }
-    },
     created() {
-        this.getCreatedPosts();
+        this.getCommentedPosts();
     },
     methods: {
-        getCreatedPosts() {
+        getCommentedPosts() {
             axios
-                .get(`/posts?userId=${this.userID}`)
-                .then(({ data: posts }) => (this.posts = posts));
+                .get(`users/${this.userID}/comments?_expand=post`)
+                .then(({ data: comments }) => {
+                    let posts = [];
+                    comments.forEach(comment => {
+                        if (comment.post.state === POST_STATE.published) {
+                            posts.push(comment.post);
+                        }
+                    });
+                    this.posts = _.uniqBy(posts, "id");
+                });
         }
     }
 };

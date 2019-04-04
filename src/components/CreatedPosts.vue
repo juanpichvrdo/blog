@@ -1,15 +1,7 @@
 <template>
     <div class="container px-5">
         <div v-if="publishedPosts.length">
-            <single-post
-                v-for="post in publishedPosts"
-                :key="post.id"
-                :post="post"
-                @postDeleted="getCreatedPosts"
-            />
-        </div>
-        <div v-else>
-            <h4 class="text-center">User doesn't have any published posts</h4>
+            <single-post v-for="post in publishedPosts" :key="post.id" :post="post"/>
         </div>
     </div>
 </template>
@@ -31,9 +23,9 @@ export default {
     },
     computed: {
         publishedPosts() {
-            return this.posts
-                .filter(post => post.state === POST_STATE.published)
-                .reverse();
+            return this.posts.filter(
+                post => post.state === POST_STATE.published
+            );
         }
     },
     created() {
@@ -42,7 +34,7 @@ export default {
     methods: {
         getCreatedPosts() {
             axios
-                .get(`/posts?user_id=${this.userID}`)
+                .get(`/users/${this.userID}/posts`)
                 .then(({ data: posts }) => (this.posts = posts));
         }
     }

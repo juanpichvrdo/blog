@@ -25,14 +25,14 @@
         </div>
         <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-                <router-link :to="`/user/${post.user_id}`" class="single-post--user--link">
+                <router-link :to="`/user/${post.userId}`" class="single-post--user--link">
                     <img src="../assets/user-2.png" alt="User profile picture">
                 </router-link>
                 <div class="ml-3">
                     <p class="single-post--user mb-1 smaller-font">
                         Written by:
                         <router-link
-                            :to="`/user/${post.user_id}`"
+                            :to="`/user/${post.userId}`"
                             class="single-post--user--link"
                         >{{ post.user }}</router-link>
                     </p>
@@ -40,7 +40,7 @@
                         <router-link
                             :to="`/posts/${post.id}`"
                             class="single-post--published--date light-blue-color"
-                        >{{ post.publish_date | formatDate }}</router-link>
+                        >{{ post.publishDate | formatDate }}</router-link>
                     </p>
                 </div>
             </div>
@@ -51,7 +51,7 @@
         </div>
 
         <div class="mt-4 px-4 row justify-content-between">
-            <p v-if="post.allow_comments">
+            <p v-if="post.allowComments">
                 <router-link
                     :to="`/posts/${post.id}`"
                     class="light-blue-color"
@@ -91,7 +91,7 @@ export default {
             return truncate(this.post.content, 200);
         },
         isAuthor() {
-            return this.getUser.id === this.post.user_id;
+            return this.getUser.id === this.post.userId;
         }
     },
     created() {
@@ -115,14 +115,14 @@ export default {
         },
         getLikes() {
             axios
-                .get(`/posts_likes/?post_id=${this.post.id}`)
+                .get(`/posts_likes/?postId=${this.post.id}`)
                 .then(({ data: likesArray }) => {
                     this.likes = likesArray.length;
                 });
         },
         getComments() {
             axios
-                .get(`/comments/?post_id=${this.post.id}`)
+                .get(`/comments/?postId=${this.post.id}`)
                 .then(({ data: commentsArray }) => {
                     this.comments = commentsArray.length;
                 });
