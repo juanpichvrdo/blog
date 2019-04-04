@@ -82,7 +82,7 @@
                         </div>
                         <div v-if="isAuthenticated && post.allowComments">
                             <hr>
-                            <CommentsSection :post-id="post.id" @commentAdded="getComments()"/>
+                            <CommentsSection :post-id="post.id" @commentsChanged="getComments()"/>
                         </div>
                         <div v-else class="text-center my-5">
                             <router-link to="/login">Login to comment</router-link>
@@ -189,7 +189,9 @@ export default {
             axios
                 .get(`/comments/?postId=${this.postID}`)
                 .then(({ data: commentsArray }) => {
-                    this.comments = commentsArray.length;
+                    this.comments = commentsArray.filter(
+                        comment => comment.state === POST_STATE.published
+                    ).length;
                 });
         },
         deletePost() {

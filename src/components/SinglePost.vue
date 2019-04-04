@@ -127,7 +127,9 @@ export default {
             axios
                 .get(`/comments/?postId=${this.post.id}`)
                 .then(({ data: commentsArray }) => {
-                    this.comments = commentsArray.length;
+                    this.comments = commentsArray.filter(
+                        comment => comment.state === POST_STATE.published
+                    ).length;
                 });
         }
     }

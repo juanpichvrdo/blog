@@ -5,9 +5,18 @@
                 <span class="search-posts--icon">
                     <font-awesome-icon class="search-posts--icon--svg" icon="search"/>
                 </span>
-                <input type="text" class="search-posts--input form-control" placeholder="Search">
+                <input
+                    v-model="searchTerm"
+                    type="text"
+                    class="search-posts--input form-control"
+                    placeholder="Search"
+                >
                 <div class="input-group-append">
-                    <button class="search-posts--button btn text-white" type="button">GO!</button>
+                    <button
+                        type="button"
+                        class="search-posts--button btn text-white"
+                        @click="searchPost"
+                    >GO!</button>
                 </div>
             </div>
         </form>
@@ -16,7 +25,17 @@
 
 <script>
 export default {
-    name: "SearchPosts"
+    name: "SearchPosts",
+    data() {
+        return {
+            searchTerm: ""
+        };
+    },
+    methods: {
+        searchPost() {
+            this.$router.push(`/search-posts/${this.searchTerm}`);
+        }
+    }
 };
 </script>
 

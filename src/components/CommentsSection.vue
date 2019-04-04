@@ -25,7 +25,7 @@
             v-for="comment in orderedComments"
             :key="comment.id"
             :comment="comment"
-            @commentDeleted="getComments"
+            @commentDeleted="commentDeleted"
         />
     </div>
 </template>
@@ -102,11 +102,15 @@ export default {
                     .then(comment => {
                         this.comments.push(comment.data);
                         this.newCommentBody = "";
-                        this.$emit("commentAdded");
+                        this.$emit("commentsChanged");
                     });
             } else {
                 console.log("Comment is too short");
             }
+        },
+        commentDeleted() {
+            this.getComments();
+            this.$emit("commentsChanged");
         }
     }
 };

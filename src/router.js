@@ -8,6 +8,7 @@ import CreatePost from "./views/CreatePost.vue";
 import PostPage from "./views/PostPage.vue";
 import EditPost from "./views/EditPost.vue";
 import UserProfile from "./views/UserProfile.vue";
+import SearchPosts from "./views/SearchPage.vue";
 
 Vue.use(Router);
 
@@ -42,6 +43,11 @@ const router = new Router({
       name: "createPost",
       component: CreatePost,
       meta: { requiresAuth: true }
+    },
+    {
+      path: "/search-posts/:search_term",
+      name: "SearchPosts",
+      component: SearchPosts
     },
     {
       path: "/edit-post/:id",
