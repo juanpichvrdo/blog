@@ -21,7 +21,12 @@
 
         <h4 v-if="comments.length" class="comments--heading mt-5">User comments</h4>
         <hr class="mb-4">
-        <single-comment v-for="comment in orderedComments" :key="comment.id" :comment="comment"/>
+        <single-comment
+            v-for="comment in orderedComments"
+            :key="comment.id"
+            :comment="comment"
+            @commentDeleted="getComments"
+        />
     </div>
 </template>
 
@@ -29,6 +34,7 @@
 import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
+import { POST_STATE } from "../utils/helpers.js";
 
 import SingleComment from "./SingleComment";
 
@@ -64,7 +70,9 @@ export default {
     computed: {
         ...mapGetters(["getUser"]),
         orderedComments() {
-            return this.comments.reverse();
+            return this.comments
+                .filter(comment => comment.state === POST_STATE.published)
+                .reverse();
         }
     },
     created() {
@@ -87,7 +95,7 @@ export default {
                         postId: this.postId,
                         datePublish: moment().format("YYYY-MM-DD HH:mm:ss"),
                         userId: this.getUser.id,
-                        state: "published"
+                        state: POST_STATE.published
                     })
                     .then(comment => {
                         this.comments.push(comment.data);

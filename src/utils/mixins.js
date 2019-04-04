@@ -1,6 +1,6 @@
 const postMixins = {
   methods: {
-    confirmDelete() {
+    confirmDeletePost() {
       this.$swal({
         title: "Are you sure you want to delete this post?",
         type: "warning",

@@ -1,16 +1,27 @@
 <template>
     <div class="comment mb-5">
-        <div class="d-flex align-items-center">
-            <router-link :to="`/user/${comment.userId}`" class="comment--picture">
-                <img src="../assets/user-2.png" alt="User profile picture">
-            </router-link>
-            <p class="mb-0 ml-3">
-                <router-link
-                    :to="`/user/${comment.userId}`"
-                    class="comment--user mr-1"
-                >{{ user.username }}</router-link>
-                <span class="comment--date ml-2">{{ comment.datePublish | formatDate }}</span>
-            </p>
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <router-link :to="`/user/${comment.userId}`" class="comment--picture">
+                    <img src="../assets/user-2.png" alt="User profile picture">
+                </router-link>
+                <p class="mb-0 ml-2">
+                    <router-link
+                        :to="`/user/${comment.userId}`"
+                        class="comment--user mr-1"
+                    >{{ user.username }}</router-link>
+                    <span class="comment--date ml-2">{{ comment.datePublish | formatDate }}</span>
+                </p>
+            </div>
+            <div v-if="isAuthor" class="d-flex align-items-center">
+                <font-awesome-icon class="comment--edit mx-2" icon="edit"/>
+
+                <font-awesome-icon
+                    class="comment--delete mx-2"
+                    icon="times"
+                    @click="confimDeleteComment"
+                />
+            </div>
         </div>
         <div class="comment--body ml-5 mt-3">
             <div class="comment--body--content">
@@ -36,6 +47,7 @@
 
 <script>
 import moment from "moment";
+import { POST_STATE } from "../utils/helpers.js";
 import { mapGetters } from "vuex";
 
 export default {
@@ -55,13 +67,49 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["getUser"])
+        ...mapGetters(["getUser"]),
+        isAuthor() {
+            return this.getUser.id === this.comment.userId;
+        }
     },
     created() {
         this.getAuthorData();
         this.getLikes();
     },
     methods: {
+        confimDeleteComment() {
+            this.$swal({
+                title: "Are you sure you want to delete this comment?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#1c6392",
+                cancelButtonColor: "#dd1e1e",
+                confirmButtonText: "Yes, delete it!"
+            }).then(result => {
+                if (result.value) {
+                    this.deleteComment();
+                    this.$swal(
+                        "Deleted!",
+                        "Your comment has been deleted.",
+                        "success"
+                    );
+                }
+            });
+        },
+        deleteComment() {
+            axios
+                .patch(`/comments/${this.comment.id}`, {
+                    state: POST_STATE.deleted
+                })
+                .then(() => {
+                    this.$emit("commentDeleted");
+                    // axios
+                    //   .patch(`comments/?postID=${this.post.id}`, {
+                    //     state: "deleted"
+                    //   })
+                    //   .then(result => console.log(result));
+                });
+        },
         getDate(date) {
             return moment(date).format("MMMM DD, YYYY - LT");
         },
@@ -70,6 +118,7 @@ export default {
                 .get(`/users/${this.comment.userId}`)
                 .then(({ data: user }) => (this.user = user));
         },
+
         getLike() {
             axios
                 .get(
@@ -137,6 +186,16 @@ export default {
             cursor: pointer;
             transition: all 0.2s;
         }
+    }
+
+    &--edit,
+    &--delete {
+        font-size: 1.3rem;
+        cursor: pointer;
+    }
+
+    &--delete {
+        color: $red-color;
     }
 }
 .red-heart {

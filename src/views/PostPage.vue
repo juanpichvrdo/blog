@@ -28,7 +28,7 @@
                             </router-link>
                             <div
                                 class="post-page--delete d-flex align-items-center"
-                                @click="confirmDelete"
+                                @click="confirmDeletePost"
                             >
                                 Delete Post
                                 <font-awesome-icon class="ml-2 individual-post--icon" icon="times"/>

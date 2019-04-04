@@ -15,7 +15,7 @@
                     <font-awesome-icon
                         class="single-post--delete"
                         icon="times"
-                        @click="confirmDelete"
+                        @click="confirmDeletePost"
                     />
                 </div>
             </div>

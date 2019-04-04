@@ -53,7 +53,7 @@
                     <div class="create-post--buttons">
                         <button
                             class="mx-3 px-5 btn btn-large btn-danger"
-                            @click="confirmDelete"
+                            @click="confirmDeletePost"
                         >Delete</button>
                         <button
                             class="mx-3 px-5 btn btn-large btn-warning"
@@ -113,7 +113,7 @@ export default {
         this.getPost();
     },
     methods: {
-        confirmDelete() {
+        confirmDeletePost() {
             this.$swal({
                 title: "Are you sure you want to delete this post?",
                 type: "warning",
