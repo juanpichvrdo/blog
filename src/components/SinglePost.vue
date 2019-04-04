@@ -52,12 +52,15 @@
 
         <div class="mt-4 px-4 row justify-content-between">
             <p v-if="post.allowComments">
-                <router-link
-                    :to="`/posts/${post.id}`"
-                    class="light-blue-color"
-                >{{ comments }} {{ `comment${comments === 1 ? '' : 's'}` }}</router-link>
+                <router-link :to="`/posts/${post.id}`" class="light-blue-color">
+                    {{ comments }}
+                    <font-awesome-icon class="ml-1" icon="comment"/>
+                </router-link>
             </p>
-            <p>{{ likes }} likes</p>
+            <p class="navy-color d-flex">
+                {{ likes }}
+                <font-awesome-icon class="ml-2" icon="thumbs-up"/>
+            </p>
         </div>
         <hr>
     </div>
@@ -180,6 +183,10 @@ export default {
 
     .light-blue-color {
         color: $light-blue-color;
+    }
+
+    .navy-color {
+        color: $navy-color;
     }
 }
 </style>

@@ -10,7 +10,9 @@ import {
   faArrowRight,
   faTimes,
   faEdit,
-  faHeart
+  faHeart,
+  faComment,
+  faThumbsUp
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -28,6 +30,8 @@ library.add(faArrowRight);
 library.add(faTimes);
 library.add(faEdit);
 library.add(faHeart);
+library.add(faComment);
+library.add(faThumbsUp);
 
 Vue.filter("formatDate", value => moment(value, "YYYY-MM-DD HH:mm:ss").fromNow());
 

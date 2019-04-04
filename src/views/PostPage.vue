@@ -57,17 +57,32 @@
 
                         <hr>
                         <div class="post-page--content mt-5" v-html="post.content"/>
-                        <div v-if="isAuthenticated" class="d-flex align-items-center mt-5">
-                            <p class="mb-0 mr-3">{{ likes }} likes</p>
-                            <button class="btn btn-info" @click="toggleLike">Toggle Like</button>
-                            <p
-                                v-if="post.allowComments"
-                                class="mb-0 ml-3"
-                            >{{ comments }} {{ `comment${comments === 1 ? '' : 's'}` }}</p>
+                        <div
+                            v-if="isAuthenticated"
+                            class="d-flex align-items-center justify-content-between mt-5"
+                        >
+                            <button
+                                :class="{'like-active': alreadyLiked}"
+                                class="post-page--like btn btn-info d-flex align-items-center"
+                                @click="toggleLike"
+                            >
+                                <font-awesome-icon
+                                    class="post-page--like--icon mr-2"
+                                    icon="thumbs-up"
+                                />
+                                {{ likes }}
+                            </button>
+                            <div class="post-page--comment d-flex">
+                                <p v-if="post.allowComments" class="mb-0 ml-3">{{ comments }}</p>
+                                <font-awesome-icon
+                                    class="post-page--comment--icon ml-2"
+                                    icon="comment"
+                                />
+                            </div>
                         </div>
                         <div v-if="isAuthenticated && post.allowComments">
                             <hr>
-                            <CommentsSection :postId="post.id" @commentAdded="getComments()"/>
+                            <CommentsSection :post-id="post.id" @commentAdded="getComments()"/>
                         </div>
                         <div v-else class="text-center my-5">
                             <router-link to="/login">Login to comment</router-link>
@@ -260,14 +275,23 @@ export default {
         font-weight: 700;
     }
 
-    &--search {
-        background-color: #ebeef1;
+    &--comment {
+        color: $navy-color;
 
-        &--heading {
-            font-family: Georgia, "Times New Roman", Times, serif;
-            color: $navy-color;
-            font-weight: 600;
+        &--icon {
+            font-size: 1.2rem;
         }
+    }
+
+    &--like {
+        background-color: $navy-color;
+        &:focus {
+            box-shadow: none;
+        }
+    }
+
+    .like-active {
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4);
     }
 }
 </style>

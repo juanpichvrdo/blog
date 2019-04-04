@@ -38,7 +38,7 @@
                         name="body"
                     />
                     <div
-                        class="comment-form--buttons d-flex justify-content-end align-items-center"
+                        class="edit-comment--buttons d-flex justify-content-end align-items-center"
                     >
                         <a
                             class="mr-4 mr-sm-5 comment-form--cancel"
@@ -239,6 +239,10 @@ export default {
     .edit-comment {
         &--header {
             padding: 0.4rem 0.8rem;
+        }
+
+        &--buttons {
+            margin-bottom: 10px;
         }
     }
 }
