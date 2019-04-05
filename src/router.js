@@ -9,6 +9,7 @@ import PostPage from "./views/PostPage.vue";
 import EditPost from "./views/EditPost.vue";
 import UserProfile from "./views/UserProfile.vue";
 import SearchPosts from "./views/SearchPage.vue";
+import UserSettings from "./views/UserSettings.vue";
 
 Vue.use(Router);
 
@@ -57,6 +58,12 @@ const router = new Router({
       meta: { requiresAuth: true }
     },
     {
+      path: "/user-settings/:id",
+      name: "userSettings",
+      component: UserSettings,
+      meta: { requiresAuth: true }
+    },
+    {
       path: "/",
       name: "home",
       component: HomePage
@@ -70,7 +77,7 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       next({
-        path: "/login",
+        path: "/",
         query: { redirect: to.fullPath }
       });
     }

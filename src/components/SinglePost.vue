@@ -40,7 +40,7 @@
                             :to="`/posts/${post.id}`"
                             class="single-post--published--date light-blue-color"
                         >{{ post.publishDate | formatDate }}</router-link>
-                        <span class="ml-2" v-if="post.edited">Edited</span>
+                        <span v-if="post.edited" class="ml-2">Edited</span>
                     </p>
                 </div>
             </div>

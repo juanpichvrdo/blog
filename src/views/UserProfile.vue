@@ -7,12 +7,17 @@
                 class="user-profile--image"
             >
             <div class="d-flex flex-column ml-5">
-                <h1 class="user-profile--name">{{ `${user.name} ${user.lastName}` }}</h1>
-                <p class="user-profile--description">{{ user.description }}</p>
+                <h1 class="user-profile--name">{{ `${user.username}` }}</h1>
+                <p class="user-profile--description mb-2">{{ user.name }} {{ user.lastName }}</p>
+                <p
+                    v-if="user.publicProfile"
+                    class="user-profile--description"
+                >{{ user.description }}</p>
             </div>
         </div>
 
-        <profile-activity/>
+        <profile-activity v-if="user.publicProfile"/>
+        <h3 class="user-profile--private text-center">This user profile is private /:</h3>
     </div>
 </template>
 
@@ -66,6 +71,11 @@ export default {
     &--tabs {
         color: $navy-color;
         cursor: pointer;
+    }
+
+    &--private {
+        color: $navy-color;
+        margin-top: 70px;
     }
 }
 </style>

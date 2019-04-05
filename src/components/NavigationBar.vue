@@ -13,7 +13,13 @@
                 <div v-if="isAuthenticated" class="d-flex align-items-center">
                     <img class="mx-3 py-sm-3" src="../assets/user-1.png" alt="User profile image">
                     <div class="navigation--user-profile">
-                        <p class="navigation--user-message">Welcome, {{ getUser.username }}</p>
+                        <div>
+                            Welcome,
+                            <router-link
+                                :to="`/user-settings/${getUser.id}`"
+                                class="navigation--user-configuration"
+                            >{{ getUser.username }}</router-link>
+                        </div>
                         <a class="navigation--user-logout" href="#" @click="onLogout">Logout</a>
                     </div>
                 </div>
@@ -104,9 +110,10 @@ export default {
             }
         }
 
-        &-message {
+        &-configuration {
             margin-bottom: 0;
-            font-weight: 300;
+            font-weight: 400;
+            color: $orange-color;
         }
 
         &-login {
