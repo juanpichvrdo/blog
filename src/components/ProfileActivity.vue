@@ -43,7 +43,6 @@ import LikedPosts from "../components/LikedPosts";
 
 export default {
     name: "ProfileActivity",
-
     components: {
         CreatedPosts,
         CommentedPosts,

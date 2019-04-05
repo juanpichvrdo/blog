@@ -94,7 +94,6 @@ export default {
     components: {
         VueEditor
     },
-
     data() {
         return {
             activeTab: "create",
