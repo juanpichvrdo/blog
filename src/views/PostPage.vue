@@ -9,7 +9,7 @@
                                 <router-link
                                     v-if="previousUrl === 'searchPosts'"
                                     class="post-page--link"
-                                    to="/searchPosts"
+                                    to="/search-posts"
                                 >SEARCH POSTS</router-link>
                                 <router-link v-else class="post-page--link" to="/">ALL POSTS</router-link>
                             </li>

@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import SinglePost from "../components/SinglePost";
 
 export default {
@@ -68,12 +69,18 @@ export default {
     },
     data() {
         return {
-            searchTerm: this.$route.params.search_term,
+            searchTerm: "",
             searchBy: "title",
             searchResults: []
         };
     },
+    computed: {
+        ...mapGetters(["getSearchTerm"])
+    },
     created() {
+        this.searchTerm = this.getSearchTerm.searchTerm;
+        this.searchBy = this.getSearchTerm.searchBy;
+        console.log(this.getSearchTerm);
         this.searchPost();
     },
     methods: {

@@ -30,7 +30,11 @@ export default {
     methods: {
         searchPost() {
             if (this.searchTerm) {
-                this.$router.push(`/search-posts/${this.searchTerm}`);
+                this.$store.dispatch("setSearch", {
+                    searchTerm: this.searchTerm,
+                    searchBy: "title"
+                });
+                this.$router.push(`/search-posts`);
             } else {
                 console.log("Enter search term to search");
             }

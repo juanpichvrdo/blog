@@ -45,7 +45,7 @@ const router = new Router({
       meta: { requiresAuth: true }
     },
     {
-      path: "/search-posts/:search_term",
+      path: "/search-posts",
       name: "searchPosts",
       component: SearchPosts,
       meta: { showNavbarSearch: false }
