@@ -75,7 +75,7 @@ export default {
         return {
             email: localStorage.getItem("email") || "",
             password: localStorage.getItem("password") || "",
-            rememberMe: false,
+            rememberMe: true,
             showError: false
         };
     },

@@ -6,7 +6,7 @@
                     class="navigation--brand display-4 navbar-brand py-3 py-sm-3 px-md-5"
                     to="/"
                 >Random Logo</router-link>
-                <search-posts v-if="isAuthenticated"/>
+                <search-posts v-if="isAuthenticated && $route.meta.showNavbarSearch === undefined"/>
             </div>
             <div class="navigation--user d-flex align-items-center pr-2 pr-md-5">
                 <a class="navigation--user-active mr-4 py-4 px-3" href="#">BLOG</a>

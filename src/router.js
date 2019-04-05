@@ -46,8 +46,9 @@ const router = new Router({
     },
     {
       path: "/search-posts/:search_term",
-      name: "SearchPosts",
-      component: SearchPosts
+      name: "searchPosts",
+      component: SearchPosts,
+      meta: { showNavbarSearch: false }
     },
     {
       path: "/edit-post/:id",

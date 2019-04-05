@@ -20,7 +20,6 @@
                 </div>
             </div>
 
-            <p v-if="post.edited">Edited</p>
             <div class="single-post--body" v-html="resumedBody"/>
         </div>
         <div class="d-flex align-items-center justify-content-between">
@@ -41,6 +40,7 @@
                             :to="`/posts/${post.id}`"
                             class="single-post--published--date light-blue-color"
                         >{{ post.publishDate | formatDate }}</router-link>
+                        <span class="ml-2" v-if="post.edited">Edited</span>
                     </p>
                 </div>
             </div>

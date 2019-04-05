@@ -6,7 +6,12 @@
                     <nav class="post-page--breadcrumb">
                         <ol class="breadcrumb pb-0 mb-0">
                             <li class="breadcrumb-item d-flex align-items-center">
-                                <router-link class="post-page--link" to="/">ALL POSTS</router-link>
+                                <router-link
+                                    v-if="previousUrl === 'searchPosts'"
+                                    class="post-page--link"
+                                    to="/searchPosts"
+                                >SEARCH POSTS</router-link>
+                                <router-link v-else class="post-page--link" to="/">ALL POSTS</router-link>
                             </li>
                             <li class="breadcrumb-item active d-flex align-items-center">
                                 <router-link
@@ -115,7 +120,8 @@ export default {
             alreadyLiked: false,
             comments: 0,
             userLike: null,
-            POST_STATE
+            POST_STATE,
+            previousUrl: ""
         };
     },
     computed: {
@@ -128,6 +134,7 @@ export default {
         this.getPost();
         this.getLikes();
         this.getComments();
+        console.log(this.previousUrl);
     },
 
     methods: {
@@ -208,6 +215,11 @@ export default {
                     //   .then(result => console.log(result));
                 });
         }
+    },
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.previousUrl = from.name;
+        });
     }
 };
 </script>

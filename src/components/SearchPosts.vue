@@ -1,6 +1,6 @@
 <template>
     <div class="search-posts">
-        <form class="search-posts--form">
+        <form class="search-posts--form" @submit.prevent="searchPost">
             <div class="input-group">
                 <span class="search-posts--icon">
                     <font-awesome-icon class="search-posts--icon--svg" icon="search"/>
@@ -12,11 +12,7 @@
                     placeholder="Search"
                 >
                 <div class="input-group-append">
-                    <button
-                        type="button"
-                        class="search-posts--button btn text-white"
-                        @click="searchPost"
-                    >GO!</button>
+                    <button type="submit" class="search-posts--button btn text-white">GO!</button>
                 </div>
             </div>
         </form>
@@ -33,7 +29,11 @@ export default {
     },
     methods: {
         searchPost() {
-            this.$router.push(`/search-posts/${this.searchTerm}`);
+            if (this.searchTerm) {
+                this.$router.push(`/search-posts/${this.searchTerm}`);
+            } else {
+                console.log("Enter search term to search");
+            }
         }
     }
 };
