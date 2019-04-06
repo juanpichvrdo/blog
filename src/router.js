@@ -10,7 +10,7 @@ import EditPost from "./views/EditPost.vue";
 import UserProfile from "./views/UserProfile.vue";
 import SearchPosts from "./views/SearchPage.vue";
 import UserSettings from "./views/UserSettings.vue";
-import PostList from "./views/PostList.vue";
+import PostListPage from "./views/PostListPage.vue";
 
 Vue.use(Router);
 
@@ -67,7 +67,7 @@ const router = new Router({
     {
       path: "/post-list/:id",
       name: "postList",
-      component: PostList,
+      component: PostListPage,
       meta: { requiresAuth: true }
     },
     {

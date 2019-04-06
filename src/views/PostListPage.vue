@@ -42,7 +42,7 @@ import DraftedPostsList from "../components/DraftedPostsList";
 import DeletedPostsList from "../components/DeletedPostsList";
 
 export default {
-    name: "PostList",
+    name: "PostListPage",
     components: {
         PublishedPostsList,
         DraftedPostsList,
@@ -54,6 +54,7 @@ export default {
             activeTab: "created"
         };
     },
+
     created() {
         // this.getUserPosts();
     },
