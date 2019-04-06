@@ -50,7 +50,10 @@
                             for="allowCommentsCheckbox"
                         >Allow comments</label>
                     </div>
-                    <div class="create-post--buttons">
+                    <div
+                        v-if="post.state === POST_STATE.draft || post.state === POST_STATE.published"
+                        class="create-post--buttons"
+                    >
                         <button
                             class="mx-3 px-5 btn btn-large btn-danger"
                             @click="confirmDeletePost"
@@ -69,6 +72,20 @@
                             @click="validateForm(POST_STATE.published)"
                         >Publish</button>
                     </div>
+                    <div v-else class="create-post--buttons">
+                        <button
+                            class="mx-3 px-5 btn btn-large btn-warning"
+                            @click="$router.push('/')"
+                        >Cancel</button>
+                        <button
+                            class="mx-3 px-5 btn btn-large btn-info"
+                            @click="validateForm(POST_STATE.draft)"
+                        >Undo Delete & Draft</button>
+                        <button
+                            class="mx-3 px-5 btn btn-large btn-success"
+                            @click="validateForm(POST_STATE.published)"
+                        >Undo Delete & Publish</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -86,6 +103,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import { postMixins } from "../utils/mixins";
@@ -144,7 +162,8 @@ export default {
                     edited: true,
                     state: state,
                     publishDate:
-                        this.post.state === POST_STATE.draft
+                        this.post.state === POST_STATE.draft ||
+                        this.post.state === POST_STATE.deleted
                             ? moment().format("YYYY-MM-DD HH:MM:SS")
                             : this.post.publishDate
                 })

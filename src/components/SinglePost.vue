@@ -70,11 +70,11 @@
 import truncate from "html-truncate";
 import { mapGetters } from "vuex";
 import { POST_STATE } from "../utils/helpers.js";
-import { postMixins } from "../utils/mixins";
+import { postMixins, singlePostMixins } from "../utils/mixins";
 
 export default {
     name: "SinglePost",
-    mixins: [postMixins],
+    mixins: [postMixins, singlePostMixins],
     props: {
         post: {
             type: Object,
@@ -109,27 +109,6 @@ export default {
                 })
                 .then(() => {
                     this.$emit("postDeleted");
-                    // axios
-                    //   .patch(`comments/?postID=${this.post.id}`, {
-                    //     state: "deleted"
-                    //   })
-                    //   .then(result => console.log(result));
-                });
-        },
-        getLikes() {
-            axios
-                .get(`/posts_likes/?postId=${this.post.id}`)
-                .then(({ data: likesArray }) => {
-                    this.likes = likesArray.length;
-                });
-        },
-        getComments() {
-            axios
-                .get(`/comments/?postId=${this.post.id}`)
-                .then(({ data: commentsArray }) => {
-                    this.comments = commentsArray.filter(
-                        comment => comment.state === POST_STATE.published
-                    ).length;
                 });
         }
     }

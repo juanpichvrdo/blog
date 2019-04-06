@@ -1,3 +1,5 @@
+import { POST_STATE } from "./helpers";
+
 export const postMixins = {
   methods: {
     confirmDeletePost() {
@@ -28,5 +30,22 @@ export const commentMixins = {
         [{ indent: "-1" }, { indent: "+1" }]
       ]
     };
+  }
+};
+
+export const singlePostMixins = {
+  methods: {
+    getLikes() {
+      axios.get(`/posts_likes/?postId=${this.post.id}`).then(({ data: likesArray }) => {
+        this.likes = likesArray.length;
+      });
+    },
+    getComments() {
+      axios.get(`/comments/?postId=${this.post.id}`).then(({ data: commentsArray }) => {
+        this.comments = commentsArray.filter(
+          comment => comment.state === POST_STATE.published
+        ).length;
+      });
+    }
   }
 };

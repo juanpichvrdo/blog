@@ -1,6 +1,6 @@
 <template>
     <div class="post-list container mt-5">
-        <h1>Post List</h1>
+        <h1 class="post-list--heading">Post List</h1>
         <ul class="nav nav-tabs mt-4 mb-5">
             <li class="nav-item">
                 <a
@@ -53,20 +53,15 @@ export default {
             userID: this.$route.params.id,
             activeTab: "created"
         };
-    },
-
-    created() {
-        // this.getUserPosts();
-    },
-    methods: {
-        // getUserPosts() {
-        //     axios
-        //         .get(`/users/${this.userID}/posts`)
-        //         .then(({ data: posts }) => console.log(posts));
-        // }
     }
 };
 </script>
 
 <style lang="scss">
+.post-list {
+    &--heading {
+        color: $navy-color;
+        font-family: Georgia, "Times New Roman", Times, serif;
+    }
+}
 </style>

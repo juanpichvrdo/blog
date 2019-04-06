@@ -104,14 +104,14 @@ import { mapGetters } from "vuex";
 
 import CommentsSection from "../components/CommentsSection";
 import { POST_STATE } from "../utils/helpers.js";
-import { postMixins } from "../utils/mixins";
+import { postMixins, singlePostMixins } from "../utils/mixins";
 
 export default {
     name: "PostPage",
     components: {
         CommentsSection
     },
-    mixins: [postMixins],
+    mixins: [postMixins, singlePostMixins],
     data() {
         return {
             postID: this.$route.params.id,
@@ -134,7 +134,6 @@ export default {
         this.getPost();
         this.getLikes();
         this.getComments();
-        console.log(this.previousUrl);
     },
 
     methods: {
@@ -179,6 +178,15 @@ export default {
                     }
                 });
         },
+        getComments() {
+            axios
+                .get(`/comments/?postId=${this.postID}`)
+                .then(({ data: commentsArray }) => {
+                    this.comments = commentsArray.filter(
+                        comment => comment.state === POST_STATE.published
+                    ).length;
+                });
+        },
         getLike() {
             axios
                 .get(
@@ -192,15 +200,7 @@ export default {
                     }
                 });
         },
-        getComments() {
-            axios
-                .get(`/comments/?postId=${this.postID}`)
-                .then(({ data: commentsArray }) => {
-                    this.comments = commentsArray.filter(
-                        comment => comment.state === POST_STATE.published
-                    ).length;
-                });
-        },
+
         deletePost() {
             axios
                 .patch(`/posts/${this.postID}`, {
@@ -208,11 +208,6 @@ export default {
                 })
                 .then(() => {
                     this.$router.push("/");
-                    // axios
-                    //   .patch(`comments/?postID=${this.id}`, {
-                    //     state: "deleted"
-                    //   })
-                    //   .then(result => console.log(result));
                 });
         }
     },
