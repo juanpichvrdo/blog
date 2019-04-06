@@ -9,7 +9,16 @@
                 <search-posts v-if="isAuthenticated && $route.meta.showNavbarSearch === undefined"/>
             </div>
             <div class="navigation--user d-flex align-items-center pr-2 pr-md-5">
-                <a class="navigation--user-active mr-4 py-4 px-3" href="#">BLOG</a>
+                <router-link
+                    :class="{ active: $route.name !== 'postList' }"
+                    to="/"
+                    class="navigation--user-links mr-4 py-4 px-3"
+                >BLOG</router-link>
+                <router-link
+                    :class="{ active: $route.name === 'postList' }"
+                    :to="`/post-list/${getUser.id}`"
+                    class="navigation--user-links mr-4 py-4 px-3"
+                >POSTS</router-link>
                 <div v-if="isAuthenticated" class="d-flex align-items-center">
                     <img class="mx-3 py-sm-3" src="../assets/user-1.png" alt="User profile image">
                     <div class="navigation--user-profile">
@@ -93,14 +102,12 @@ export default {
     &--user {
         font-size: 0.8rem;
 
-        &-active {
+        &-links {
             color: $white-color;
-            border-bottom: 5px solid $white-color;
 
             &:hover {
                 text-decoration: none;
                 color: #e3e4eb;
-                border-bottom: 5px solid #e3e4eb;
             }
         }
 
@@ -125,6 +132,14 @@ export default {
                 color: #e3e4eb;
                 text-decoration: none;
             }
+        }
+    }
+
+    .active {
+        border-bottom: 5px solid $white-color;
+
+        &:hover {
+            border-bottom: 5px solid #e3e4eb;
         }
     }
 }

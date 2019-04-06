@@ -10,18 +10,19 @@
                 <h1 class="user-profile--name">{{ `${user.username}` }}</h1>
                 <p class="user-profile--description mb-2">{{ user.name }} {{ user.lastName }}</p>
                 <p
-                    v-if="user.publicProfile"
+                    v-if="user.publicProfile || user.id === getUser.id"
                     class="user-profile--description"
                 >{{ user.description }}</p>
             </div>
         </div>
 
-        <profile-activity v-if="user.publicProfile"/>
-        <h3 class="user-profile--private text-center">This user profile is private /:</h3>
+        <profile-activity v-if="user.publicProfile || user.id === getUser.id"/>
+        <h3 v-else class="user-profile--private text-center">This user profile is private /:</h3>
     </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import ProfileActivity from "../components/ProfileActivity";
 
 export default {
@@ -29,16 +30,19 @@ export default {
     components: {
         ProfileActivity
     },
+
     data() {
         return {
             userID: this.$route.params.id,
             user: {}
         };
     },
+    computed: {
+        ...mapGetters(["getUser"])
+    },
     created() {
         this.getUserData();
     },
-
     methods: {
         getUserData() {
             axios

@@ -1,8 +1,58 @@
 <template>
     <div class="user-settings container mt-5">
         <h2 class="user-settings--heading color-navy display-5">User Settings</h2>
-        <hr class="mb-4">
-        <form novalidate @submit.prevent="updateSettings">
+
+        <ul class="nav nav-tabs mt-4 mb-5">
+            <li class="nav-item">
+                <a
+                    :class="{active: activeTab === 'general'}"
+                    class="nav-link user-settings--tabs"
+                    @click="activeTab = 'general'"
+                >General</a>
+            </li>
+            <li class="nav-item">
+                <a
+                    :class="{active: activeTab === 'profile'}"
+                    class="nav-link user-settings--tabs"
+                    @click="activeTab = 'profile'"
+                >Profile</a>
+            </li>
+        </ul>
+
+        <form v-if="activeTab === 'general'" novalidate @submit.prevent="validateForm">
+            <div class="form-group mb-4">
+                <label class="form--label" for="signupPassword">Password</label>
+                <input
+                    v-validate="'required|min:6'"
+                    id="signupPassword"
+                    ref="password"
+                    v-model="password"
+                    class="form--input form-control form-control-lg"
+                    type="password"
+                    placeholder="6 or more characters"
+                    name="password"
+                >
+                <div class="invalid-feedback">{{ errors.first('password') }}</div>
+            </div>
+            <div class="form-group mb-4">
+                <label class="form--label" for="confirmsign-up-password">Confirm Password</label>
+                <input
+                    v-validate="'required|min:6|confirmed:password'"
+                    id="confirmSignUpPassword"
+                    v-model="confirmPassword"
+                    class="form--input form-control form-control-lg"
+                    name="password_confirmation"
+                    type="password"
+                    placeholder="6 or more characters"
+                    data-vv-as="password"
+                >
+                <div class="invalid-feedback">{{ errors.first('password_confirmation') }}</div>
+            </div>
+
+            <button type="submit" class="mb-5 btn user-settings--btn btn-lg d-block mx-auto">Update</button>
+        </form>
+
+        <form v-if="activeTab === 'profile'" novalidate @submit.prevent="updateProfileSettings">
             <div class="form-group mb-4 mb-4">
                 <label class="form--label" for="username">Username</label>
                 <input
@@ -56,7 +106,7 @@
                 >
                 <label class="form-check-label form--label" for="isPublic">Public Profile</label>
             </div>
-            <button type="submit" class="btn user-settings--btn btn-lg d-block mx-auto">Update</button>
+            <button type="submit" class="mb-5 btn user-settings--btn btn-lg d-block mx-auto">Update</button>
         </form>
     </div>
 </template>
@@ -73,7 +123,10 @@ export default {
             firstName: "",
             lastName: "",
             description: "",
-            publicProfile: true
+            publicProfile: true,
+            activeTab: "general",
+            password: "",
+            confirmPassword: ""
         };
     },
     computed: {
@@ -84,6 +137,13 @@ export default {
     },
 
     methods: {
+        validateForm() {
+            this.$validator.validateAll().then(result => {
+                if (result) {
+                    this.updateGeneralSettings();
+                }
+            });
+        },
         getUserProfile() {
             axios.get(`/users/${this.userID}`).then(({ data: user }) => {
                 if (Object.keys(user).length) {
@@ -93,13 +153,15 @@ export default {
                         this.lastName = user.lastName;
                         this.description = user.description;
                         this.publicProfile = user.publicProfile;
+                        this.password = user.password;
+                        this.confirmPassword = user.password;
                     } else {
                         this.$router.push(`/`);
                     }
                 }
             });
         },
-        updateSettings() {
+        updateProfileSettings() {
             axios
                 .patch(`/users/${this.userID}`, {
                     username: this.username,
@@ -109,6 +171,13 @@ export default {
                     publicProfile: this.publicProfile
                 })
                 .then(() => console.log("updated"));
+        },
+        updateGeneralSettings() {
+            axios
+                .patch(`/users/${this.userID}`, {
+                    password: this.password
+                })
+                .then(() => console.log("password updated"));
         },
         checkUser() {
             console.log(this.getUser);
@@ -134,6 +203,11 @@ export default {
             background-color: #1d70a8;
         }
     }
+
+    &--tabs {
+        cursor: pointer;
+    }
+
     .color-navy {
         color: $navy-color;
     }
