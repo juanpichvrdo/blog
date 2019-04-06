@@ -2,7 +2,7 @@
     <div class="post-page">
         <div class="container-fluid">
             <div class="row">
-                <div class="post-page--body text-center text-md-left">
+                <div class="post-page--body">
                     <nav class="post-page--breadcrumb">
                         <ol class="breadcrumb pb-0 mb-0">
                             <li class="breadcrumb-item d-flex align-items-center">
@@ -23,40 +23,46 @@
                     </nav>
 
                     <div class="px-xl-5">
-                        <h1 class="post-page--title display-4">{{ post.title }}</h1>
-                        <div
-                            v-if="isAuthor"
-                            class="d-flex align-items-center justify-content-center justify-content-md-start my-3"
-                        >
-                            <router-link :to="`/edit-post/${postID}`" class="mr-3">
-                                <font-awesome-icon class="individual-post--edit" icon="edit"/>
-                            </router-link>
-                            <div
-                                class="post-page--delete d-flex align-items-center"
-                                @click="confirmDeletePost"
-                            >
-                                Delete Post
-                                <font-awesome-icon class="ml-2 individual-post--icon" icon="times"/>
-                            </div>
-                        </div>
-                        <div
-                            class="d-flex align-items-center mb-4 justify-content-center justify-content-md-start"
-                        >
-                            <router-link :to="`/user/${post.userId}`" class="post-page--link">
-                                <img src="../assets/user-2.png" alt="User profile picture">
-                            </router-link>
+                        <h1
+                            class="post-page--title display-4 text-center text-md-left"
+                        >{{ post.title }}</h1>
 
-                            <div class="ml-3">
-                                <p class="post-page--user mb-0 smaller-font">
-                                    Written by:
-                                    <router-link
-                                        :to="`/user/${post.userId}`"
-                                        class="post-page--link"
-                                    >{{ post.user }}</router-link>
-                                </p>
-                                <p
-                                    class="post-page--published mb-0 smaller-font"
-                                >{{ post.publishDate | formatDate }}</p>
+                        <div class="d-flex align-items-center mb-4 justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <router-link :to="`/user/${post.userId}`" class="post-page--link">
+                                    <img src="../assets/user-2.png" alt="User profile picture">
+                                </router-link>
+                                <div class="ml-2">
+                                    <p class="post-page--user mb-0 smaller-font">
+                                        Written by:
+                                        <router-link
+                                            :to="`/user/${post.userId}`"
+                                            class="post-page--link"
+                                        >{{ post.user }}</router-link>
+                                    </p>
+                                    <p
+                                        class="post-page--published mb-0 smaller-font"
+                                    >{{ post.publishDate | formatDate }}</p>
+                                </div>
+                            </div>
+
+                            <div
+                                v-if="isAuthor"
+                                class="d-flex align-items-center justify-content-center justify-content-md-start my-3"
+                            >
+                                <div
+                                    class="post-page--delete d-flex align-items-center mr-3"
+                                    @click="confirmDeletePost"
+                                >
+                                    <font-awesome-icon
+                                        class="ml-2 individual-post--icon"
+                                        icon="times"
+                                    />
+                                </div>
+
+                                <router-link :to="`/edit-post/${postID}`">
+                                    <font-awesome-icon class="post-page--edit" icon="edit"/>
+                                </router-link>
                             </div>
                         </div>
 
@@ -75,9 +81,9 @@
                                     class="post-page--like--icon mr-2"
                                     icon="thumbs-up"
                                 />
-                                {{ likes }}
+                                <span v-if="likes">{{ likes }}</span>
                             </button>
-                            <div class="post-page--comment d-flex">
+                            <div v-if="comments" class="post-page--comment d-flex">
                                 <p v-if="post.allowComments" class="mb-0 ml-3">{{ comments }}</p>
                                 <font-awesome-icon
                                     class="post-page--comment--icon ml-2"
@@ -245,8 +251,14 @@ export default {
         }
     }
 
+    &--edit,
+    &--delete {
+        font-size: 2rem;
+    }
+
     &--delete {
         cursor: pointer;
+        color: $red-color;
 
         &:hover {
             color: #a12e2e;
@@ -294,6 +306,8 @@ export default {
 
     &--like {
         background-color: $navy-color;
+        padding: 10px 15px;
+
         &:focus {
             box-shadow: none;
         }

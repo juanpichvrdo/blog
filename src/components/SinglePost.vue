@@ -52,12 +52,12 @@
 
         <div class="mt-4 px-4 row justify-content-between">
             <p v-if="post.allowComments">
-                <router-link :to="`/posts/${post.id}`" class="light-blue-color">
+                <router-link v-if="comments" :to="`/posts/${post.id}`" class="light-blue-color">
                     {{ comments }}
                     <font-awesome-icon class="ml-1" icon="comment"/>
                 </router-link>
             </p>
-            <p class="navy-color d-flex">
+            <p v-if="likes" class="navy-color d-flex">
                 {{ likes }}
                 <font-awesome-icon class="ml-2" icon="thumbs-up"/>
             </p>

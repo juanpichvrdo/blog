@@ -145,6 +145,7 @@ export default {
 }
 .comments {
     background-color: $white-color;
+    margin-bottom: 100px;
 
     .comment-form {
         width: 100%;

@@ -19,7 +19,7 @@
             </li>
         </ul>
 
-        <form v-if="activeTab === 'general'" novalidate @submit.prevent="validateForm">
+        <form v-if="activeTab === 'general'" novalidate @submit.prevent="validateFormGeneral">
             <div class="form-group mb-4">
                 <label class="form--label" for="signupPassword">Password</label>
                 <input
@@ -52,7 +52,7 @@
             <button type="submit" class="mb-5 btn user-settings--btn btn-lg d-block mx-auto">Update</button>
         </form>
 
-        <form v-if="activeTab === 'profile'" novalidate @submit.prevent="updateProfileSettings">
+        <form v-if="activeTab === 'profile'" novalidate @submit.prevent="validateFormProfile">
             <div class="form-group mb-4 mb-4">
                 <label class="form--label" for="username">Username</label>
                 <input
@@ -63,6 +63,7 @@
                     placeholder="Username"
                     name="username"
                 >
+                <div class="invalid-feedback">{{ errors.first('username') }}</div>
             </div>
             <div class="form-group mb-4">
                 <label class="form--label" for="firstName">First Name</label>
@@ -74,6 +75,7 @@
                     placeholder="First Name"
                     name="firstName"
                 >
+                <div class="invalid-feedback">{{ errors.first('firstName') }}</div>
             </div>
             <div class="form-group mb-4">
                 <label class="form--label" for="lastName">Last Name</label>
@@ -85,6 +87,7 @@
                     placeholder="Last Name"
                     name="lastName"
                 >
+                <div class="invalid-feedback">{{ errors.first('lastName') }}</div>
             </div>
             <div class="form-group mb-4">
                 <label class="form--label" for="description">Description</label>
@@ -96,6 +99,7 @@
                     placeholder="Description"
                     name="description"
                 >
+                <div class="invalid-feedback">{{ errors.first('description') }}</div>
             </div>
             <div class="form-group mb-4 form-check">
                 <input
@@ -135,12 +139,18 @@ export default {
     created() {
         this.getUserProfile();
     },
-
     methods: {
-        validateForm() {
+        validateFormGeneral() {
             this.$validator.validateAll().then(result => {
                 if (result) {
                     this.updateGeneralSettings();
+                }
+            });
+        },
+        validateFormProfile() {
+            this.$validator.validateAll().then(result => {
+                if (result) {
+                    this.checkUsername();
                 }
             });
         },
@@ -161,6 +171,16 @@ export default {
                 }
             });
         },
+        checkUsername() {
+            axios.get(`/users/?username=${this.username}`).then(({ data }) => {
+                const user = data[0];
+                if (user) {
+                    console.log("That username is taken");
+                } else {
+                    this.updateProfileSettings();
+                }
+            });
+        },
         updateProfileSettings() {
             axios
                 .patch(`/users/${this.userID}`, {
@@ -178,9 +198,6 @@ export default {
                     password: this.password
                 })
                 .then(() => console.log("password updated"));
-        },
-        checkUser() {
-            console.log(this.getUser);
         }
     }
 };

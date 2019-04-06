@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import PublishedPostsList from "../components/PublishedPostsList";
 import DraftedPostsList from "../components/DraftedPostsList";
 import DeletedPostsList from "../components/DeletedPostsList";
@@ -53,6 +54,23 @@ export default {
             userID: this.$route.params.id,
             activeTab: "created"
         };
+    },
+    computed: {
+        ...mapGetters(["getUser"])
+    },
+    created() {
+        this.checkUserProfile();
+    },
+    methods: {
+        checkUserProfile() {
+            axios.get(`/users/${this.userID}`).then(({ data: user }) => {
+                if (Object.keys(user).length) {
+                    if (this.getUser.id !== user.id) {
+                        this.$router.push(`/`);
+                    }
+                }
+            });
+        }
     }
 };
 </script>

@@ -181,6 +181,16 @@ export default {
                 if (user) {
                     this.errorMessage = "That email is taken";
                 } else {
+                    this.checkUsername();
+                }
+            });
+        },
+        checkUsername() {
+            axios.get(`/users/?username=${this.username}`).then(({ data }) => {
+                const user = data[0];
+                if (user) {
+                    this.errorMessage = "That username is taken";
+                } else {
                     this.processForm();
                 }
             });

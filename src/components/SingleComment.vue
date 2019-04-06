@@ -59,7 +59,7 @@
 
                 <div class="comment--body--info d-flex justify-content-end mt-4">
                     <span class="mx-1 d-flex align-items-center mr-3">
-                        {{ likes }}
+                        <span v-if="likes">{{ likes }}</span>
                         <font-awesome-icon
                             :class="{ 'red-heart': alreadyLiked }"
                             class="comment--body--like ml-2"
