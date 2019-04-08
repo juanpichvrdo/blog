@@ -119,37 +119,37 @@ export default {
             });
         },
         processPost(state) {
-            axios
-                .post("/posts", {
-                    title: this.title,
-                    content: this.content,
-                    allowComments: this.allowComments,
-                    user: this.getUser.username,
-                    publishDate:
-                        state === this.POST_STATE.published
-                            ? moment().format("YYYY-MM-DD HH:mm:ss")
-                            : null,
-                    createdDate: moment().format("YYYY-MM-DD HH:mm:ss"),
-                    userId: this.getUser.id,
-                    likes: 0,
-                    edited: false,
-                    state: state
-                })
-                .then(({ data: post }) => {
-                    if (Object.keys(post).length) {
-                        if (state === this.POST_STATE.published) {
-                            toastr["success"]("Post published successfully");
-                        } else {
-                            toastr["success"]("Post saved");
-                        }
-                        router.push("/");
+            const currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
+
+            const postData = {
+                title: this.title,
+                content: this.content,
+                allowComments: this.allowComments,
+                user: this.getUser.username,
+                publishDate: null,
+                createdDate: currentDate,
+                userId: this.getUser.id,
+                likes: 0,
+                edited: false,
+                state: state
+            };
+
+            if (state === this.POST_STATE.published) {
+                postData.publishDate = currentDate;
+            }
+
+            axios.post("/posts", postData).then(({ data: post }) => {
+                if (Object.keys(post).length) {
+                    if (state === this.POST_STATE.published) {
+                        toastr.success("Post published successfully");
                     } else {
-                        toastr["error"](
-                            "Please try again",
-                            "Error creating post"
-                        );
+                        toastr.success("Post saved");
                     }
-                });
+                    router.push("/");
+                } else {
+                    toastr.error("Please try again", "Error creating post");
+                }
+            });
         }
     }
 };
