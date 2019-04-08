@@ -123,6 +123,7 @@
 
 <script>
 import Cookies from "js-cookie";
+import toastr from "toastr";
 import router from "../router.js";
 
 import AlertMessage from "../components/AlertMessage";
@@ -169,9 +170,13 @@ export default {
                     if (user) {
                         Cookies.set("id", user.id);
                         this.$store.dispatch("authenticateUser", user);
+                        toastr["success"]("Sign up succesfully!");
                         router.push("/");
                     } else {
-                        this.errorMessage = "Error creating user";
+                        toastr["error"](
+                            "Please try again",
+                            "Error creating user"
+                        );
                     }
                 });
         },
@@ -179,7 +184,10 @@ export default {
             axios.get(`/users/?email=${this.email}`).then(({ data }) => {
                 const user = data[0];
                 if (user) {
-                    this.errorMessage = "That email is taken";
+                    toastr["error"](
+                        "Please choose another one",
+                        "That email is taken"
+                    );
                 } else {
                     this.checkUsername();
                 }
@@ -189,7 +197,10 @@ export default {
             axios.get(`/users/?username=${this.username}`).then(({ data }) => {
                 const user = data[0];
                 if (user) {
-                    this.errorMessage = "That username is taken";
+                    toastr["error"](
+                        "Please choose another one",
+                        "That username is taken"
+                    );
                 } else {
                     this.processForm();
                 }

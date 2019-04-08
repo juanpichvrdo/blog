@@ -67,8 +67,6 @@
                             @click="toggleLike()"
                         />
                     </span>
-                    <!-- <span class="mx-1">2 childs</span>
-                    <span class="mx-1">Reply</span>-->
                 </div>
             </div>
         </div>
@@ -76,7 +74,7 @@
 </template>
 
 <script>
-import moment from "moment";
+import toastr from "toastr";
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
 import { POST_STATE } from "../utils/helpers.js";
@@ -138,7 +136,17 @@ export default {
                 .patch(`/comments/${this.comment.id}`, {
                     body: this.comment.body
                 })
-                .then(() => (this.showEditForm = false));
+                .then(({ data: comment }) => {
+                    if (Object.keys(comment).length) {
+                        toastr["success"]("Comment updated");
+                        this.showEditForm = false;
+                    } else {
+                        toastr["error"](
+                            "Error updating comment",
+                            "Please try again"
+                        );
+                    }
+                });
         },
         deleteComment() {
             axios
@@ -148,9 +156,6 @@ export default {
                 .then(() => {
                     this.$emit("commentDeleted");
                 });
-        },
-        getDate(date) {
-            return moment(date).format("MMMM DD, YYYY - LT");
         },
         getAuthorData() {
             axios

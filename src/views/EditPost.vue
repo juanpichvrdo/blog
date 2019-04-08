@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import toastr from "toastr";
 import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
@@ -131,6 +132,13 @@ export default {
         this.getPost();
     },
     methods: {
+        validateForm(state) {
+            this.$validator.validateAll().then(result => {
+                if (result) {
+                    this.updatePost(state);
+                }
+            });
+        },
         isAuthor() {
             return this.getUser.id === this.authorID;
         },
@@ -146,13 +154,7 @@ export default {
                 }
             });
         },
-        validateForm(state) {
-            this.$validator.validateAll().then(result => {
-                if (result) {
-                    this.updatePost(state);
-                }
-            });
-        },
+
         updatePost(state) {
             axios
                 .patch(`/posts/${this.postID}`, {
@@ -160,18 +162,26 @@ export default {
                     content: this.post.content,
                     allowComments: this.post.allowComments,
                     edited: true,
-                    state: state,
+                    state,
                     publishDate:
                         this.post.state === POST_STATE.draft ||
                         this.post.state === POST_STATE.deleted
                             ? moment().format("YYYY-MM-DD HH:MM:SS")
                             : this.post.publishDate
                 })
-                .then(() =>
-                    state === POST_STATE.draft
-                        ? this.$router.push("/")
-                        : this.$router.push(`/posts/${this.postID}`)
-                );
+                .then(({ data: post }) => {
+                    if (Object.keys(post).length) {
+                        toastr["success"]("Post updated");
+                        state === POST_STATE.draft
+                            ? this.$router.push("/")
+                            : this.$router.push(`/posts/${this.postID}`);
+                    } else {
+                        toastr["error"](
+                            "Please try again",
+                            "Error updating post"
+                        );
+                    }
+                });
         },
         deletePost() {
             axios

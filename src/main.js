@@ -6,13 +6,13 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import VueSweetalert2 from "vue-sweetalert2";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
-  faSearch,
-  faArrowRight,
-  faTimes,
-  faEdit,
-  faHeart,
-  faComment,
-  faThumbsUp
+    faSearch,
+    faArrowRight,
+    faTimes,
+    faEdit,
+    faHeart,
+    faComment,
+    faThumbsUp
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -21,9 +21,29 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "./config";
-import moment from "moment";
+import { formatDate } from "./utils/helpers";
 
 require("toastr/build/toastr.css");
+
+import toastr from "toastr";
+
+toastr.options = {
+    closeButton: true,
+    debug: false,
+    newestOnTop: false,
+    progressBar: false,
+    positionClass: "toast-top-right",
+    preventDuplicates: true,
+    onclick: null,
+    showDuration: "300",
+    hideDuration: "1000",
+    timeOut: "5000",
+    extendedTimeOut: "1000",
+    showEasing: "swing",
+    hideEasing: "linear",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut"
+};
 
 library.add(faSearch);
 library.add(faArrowRight);
@@ -33,16 +53,16 @@ library.add(faHeart);
 library.add(faComment);
 library.add(faThumbsUp);
 
-Vue.filter("formatDate", value => moment(value, "YYYY-MM-DD HH:mm:ss").fromNow());
+Vue.filter("formatDate", formatDate);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 Vue.use(VeeValidate, {
-  classes: true,
-  classNames: {
-    valid: "is-valid",
-    invalid: "is-invalid"
-  }
+    classes: true,
+    classNames: {
+        valid: "is-valid",
+        invalid: "is-invalid"
+    }
 });
 
 Vue.use(VueSweetalert2);
@@ -52,7 +72,7 @@ Vue.config.productionTip = false;
 Vue.use(VeeValidate);
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    render: h => h(App)
 }).$mount("#app");

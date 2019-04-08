@@ -5,26 +5,26 @@
         <ul class="nav nav-tabs mt-4 mb-5">
             <li class="nav-item">
                 <a
-                    :class="{active: activeTab === 'general'}"
-                    class="nav-link user-settings--tabs"
-                    @click="activeTab = 'general'"
-                >General</a>
-            </li>
-            <li class="nav-item">
-                <a
                     :class="{active: activeTab === 'profile'}"
                     class="nav-link user-settings--tabs"
                     @click="activeTab = 'profile'"
                 >Profile</a>
             </li>
+            <li class="nav-item">
+                <a
+                    :class="{active: activeTab === 'security'}"
+                    class="nav-link user-settings--tabs"
+                    @click="activeTab = 'security'"
+                >Security</a>
+            </li>
         </ul>
 
-        <form v-if="activeTab === 'general'" novalidate @submit.prevent="validateFormGeneral">
+        <form v-if="activeTab === 'security'" novalidate @submit.prevent="validateFormSecurity">
             <div class="form-group mb-4">
-                <label class="form--label" for="signupPassword">Password</label>
+                <label class="form--label" for="password">Password</label>
                 <input
                     v-validate="'required|min:6'"
-                    id="signupPassword"
+                    id="password"
                     ref="password"
                     v-model="password"
                     class="form--input form-control form-control-lg"
@@ -116,6 +116,7 @@
 </template>
 
 <script>
+import toastr from "toastr";
 import { mapGetters } from "vuex";
 
 export default {
@@ -128,7 +129,7 @@ export default {
             lastName: "",
             description: "",
             publicProfile: true,
-            activeTab: "general",
+            activeTab: "profile",
             password: "",
             confirmPassword: ""
         };
@@ -140,10 +141,10 @@ export default {
         this.getUserProfile();
     },
     methods: {
-        validateFormGeneral() {
+        validateFormSecurity() {
             this.$validator.validateAll().then(result => {
                 if (result) {
-                    this.updateGeneralSettings();
+                    this.updateSecuritySettings();
                 }
             });
         },
@@ -175,7 +176,10 @@ export default {
             axios.get(`/users/?username=${this.username}`).then(({ data }) => {
                 const user = data[0];
                 if (user) {
-                    console.log("That username is taken");
+                    toastr["error"](
+                        "Please choose another one",
+                        "That username is taken"
+                    );
                 } else {
                     this.updateProfileSettings();
                 }
@@ -190,14 +194,32 @@ export default {
                     description: this.description,
                     publicProfile: this.publicProfile
                 })
-                .then(() => console.log("updated"));
+                .then(({ data }) => {
+                    if (data) {
+                        toastr["success"]("Profile updated successfully");
+                    } else {
+                        toastr["error"](
+                            "Please try again",
+                            "Error updating profile"
+                        );
+                    }
+                });
         },
-        updateGeneralSettings() {
+        updateSecuritySettings() {
             axios
                 .patch(`/users/${this.userID}`, {
-                    password: this.password
+                    password: this.editPassword
                 })
-                .then(() => console.log("password updated"));
+                .then(({ data }) => {
+                    if (data) {
+                        toastr["success"]("Password updated successfully");
+                    } else {
+                        toastr["error"](
+                            "Please try again",
+                            "Error updating password"
+                        );
+                    }
+                });
         }
     }
 };

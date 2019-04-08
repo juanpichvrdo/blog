@@ -83,6 +83,8 @@
 </template>
 
 <script>
+// import truncate from "html-truncate";
+import toastr from "toastr";
 import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
@@ -110,8 +112,11 @@ export default {
         validateForm(state) {
             this.$validator.validateAll().then(result => {
                 if (result) {
-                    this.processPost(state);
-                    console.log(this.content);
+                    if (this.content) {
+                        this.processPost(state);
+                    } else {
+                        toastr["warning"]("Post needs content");
+                    }
                 }
             });
         },
@@ -132,9 +137,20 @@ export default {
                     edited: false,
                     state: state
                 })
-                .then(result => {
-                    console.log(result);
-                    router.push("/");
+                .then(({ data: post }) => {
+                    if (Object.keys(post).length) {
+                        if (state === this.POST_STATE.published) {
+                            toastr["success"]("Post published successfully");
+                        } else {
+                            toastr["success"]("Post saved");
+                        }
+                        router.push("/");
+                    } else {
+                        toastr["error"](
+                            "Please try again",
+                            "Error creating post"
+                        );
+                    }
                 });
         }
     }

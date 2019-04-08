@@ -1,7 +1,7 @@
 <template>
     <div class="alert--message alert alert-danger" role="alert">
         <strong>
-            <slot></slot>
+            <slot/>
         </strong>
         <button class="close" type="button" @click="$emit('closeMessage')">
             <span>&times;</span>
