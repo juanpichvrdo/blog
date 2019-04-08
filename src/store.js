@@ -36,6 +36,17 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        getUser({ commit }) {
+            const id = Cookies.get("id");
+            if (id) {
+                axios.get(`/users/?id=${id}`).then(({ data }) => {
+                    const user = data[0];
+                    if (user) {
+                        commit("setUser", user);
+                    }
+                });
+            }
+        },
         authenticateUser({ commit }, user) {
             commit("setUser", user);
         },
