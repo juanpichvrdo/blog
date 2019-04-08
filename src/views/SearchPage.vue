@@ -7,7 +7,7 @@
                         <font-awesome-icon class="search-posts--icon--svg" icon="search"/>
                     </span>
                     <input
-                        v-model="searchTerm"
+                        v-model.trim="searchTerm"
                         type="text"
                         class="search-page--input search-posts--input form-control"
                         placeholder="Search"

@@ -13,7 +13,7 @@
                             <label class="form--label" for="loginEmail">Email</label>
                             <input
                                 id="loginEmail"
-                                v-model="email"
+                                v-model.trim="email"
                                 class="form--input form-control form-control-lg"
                                 type="email"
                                 placeholder="jd@gmail.com"

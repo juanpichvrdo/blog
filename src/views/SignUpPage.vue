@@ -14,7 +14,7 @@
                             <input
                                 v-validate="'required|email'"
                                 id="signUpEmail"
-                                v-model="email"
+                                v-model.trim="email"
                                 class="form--input form-control form-control-lg"
                                 type="email"
                                 placeholder="jd@gmail.com"
@@ -60,7 +60,7 @@
                             <input
                                 v-validate="'required'"
                                 id="signUpUsername"
-                                v-model="username"
+                                v-model.trim="username"
                                 class="form--input form-control form-control-lg"
                                 type="text"
                                 placeholder="Username"
@@ -73,7 +73,7 @@
                             <input
                                 v-validate="'required'"
                                 id="name"
-                                v-model="name"
+                                v-model.trim="name"
                                 class="form--input form-control form-control-lg"
                                 type="text"
                                 placeholder="Name"
@@ -86,7 +86,7 @@
                             <input
                                 v-validate="'required'"
                                 id="last-name"
-                                v-model="lastName"
+                                v-model.trim="lastName"
                                 class="form--input form-control form-control-lg"
                                 name="last-name"
                                 type="text"
@@ -99,7 +99,7 @@
                             <input
                                 v-validate="'required'"
                                 id="description"
-                                v-model="description"
+                                v-model.trim="description"
                                 class="form--input form-control form-control-lg"
                                 name="description"
                                 type="text"

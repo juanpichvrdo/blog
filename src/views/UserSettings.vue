@@ -57,7 +57,7 @@
                 <label class="form--label" for="username">Username</label>
                 <input
                     id="username"
-                    v-model="username"
+                    v-model.trim="username"
                     type="email"
                     class="form-control form-control-lg form--input"
                     placeholder="Username"
@@ -69,7 +69,7 @@
                 <label class="form--label" for="firstName">First Name</label>
                 <input
                     id="firstName"
-                    v-model="firstName"
+                    v-model.trim="firstName"
                     type="text"
                     class="form-control form-control-lg form--input"
                     placeholder="First Name"
@@ -81,7 +81,7 @@
                 <label class="form--label" for="lastName">Last Name</label>
                 <input
                     id="lastName"
-                    v-model="lastName"
+                    v-model.trim="lastName"
                     type="text"
                     class="form-control form-control-lg form--input"
                     placeholder="Last Name"
@@ -93,7 +93,7 @@
                 <label class="form--label" for="description">Description</label>
                 <input
                     id="description"
-                    v-model="description"
+                    v-model.trim="description"
                     type="text"
                     class="form-control form-control-lg form--input"
                     placeholder="Description"
@@ -104,7 +104,7 @@
             <div class="form-group mb-4 form-check">
                 <input
                     id="isPublic"
-                    v-model="publicProfile"
+                    v-model.trim="publicProfile"
                     type="checkbox"
                     class="form-check-input"
                 >

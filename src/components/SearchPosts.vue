@@ -6,7 +6,7 @@
                     <font-awesome-icon class="search-posts--icon--svg" icon="search"/>
                 </span>
                 <input
-                    v-model="searchTerm"
+                    v-model.trim="searchTerm"
                     type="text"
                     class="search-posts--input form-control"
                     placeholder="Search"
@@ -35,8 +35,6 @@ export default {
                     searchBy: "title"
                 });
                 this.$router.push(`/search-posts`);
-            } else {
-                console.log("Enter search term to search");
             }
         }
     }

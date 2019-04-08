@@ -28,7 +28,7 @@
                     <input
                         v-validate="'required'"
                         id="title"
-                        v-model="title"
+                        v-model.trim="title"
                         type="text"
                         class="form-control form-control-lg"
                         placeholder="Post Title"
