@@ -171,17 +171,22 @@ export default {
             });
         },
         checkUsername() {
-            axios.get(`/users/?username=${this.username}`).then(({ data }) => {
-                const user = data[0];
-                if (user) {
-                    toastr["error"](
-                        "Please choose another one",
-                        "That username is taken"
-                    );
-                } else {
-                    this.updateProfileSettings();
-                }
-            });
+            // axios.get(`/users/?username=${this.username}`).then(({ data }) => {
+            axios
+                .get(
+                    `/users/?username=${this.username}&id_ne=${this.getUser.id}`
+                )
+                .then(({ data }) => {
+                    const user = data[0];
+                    if (user) {
+                        toastr["error"](
+                            "Please choose another one",
+                            "That username is taken"
+                        );
+                    } else {
+                        this.updateProfileSettings();
+                    }
+                });
         },
         updateProfileSettings() {
             axios
@@ -195,6 +200,7 @@ export default {
                 .then(({ data }) => {
                     if (data) {
                         this.$store.dispatch("getUser");
+
                         toastr["success"]("Profile updated successfully");
                     } else {
                         toastr["error"](
