@@ -7,29 +7,14 @@
 
 <script>
 import NavigationBar from "./components/NavigationBar";
-import Cookies from "js-cookie";
 
 export default {
     name: "App",
     components: {
         NavigationBar
     },
-    data() {
-        return {
-            prevHeight: 0,
-            showNavbar: true
-        };
-    },
     created() {
-        const id = Cookies.get("id");
-        if (id) {
-            axios.get(`/users/?id=${id}`).then(({ data }) => {
-                const user = data[0];
-                if (user) {
-                    this.$store.dispatch("authenticateUser", user);
-                }
-            });
-        }
+        this.$store.dispatch("getUser");
     }
 };
 </script>
