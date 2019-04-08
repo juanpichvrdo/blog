@@ -5,10 +5,6 @@
                 <h2 class="form--heading text-center pb-4 mt-5 mb-4">Login</h2>
                 <div class="card-body">
                     <form class="px-md-5" novalidate @submit.prevent="validateForm">
-                        <alert-message
-                            v-if="showError"
-                            @closeMessage="showError = false"
-                        >Wrong user name or password.</alert-message>
                         <div class="form-group mb-4">
                             <label class="form--label" for="loginEmail">Email</label>
                             <input
@@ -63,20 +59,15 @@
 <script>
 import Cookies from "js-cookie";
 import router from "../router";
-
-import AlertMessage from "../components/AlertMessage";
+import toastr from "toastr";
 
 export default {
     name: "LoginForm",
-    components: {
-        AlertMessage
-    },
     data() {
         return {
             email: localStorage.getItem("email") || "",
             password: localStorage.getItem("password") || "",
-            rememberMe: true,
-            showError: false
+            rememberMe: true
         };
     },
 
@@ -93,22 +84,25 @@ export default {
                 .get(`/users?email=${this.email}&password=${this.password}`)
                 .then(({ data }) => {
                     const user = data[0];
-                    console.log(user);
                     if (user) {
-                        if (this.rememberMe) {
-                            localStorage.setItem("email", this.email);
-                            localStorage.setItem("password", this.password);
-                        } else {
-                            localStorage.removeItem("email");
-                            localStorage.removeItem("password");
-                        }
+                        this.rememberUser(this.rememberMe);
                         Cookies.set("id", user.id);
                         this.$store.dispatch("authenticateUser", user);
+
                         router.push("/");
                     } else {
-                        this.showError = true;
+                        toastr["error"]("Wrong username or password");
                     }
                 });
+        },
+        rememberUser(isRemebered) {
+            if (isRemebered) {
+                localStorage.setItem("email", this.email);
+                localStorage.setItem("password", this.password);
+            } else {
+                localStorage.removeItem("email");
+                localStorage.removeItem("password");
+            }
         }
     }
 };

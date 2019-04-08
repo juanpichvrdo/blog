@@ -43,7 +43,6 @@ export default {
             posts: []
         };
     },
-
     created() {
         this.getUserPosts();
     },
@@ -53,7 +52,7 @@ export default {
                 .get(`users/${this.userID}/posts?state=1`)
                 .then(({ data: posts }) => {
                     if (posts.length) {
-                        this.posts = posts;
+                        this.posts = posts.reverse();
                     }
                 });
         }

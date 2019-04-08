@@ -5,10 +5,6 @@
                 <h2 class="form--heading text-center pb-4 mt-5 mb-4">Sign Up</h2>
                 <div class="card-body">
                     <form novalidate class="px-md-5" @submit.prevent="validateForm">
-                        <alert-message
-                            v-if="errorMessage"
-                            @closeMessage="errorMessage = ''"
-                        >{{ errorMessage }}</alert-message>
                         <div class="form-group mb-4">
                             <label class="form--label" for="signUpEmail">Email</label>
                             <input
@@ -126,13 +122,8 @@ import Cookies from "js-cookie";
 import toastr from "toastr";
 import router from "../router.js";
 
-import AlertMessage from "../components/AlertMessage";
-
 export default {
     name: "SignUpForm",
-    components: {
-        AlertMessage
-    },
     data() {
         return {
             email: "",
@@ -140,9 +131,7 @@ export default {
             username: "",
             name: "",
             lastName: "",
-            description: "",
-            dbUsername: "",
-            errorMessage: ""
+            description: ""
         };
     },
     methods: {

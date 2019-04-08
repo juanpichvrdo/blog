@@ -50,7 +50,7 @@ export default {
                 .get(`users/${this.userID}/posts?state=2`)
                 .then(({ data: posts }) => {
                     if (posts.length) {
-                        this.posts = posts;
+                        this.posts = posts.reverse();
                     }
                 });
         }
