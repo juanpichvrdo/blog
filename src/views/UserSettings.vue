@@ -164,8 +164,6 @@ export default {
                         this.lastName = user.lastName;
                         this.description = user.description;
                         this.publicProfile = user.publicProfile;
-                        this.password = user.password;
-                        this.confirmPassword = user.password;
                     } else {
                         this.$router.push(`/`);
                     }
