@@ -10,7 +10,6 @@
                     name="content"
                 />
                 <div class="comment-form--buttons d-flex justify-content-end align-items-center">
-                    <!-- <a class="mr-4 mr-sm-5 comment-form--cancel" @click="newCommentBody = ''">Cancel</a> -->
                     <button
                         class="comment-form--add-comment btn btn-success mr-3"
                         @click="submitComment"

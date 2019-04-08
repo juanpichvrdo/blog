@@ -194,6 +194,7 @@ export default {
                 })
                 .then(({ data }) => {
                     if (data) {
+                        this.$store.dispatch("getUser");
                         toastr["success"]("Profile updated successfully");
                     } else {
                         toastr["error"](
@@ -210,6 +211,7 @@ export default {
                 })
                 .then(({ data }) => {
                     if (data) {
+                        this.$store.dispatch("getUser");
                         toastr["success"]("Password updated successfully");
                     } else {
                         toastr["error"](

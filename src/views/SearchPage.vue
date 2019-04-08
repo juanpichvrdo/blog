@@ -80,7 +80,6 @@ export default {
     created() {
         this.searchTerm = this.getSearchTerm.searchTerm;
         this.searchBy = this.getSearchTerm.searchBy;
-        console.log(this.getSearchTerm);
         this.searchPost();
     },
     methods: {

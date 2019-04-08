@@ -33,7 +33,7 @@
                         <router-link
                             :to="`/user/${post.userId}`"
                             class="single-post--user--link"
-                        >{{ post.user }}</router-link>
+                        >{{ author }}</router-link>
                     </p>
                     <p class="single-post--published mb-0 smaller-font">
                         <router-link
@@ -85,7 +85,8 @@ export default {
         return {
             showDelete: false,
             likes: 0,
-            comments: 0
+            comments: 0,
+            author: ""
         };
     },
     computed: {
@@ -100,8 +101,14 @@ export default {
     created() {
         this.getLikes();
         this.getComments();
+        this.getAuthor();
     },
     methods: {
+        getAuthor() {
+            axios.get(`/users/${this.post.userId}`).then(({ data: user }) => {
+                this.author = user.username;
+            });
+        },
         deletePost() {
             axios
                 .patch(`/posts/${this.post.id}`, {
