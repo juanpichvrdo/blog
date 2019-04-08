@@ -32,7 +32,6 @@
 
 <script>
 import toastr from "toastr";
-import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import { POST_STATE } from "../utils/helpers.js";

@@ -104,7 +104,6 @@
 
 <script>
 import toastr from "toastr";
-import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import { postMixins } from "../utils/mixins";
