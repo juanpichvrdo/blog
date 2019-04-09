@@ -47,7 +47,12 @@ export default {
         getUserData() {
             axios
                 .get(`/users/${this.userID}`)
-                .then(({ data: user }) => (this.user = user));
+                .then(({ data: user }) => {
+                    if (Object.keys(user).length) {
+                        this.user = user;
+                    }
+                })
+                .catch(() => this.$router.push("/404"));
         }
     }
 };

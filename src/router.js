@@ -11,6 +11,7 @@ import UserProfile from "./views/UserProfile.vue";
 import SearchPosts from "./views/SearchPage.vue";
 import UserSettings from "./views/UserSettings.vue";
 import PostListPage from "./views/PostListPage.vue";
+import NotFoundPage from "./views/NotFoundPage.vue";
 
 Vue.use(Router);
 
@@ -74,6 +75,14 @@ const router = new Router({
             path: "/",
             name: "home",
             component: HomePage
+        },
+        {
+            path: "/404",
+            component: NotFoundPage
+        },
+        {
+            path: "*",
+            redirect: "/404"
         }
     ]
 });

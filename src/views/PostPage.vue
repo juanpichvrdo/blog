@@ -153,6 +153,8 @@ export default {
                 if (post.length) {
                     this.post = post[0];
                     this.getAuthor();
+                } else {
+                    this.$router.push("/404");
                 }
             });
         },
