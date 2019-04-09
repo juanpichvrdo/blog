@@ -41,7 +41,7 @@ export default new Vuex.Store({
             if (id) {
                 axios.get(`/users/?id=${id}`).then(({ data }) => {
                     const user = data[0];
-                    if (user) {
+                    if (Object.keys(user).length) {
                         commit("setUser", user);
                     }
                 });

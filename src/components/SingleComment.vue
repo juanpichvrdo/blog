@@ -138,10 +138,10 @@ export default {
                 })
                 .then(({ data: comment }) => {
                     if (Object.keys(comment).length) {
-                        toastr["success"]("Comment updated");
+                        toastr.success("Comment updated");
                         this.showEditForm = false;
                     } else {
-                        toastr["error"](
+                        toastr.error(
                             "Error updating comment",
                             "Please try again"
                         );

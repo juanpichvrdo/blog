@@ -107,7 +107,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-
+import toastr from "toastr";
 import CommentsSection from "../components/CommentsSection";
 import { POST_STATE } from "../utils/helpers.js";
 import { postMixins, singlePostMixins } from "../utils/mixins";
@@ -158,23 +158,31 @@ export default {
         },
         toggleLike() {
             if (this.alreadyLiked) {
-                axios
-                    .delete(`/posts_likes/${this.userLike}`)
-                    .then(() => {
-                        this.alreadyLiked = false;
-                        this.getLikes();
-                    })
-                    .catch(err => console.log(err));
+                this.deleteLike();
             } else {
-                axios
-                    .post(`/posts_likes`, {
-                        postId: Number(this.postID),
-                        userId: this.getUser.id
-                    })
-                    .then(() => {
-                        this.getLikes();
-                    });
+                this.sendLike();
             }
+        },
+        deleteLike() {
+            axios
+                .delete(`/posts_likes/${this.userLike}`)
+                .then(() => {
+                    this.alreadyLiked = false;
+                    this.getLikes();
+                })
+                .catch(() =>
+                    toastr.error("Please try again", "Error doing that request")
+                );
+        },
+        sendLike() {
+            axios
+                .post(`/posts_likes`, {
+                    postId: Number(this.postID),
+                    userId: this.getUser.id
+                })
+                .then(() => {
+                    this.getLikes();
+                });
         },
         getLikes() {
             axios
@@ -211,7 +219,6 @@ export default {
                     }
                 });
         },
-
         deletePost() {
             axios
                 .patch(`/posts/${this.postID}`, {

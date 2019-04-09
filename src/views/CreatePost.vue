@@ -87,7 +87,7 @@ import toastr from "toastr";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import router from "../router.js";
-import { POST_STATE } from "../utils/helpers.js";
+import { POST_STATE, currentDate } from "../utils/helpers.js";
 
 export default {
     name: "CreatePost",
@@ -119,15 +119,13 @@ export default {
             });
         },
         processPost(state) {
-            const currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
-
             const postData = {
                 title: this.title,
                 content: this.content,
                 allowComments: this.allowComments,
                 user: this.getUser.username,
                 publishDate: null,
-                createdDate: currentDate,
+                createdDate: currentDate(),
                 userId: this.getUser.id,
                 likes: 0,
                 edited: false,
@@ -135,21 +133,24 @@ export default {
             };
 
             if (state === this.POST_STATE.published) {
-                postData.publishDate = currentDate;
+                postData.publishDate = currentDate();
             }
 
             axios.post("/posts", postData).then(({ data: post }) => {
-                if (Object.keys(post).length) {
-                    if (state === this.POST_STATE.published) {
-                        toastr.success("Post published successfully");
-                    } else {
-                        toastr.success("Post saved");
-                    }
-                    router.push("/");
-                } else {
-                    toastr.error("Please try again", "Error creating post");
-                }
+                this.postCreationResponse(post, state);
             });
+        },
+        postCreationResponse(post, state) {
+            if (Object.keys(post).length) {
+                if (state === this.POST_STATE.published) {
+                    toastr.success("Post published successfully");
+                } else {
+                    toastr.success("Post saved");
+                }
+                router.push("/");
+            } else {
+                toastr.error("Please try again", "Error creating post");
+            }
         }
     }
 };

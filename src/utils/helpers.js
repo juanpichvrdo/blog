@@ -7,3 +7,7 @@ export const POST_STATE = {
 export function formatDate(date) {
     return moment(date, "YYYY-MM-DD HH:mm:ss").fromNow();
 }
+
+export function currentDate() {
+    return moment().format("YYYY-MM-DD HH:mm:ss");
+}

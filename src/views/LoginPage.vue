@@ -84,14 +84,14 @@ export default {
                 .get(`/users?email=${this.email}&password=${this.password}`)
                 .then(({ data }) => {
                     const user = data[0];
-                    if (user) {
+                    if (Object.keys(user).length) {
                         this.rememberUser(this.rememberMe);
                         Cookies.set("id", user.id);
                         this.$store.dispatch("authenticateUser", user);
 
                         router.push("/");
                     } else {
-                        toastr["error"]("Wrong username or password");
+                        toastr.error("Wrong username or password");
                     }
                 });
         },

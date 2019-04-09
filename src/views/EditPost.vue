@@ -80,11 +80,11 @@
                         <button
                             class="mx-3 px-5 btn btn-large btn-info"
                             @click="validateForm(POST_STATE.draft)"
-                        >Undo Delete & Draft</button>
+                        >Draft</button>
                         <button
                             class="mx-3 px-5 btn btn-large btn-success"
                             @click="validateForm(POST_STATE.published)"
-                        >Undo Delete & Publish</button>
+                        >Publish</button>
                     </div>
                 </div>
             </form>
@@ -107,7 +107,7 @@ import toastr from "toastr";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import { postMixins } from "../utils/mixins";
-import { POST_STATE } from "../utils/helpers.js";
+import { POST_STATE, currentDate } from "../utils/helpers.js";
 
 export default {
     name: "EditPost",
@@ -153,34 +153,42 @@ export default {
                 }
             });
         },
-
         updatePost(state) {
+            const postData = {
+                title: this.post.title,
+                content: this.post.content,
+                allowComments: this.post.allowComments,
+                edited: true,
+                state,
+                publishDate: this.post.publishDate
+            };
+
+            if (
+                this.post.state === POST_STATE.draft ||
+                this.post.state === POST_STATE.deleted
+            ) {
+                postData.publishDate = currentDate();
+            } else {
+                this.post.publishDate;
+            }
+
             axios
-                .patch(`/posts/${this.postID}`, {
-                    title: this.post.title,
-                    content: this.post.content,
-                    allowComments: this.post.allowComments,
-                    edited: true,
-                    state,
-                    publishDate:
-                        this.post.state === POST_STATE.draft ||
-                        this.post.state === POST_STATE.deleted
-                            ? moment().format("YYYY-MM-DD HH:MM:SS")
-                            : this.post.publishDate
-                })
+                .patch(`/posts/${this.postID}`, postData)
                 .then(({ data: post }) => {
-                    if (Object.keys(post).length) {
-                        toastr["success"]("Post updated");
-                        state === POST_STATE.draft
-                            ? this.$router.push("/")
-                            : this.$router.push(`/posts/${this.postID}`);
-                    } else {
-                        toastr["error"](
-                            "Please try again",
-                            "Error updating post"
-                        );
-                    }
+                    this.postEditResponse(post, state);
                 });
+        },
+        postEditResponse(post, state) {
+            if (Object.keys(post).length) {
+                toastr.success("Post updated");
+                if (state === POST_STATE.draft) {
+                    this.$router.push("/");
+                } else {
+                    this.$router.push(`/posts/${this.postID}`);
+                }
+            } else {
+                toastr.error("Please try again", "Error updating post");
+            }
         },
         deletePost() {
             axios
@@ -189,11 +197,6 @@ export default {
                 })
                 .then(() => {
                     this.$router.push("/");
-                    // axios
-                    //   .patch(`comments/?postID=${this.id}`, {
-                    //     state: "deleted"
-                    //   })
-                    //   .then(result => console.log(result));
                 });
         }
     }

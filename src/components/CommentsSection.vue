@@ -33,7 +33,7 @@
 import toastr from "toastr";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
-import { POST_STATE } from "../utils/helpers.js";
+import { POST_STATE, currentDate } from "../utils/helpers.js";
 
 import SingleComment from "./SingleComment";
 import { commentMixins } from "../utils/mixins.js";
@@ -54,18 +54,7 @@ export default {
     data() {
         return {
             comments: [],
-            newCommentBody: "",
-            customToolbar: [
-                ["bold", "italic", "underline", { color: [] }],
-                [{ list: "ordered" }, { list: "bullet" }],
-                [
-                    { align: "" },
-                    { align: "center" },
-                    { align: "right" },
-                    { align: "justify" }
-                ],
-                [{ indent: "-1" }, { indent: "+1" }]
-            ]
+            newCommentBody: ""
         };
     },
     computed: {
@@ -90,29 +79,31 @@ export default {
         },
         submitComment() {
             if (this.newCommentBody.length > 0) {
+                const commentData = {
+                    body: this.newCommentBody,
+                    postId: this.postId,
+                    datePublish: currentDate(),
+                    userId: this.getUser.id,
+                    state: POST_STATE.published
+                };
+
                 axios
-                    .post("/comments", {
-                        body: this.newCommentBody,
-                        postId: this.postId,
-                        datePublish: moment().format("YYYY-MM-DD HH:mm:ss"),
-                        userId: this.getUser.id,
-                        state: POST_STATE.published
-                    })
+                    .post("/comments", commentData)
                     .then(({ data: comment }) => {
-                        if (Object.keys(comment).length) {
-                            this.comments.push(comment);
-                            toastr["success"]("Comment submitted");
-                            this.newCommentBody = "";
-                            this.$emit("commentsChanged");
-                        } else {
-                            toastr["error"](
-                                "Please try again",
-                                "Error creating comment"
-                            );
-                        }
+                        this.commentCreationResponse(comment);
                     });
             } else {
-                toastr["warning"]("Comment needs content");
+                toastr.warning("Comment needs content");
+            }
+        },
+        commentCreationResponse(comment) {
+            if (Object.keys(comment).length) {
+                this.comments.push(comment);
+                toastr.success("Comment submitted");
+                this.newCommentBody = "";
+                this.$emit("commentsChanged");
+            } else {
+                toastr.error("Please try again", "Error creating comment");
             }
         },
         commentDeleted() {

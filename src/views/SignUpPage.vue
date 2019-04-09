@@ -143,37 +143,33 @@ export default {
             });
         },
         processForm() {
-            axios
-                .post("/users", {
-                    email: this.email,
-                    password: this.password,
-                    username: this.username,
-                    name: this.name,
-                    lastName: this.lastName,
-                    description: this.description,
-                    publicProfile: true
-                })
-                .then(response => {
-                    const user = response.data;
-                    console.log(user);
-                    if (user) {
-                        Cookies.set("id", user.id);
-                        this.$store.dispatch("authenticateUser", user);
-                        toastr["success"]("Sign up succesfully!");
-                        router.push("/");
-                    } else {
-                        toastr["error"](
-                            "Please try again",
-                            "Error creating user"
-                        );
-                    }
-                });
+            const userData = {
+                email: this.email,
+                password: this.password,
+                username: this.username,
+                name: this.name,
+                lastName: this.lastName,
+                description: this.description,
+                publicProfile: true
+            };
+            axios.post("/users", userData).then(response => {
+                const user = response.data;
+                console.log(user);
+                if (user) {
+                    Cookies.set("id", user.id);
+                    this.$store.dispatch("authenticateUser", user);
+                    toastr.success("Sign up succesfully!");
+                    router.push("/");
+                } else {
+                    toastr.error("Please try again", "Error creating user");
+                }
+            });
         },
         checkEmail() {
             axios.get(`/users/?email=${this.email}`).then(({ data }) => {
                 const user = data[0];
                 if (user) {
-                    toastr["error"](
+                    toastr.error(
                         "Please choose another one",
                         "That email is taken"
                     );
@@ -186,7 +182,7 @@ export default {
             axios.get(`/users/?username=${this.username}`).then(({ data }) => {
                 const user = data[0];
                 if (user) {
-                    toastr["error"](
+                    toastr.error(
                         "Please choose another one",
                         "That username is taken"
                     );

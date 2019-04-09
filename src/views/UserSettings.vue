@@ -171,7 +171,6 @@ export default {
             });
         },
         checkUsername() {
-            // axios.get(`/users/?username=${this.username}`).then(({ data }) => {
             axios
                 .get(
                     `/users/?username=${this.username}&id_ne=${this.getUser.id}`
@@ -179,7 +178,7 @@ export default {
                 .then(({ data }) => {
                     const user = data[0];
                     if (user) {
-                        toastr["error"](
+                        toastr.error(
                             "Please choose another one",
                             "That username is taken"
                         );
@@ -201,9 +200,9 @@ export default {
                     if (data) {
                         this.$store.dispatch("getUser");
 
-                        toastr["success"]("Profile updated successfully");
+                        toastr.success("Profile updated successfully");
                     } else {
-                        toastr["error"](
+                        toastr.error(
                             "Please try again",
                             "Error updating profile"
                         );
@@ -218,9 +217,9 @@ export default {
                 .then(({ data }) => {
                     if (data) {
                         this.$store.dispatch("getUser");
-                        toastr["success"]("Password updated successfully");
+                        toastr.success("Password updated successfully");
                     } else {
-                        toastr["error"](
+                        toastr.error(
                             "Please try again",
                             "Error updating password"
                         );
