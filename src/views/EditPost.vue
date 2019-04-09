@@ -36,7 +36,10 @@
                 </div>
                 <vue-editor v-model="post.content" name="content"/>
                 <div class="invalid-feedback">{{ errors.first('content') }}</div>
-                <div class="row d-flex justify-content-between align-items-center mt-5">
+
+                <div
+                    class="row d-flex flex-column flex-lg-row justify-content-lg-between align-items-center mt-5"
+                >
                     <div class="form-check">
                         <input
                             id="allowCommentsCheckbox"
@@ -55,22 +58,22 @@
                         class="create-post--buttons"
                     >
                         <button
-                            class="mx-3 px-5 btn btn-large btn-danger"
-                            @click="confirmDeletePost"
-                        >Delete</button>
-                        <button
-                            class="mx-3 px-5 btn btn-large btn-warning"
-                            @click="$router.push('/')"
-                        >Cancel</button>
+                            v-if="post.state === POST_STATE.draft"
+                            class="mx-3 px-5 btn btn-large btn-success"
+                            @click="validateForm(POST_STATE.published)"
+                        >Publish</button>
                         <button
                             class="mx-3 px-5 btn btn-large btn-info"
                             @click="validateForm(post.state)"
                         >Update</button>
                         <button
-                            v-if="post.state === POST_STATE.draft"
-                            class="mx-3 px-5 btn btn-large btn-success"
-                            @click="validateForm(POST_STATE.published)"
-                        >Publish</button>
+                            class="mx-3 px-5 btn btn-large btn-warning"
+                            @click="$router.push('/')"
+                        >Cancel</button>
+                        <button
+                            class="mx-3 px-5 btn btn-large btn-danger"
+                            @click="confirmDeletePost"
+                        >Delete</button>
                     </div>
                     <div v-else class="create-post--buttons">
                         <button

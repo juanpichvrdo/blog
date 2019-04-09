@@ -1,5 +1,5 @@
 <template>
-    <div class="single-post pb-4" @mouseover="showDelete = true" @mouseleave="showDelete = false">
+    <div class="single-post pb-4">
         <div class="container-fluid px-4 py-3 mb-2">
             <div class="d-flex justify-content-between align-items-start">
                 <h2 class="single-post--heading mb-3 mb-lg-5">
@@ -83,7 +83,6 @@ export default {
     },
     data() {
         return {
-            showDelete: false,
             likes: 0,
             comments: 0,
             author: ""

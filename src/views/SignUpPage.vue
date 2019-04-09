@@ -109,7 +109,7 @@
                     </form>
                 </div>
             </div>
-            <p class="col-12 text-center mt-5">
+            <p class="col-12 text-center my-5">
                 Already have an account?
                 <router-link class="login-link" to="/login">Login</router-link>
             </p>

@@ -51,8 +51,8 @@
                     </div>
                 </div>
             </form>
-            <div v-if="searchResults.length" class="mt-3">
-                <single-post v-for="post in searchResults" :key="post.id" :post="post"/>
+            <div v-if="publishedPosts.length" class="mt-3">
+                <single-post v-for="post in publishedPosts" :key="post.id" :post="post"/>
             </div>
         </div>
     </div>
@@ -60,6 +60,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { POST_STATE } from "../utils/helpers.js";
 import SinglePost from "../components/SinglePost";
 
 export default {
@@ -75,7 +76,12 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["getSearchTerm"])
+        ...mapGetters(["getSearchTerm"]),
+        publishedPosts() {
+            return this.searchResults
+                .filter(post => post.state === POST_STATE.published)
+                .reverse();
+        }
     },
     created() {
         this.searchTerm = this.getSearchTerm.searchTerm;

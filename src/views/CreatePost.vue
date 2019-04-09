@@ -38,7 +38,9 @@
                 </div>
                 <vue-editor v-model="content" name="content"/>
                 <div class="invalid-feedback">{{ errors.first('content') }}</div>
-                <div class="row d-flex justify-content-between align-items-center mt-5">
+                <div
+                    class="row d-flex flex-column flex-lg-row justify-content-lg-between align-items-center mt-5"
+                >
                     <div class="form-check">
                         <input
                             id="allowCommentsCheckbox"
@@ -174,6 +176,34 @@ export default {
 
     &--checkbox {
         margin-top: 6px;
+    }
+
+    &--buttons {
+        display: flex;
+        flex-direction: row-reverse;
+
+        @media only screen and (max-width: 991px) {
+            margin-top: 20px;
+        }
+
+        @media only screen and (max-width: 768px) {
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+        }
+
+        & button {
+            @media only screen and (max-width: 768px) {
+                margin-bottom: 20px;
+                padding: 10px 0;
+            }
+        }
+
+        // & button {
+        //     @media only screen and (max-width: 991px) {
+        //         margin: 20px;
+        //     }
+        // }
     }
 }
 </style>

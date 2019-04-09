@@ -1,42 +1,62 @@
 <template>
-    <nav class="navigation navbar py-0">
-        <div class="container-fluid d-flex flex-column flex-sm-row">
-            <div class="d-flex align-items-center">
+    <nav>
+        <b-navbar class="navigation navbar py-0" toggleable="lg">
+            <div class="container-fluid d-flex">
                 <router-link
                     class="navigation--brand display-4 navbar-brand py-3 py-sm-3 px-md-5"
                     to="/"
                 >Random Logo</router-link>
-                <search-posts v-if="isAuthenticated && $route.meta.showNavbarSearch === undefined"/>
-            </div>
-            <div class="navigation--user d-flex align-items-center pr-2 pr-md-5">
-                <router-link
-                    :class="{ active: $route.name !== 'postList' }"
-                    to="/"
-                    class="navigation--user-links mr-4 py-4 px-3"
-                >BLOG</router-link>
-                <router-link
-                    :class="{ active: $route.name === 'postList' }"
-                    :to="`/post-list/${getUser.id}`"
-                    class="navigation--user-links mr-4 py-4 px-3"
-                >POSTS</router-link>
-                <div v-if="isAuthenticated" class="d-flex align-items-center">
-                    <img class="mx-3 py-sm-3" src="../assets/user-1.png" alt="User profile image">
-                    <div class="navigation--user-profile">
-                        <div>
-                            Welcome,
-                            <router-link
-                                :to="`/user-settings/${getUser.id}`"
-                                class="navigation--user-configuration"
-                            >{{ getUser.username }}</router-link>
-                        </div>
-                        <a class="navigation--user-logout" href="#" @click="onLogout">Logout</a>
+
+                <b-navbar-toggle target="nav-collapse"/>
+
+                <b-collapse id="nav-collapse" is-nav>
+                    <div class="navigation--search-container">
+                        <search-posts
+                            v-if="isAuthenticated && $route.meta.showNavbarSearch === undefined"
+                        />
                     </div>
-                </div>
-                <div v-else class="ml-5">
-                    <router-link class="navigation--user-login" to="/login">Login</router-link>
-                </div>
+
+                    <b-navbar-nav class="navigation--user text-center ml-auto">
+                        <router-link
+                            :class="{ active: $route.name !== 'postList' }"
+                            to="/"
+                            class="navigation--user-links mr-3 mb-3 mb-lg-0 py-lg-4 px-lg-3"
+                        >BLOG</router-link>
+                        <router-link
+                            v-if="isAuthenticated"
+                            :class="{ active: $route.name === 'postList' }"
+                            :to="`/post-list/${getUser.id}`"
+                            class="navigation--user-links mr-3 mb-3 mb-lg-0 py-lg-4 px-lg-3"
+                        >POSTS</router-link>
+                    </b-navbar-nav>
+
+                    <div
+                        v-if="isAuthenticated"
+                        class="d-flex align-items-center justify-content-center my-3 my-lg-0"
+                    >
+                        <img
+                            class="mx-3 py-sm-3"
+                            src="../assets/user-1.png"
+                            alt="User profile image"
+                        >
+                        <div class="navigation--user-profile">
+                            <div>
+                                Welcome,
+                                <router-link
+                                    :to="`/user-settings/${getUser.id}`"
+                                    class="navigation--user-configuration"
+                                >{{ getUser.username }}</router-link>
+                            </div>
+                            <a class="navigation--user-logout" href="#" @click="onLogout">Logout</a>
+                        </div>
+                    </div>
+
+                    <div v-else class="ml-lg-5 my-4 my-lg-0 text-center">
+                        <router-link class="navigation--user-login" to="/login">Login</router-link>
+                    </div>
+                </b-collapse>
             </div>
-        </div>
+        </b-navbar>
     </nav>
 </template>
 
@@ -84,10 +104,17 @@ export default {
         padding-right: 10px;
     }
 
-    & > div {
-        justify-content: space-between;
-        @media only screen and (max-width: 950px) {
-            justify-content: center;
+    &--search-container {
+        @media only screen and (max-width: 992px) {
+            display: block;
+            margin-top: 50px;
+            width: 30rem;
+            margin: 0 auto;
+            // height: 45px;
+        }
+
+        @media only screen and (max-width: 550px) {
+            width: 20rem;
         }
     }
 
@@ -102,6 +129,14 @@ export default {
     &--user {
         font-size: 0.8rem;
 
+        @media only screen and (max-width: 991px) {
+            // padding-left: 100px;
+            // padding-right: 100px;
+
+            margin: 30px auto 0;
+            width: 300px;
+        }
+
         &-links {
             color: $white-color;
 
@@ -112,6 +147,8 @@ export default {
         }
 
         &-profile {
+            font-size: 0.8rem;
+
             .navigation--user-logout {
                 color: $light-blue-color;
             }
@@ -137,9 +174,22 @@ export default {
 
     .active {
         border-bottom: 5px solid $white-color;
+        transition: background-color 0.2s;
 
         &:hover {
             border-bottom: 5px solid #e3e4eb;
+        }
+
+        @media only screen and (max-width: 991px) {
+            border-bottom: 2px solid #e3e4eb;
+            padding-bottom: 5px;
+            display: block;
+
+            &:hover {
+                &:hover {
+                    border-bottom: 2px solid #e3e4eb;
+                }
+            }
         }
     }
 }

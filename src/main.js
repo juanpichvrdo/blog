@@ -26,6 +26,8 @@ import { formatDate } from "./utils/helpers";
 require("toastr/build/toastr.css");
 
 import toastr from "toastr";
+import Navbar from "bootstrap-vue/es/components/navbar";
+Vue.use(Navbar);
 
 toastr.options = {
     closeButton: true,
