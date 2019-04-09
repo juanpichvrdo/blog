@@ -64,12 +64,19 @@
                             :class="{ 'red-heart': alreadyLiked }"
                             class="comment--body--like ml-2"
                             icon="heart"
-                            @click="toggleLike()"
+                            @click="toggleLike"
                         />
                     </span>
+                    <!-- <font-awesome-icon class="ml-1" icon="comment"/> -->
+                    <font-awesome-icon
+                        class="comment--body--reply ml-2"
+                        icon="reply"
+                        @click="addingReply = true"
+                    />
                 </div>
             </div>
         </div>
+        <comment-reply v-if="addingReply"/>
     </div>
 </template>
 
@@ -79,10 +86,12 @@ import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
 import { POST_STATE } from "../utils/helpers.js";
 import { commentMixins } from "../utils/mixins.js";
+import CommentReply from "./CommentReply";
 
 export default {
     name: "SingleComment",
     components: {
+        CommentReply,
         VueEditor
     },
     mixins: [commentMixins],
@@ -98,7 +107,8 @@ export default {
             alreadyLiked: false,
             userLike: null,
             likes: null,
-            showEditForm: false
+            showEditForm: false,
+            addingReply: false
         };
     },
     computed: {
@@ -204,6 +214,9 @@ export default {
                         this.getLikes();
                     });
             }
+        },
+        addReply() {
+            console.log("Reply");
         }
     }
 };
@@ -224,10 +237,15 @@ export default {
         border-radius: 5px;
         padding: 1.7rem 1.7rem 1.2rem;
 
-        &--like {
+        &--like,
+        &--reply {
             font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.2s;
+        }
+
+        &--reply {
+            color: $light-blue-color;
         }
     }
 

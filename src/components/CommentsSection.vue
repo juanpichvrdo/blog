@@ -84,7 +84,8 @@ export default {
                     postId: this.postId,
                     datePublish: currentDate(),
                     userId: this.getUser.id,
-                    state: POST_STATE.published
+                    state: POST_STATE.published,
+                    replyId: null
                 };
 
                 axios
