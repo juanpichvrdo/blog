@@ -1,14 +1,14 @@
 <template>
     <div class="container-fluid">
-        <div class="m-3 mt-4 m-md-5 d-flex justify-content-between align-items-center">
-            <h2 class="post-list--heading">All posts</h2>
-            <router-link
-                v-if="isAuthenticated"
-                to="/create-post"
-                class="post-list--create-post btn btn-success"
-            >Create Post</router-link>
-        </div>
         <div class="container mt-3">
+            <div class="mt-5 d-flex justify-content-between align-items-center">
+                <h2 class="post-list--heading">All posts</h2>
+                <router-link
+                    v-if="isAuthenticated"
+                    to="/create-post"
+                    class="post-list--create-post btn btn-success"
+                >Create Post</router-link>
+            </div>
             <hr>
             <div v-if="publishedPosts.length">
                 <single-post

@@ -29,27 +29,11 @@
                 </div>
             </div>
             <div v-if="showEditForm" class="card comment-form edit-comment ml-5 mt-3">
-                <div class="comment-form--header edit-comment--header card-header">Edit comment</div>
-                <div class="comment-form--container card-body p-0">
-                    <vue-editor
-                        :editor-toolbar="customToolbar"
-                        v-model="comment.body"
-                        class="comment-form--editor"
-                        name="body"
-                    />
-                    <div
-                        class="edit-comment--buttons d-flex justify-content-end align-items-center"
-                    >
-                        <a
-                            class="mr-4 mr-sm-5 comment-form--cancel"
-                            @click="showEditForm = false"
-                        >Cancel</a>
-                        <button
-                            class="comment-form--add-comment btn btn-success mr-3"
-                            @click="updateComment"
-                        >Submit</button>
-                    </div>
-                </div>
+                <comment-form
+                    :body="comment.body"
+                    @submitComment="updateComment"
+                    @closeForm="showEditForm = false"
+                >Edit Comment</comment-form>
             </div>
 
             <div v-else class="comment--body ml-5 mt-3">
@@ -71,12 +55,12 @@
                     <font-awesome-icon
                         class="comment--body--reply ml-2"
                         icon="reply"
-                        @click="addingReply = true"
+                        @click="addingReply = !addingReply"
                     />
                 </div>
             </div>
         </div>
-        <comment-reply v-if="addingReply"/>
+        <comment-reply v-if="addingReply" @closeReply="addingReply = false"/>
     </div>
 </template>
 
@@ -87,12 +71,14 @@ import { VueEditor } from "vue2-editor";
 import { POST_STATE } from "../utils/helpers.js";
 import { commentMixins } from "../utils/mixins.js";
 import CommentReply from "./CommentReply";
+import CommentForm from "./CommentForm";
 
 export default {
     name: "SingleComment",
     components: {
         CommentReply,
-        VueEditor
+        VueEditor,
+        CommentForm
     },
     mixins: [commentMixins],
     props: {
@@ -141,22 +127,27 @@ export default {
                 }
             });
         },
-        updateComment() {
-            axios
-                .patch(`/comments/${this.comment.id}`, {
-                    body: this.comment.body
-                })
-                .then(({ data: comment }) => {
-                    if (Object.keys(comment).length) {
-                        toastr.success("Comment updated");
-                        this.showEditForm = false;
-                    } else {
-                        toastr.error(
-                            "Error updating comment",
-                            "Please try again"
-                        );
-                    }
-                });
+        updateComment(updatedBody) {
+            if (updatedBody) {
+                axios
+                    .patch(`/comments/${this.comment.id}`, {
+                        body: updatedBody
+                    })
+                    .then(({ data: comment }) => {
+                        if (Object.keys(comment).length) {
+                            this.$emit("commentUpdated");
+                            toastr.success("Comment updated");
+                            this.showEditForm = false;
+                        } else {
+                            toastr.error(
+                                "Error updating comment",
+                                "Please try again"
+                            );
+                        }
+                    });
+            } else {
+                toastr.warning("Comment needs content");
+            }
         },
         deleteComment() {
             axios
@@ -258,21 +249,8 @@ export default {
     &--delete {
         color: $red-color;
     }
-
-    .edit-comment {
-        &--header {
-            padding: 0.4rem 0.8rem;
-        }
-
-        &--buttons {
-            margin-bottom: 10px;
-        }
-    }
 }
 .red-heart {
     color: $red-color;
-}
-.comments .comment-form {
-    width: inherit !important;
 }
 </style>

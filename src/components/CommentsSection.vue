@@ -25,6 +25,7 @@
             :key="comment.id"
             :comment="comment"
             @commentDeleted="commentDeleted"
+            @commentUpdated="getComments"
         />
     </div>
 </template>
