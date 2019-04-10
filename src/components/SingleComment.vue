@@ -53,6 +53,7 @@
                     </span>
                     <!-- <font-awesome-icon class="ml-1" icon="comment"/> -->
                     <font-awesome-icon
+                        v-if="!comment.commentId"
                         class="comment--body--reply ml-2"
                         icon="reply"
                         @click="addingReply = !addingReply"
@@ -60,7 +61,12 @@
                 </div>
             </div>
         </div>
-        <comment-reply v-if="addingReply" @closeReply="addingReply = false"/>
+        <comment-reply
+            v-if="addingReply"
+            :comment-id="comment.id"
+            @closeReply="addingReply = false"
+            @replyAdded="$emit('commentUpdated')"
+        />
     </div>
 </template>
 
@@ -118,7 +124,7 @@ export default {
                 confirmButtonText: "Yes, delete it!"
             }).then(result => {
                 if (result.value) {
-                    this.deleteComment();
+                    this.delete();
                     this.$swal(
                         "Deleted!",
                         "Your comment has been deleted.",
@@ -134,19 +140,26 @@ export default {
                         body: updatedBody
                     })
                     .then(({ data: comment }) => {
-                        if (Object.keys(comment).length) {
-                            this.$emit("commentUpdated");
-                            toastr.success("Comment updated");
-                            this.showEditForm = false;
-                        } else {
-                            toastr.error(
-                                "Error updating comment",
-                                "Please try again"
-                            );
-                        }
+                        this.updateCommentResponse(comment);
                     });
             } else {
                 toastr.warning("Comment needs content");
+            }
+        },
+        updateCommentResponse(comment) {
+            if (Object.keys(comment).length) {
+                this.$emit("commentUpdated");
+                toastr.success("Comment updated");
+                this.showEditForm = false;
+            } else {
+                toastr.error("Error updating comment", "Please try again");
+            }
+        },
+        delete() {
+            if (!this.comment.commentId) {
+                this.deleteComment();
+            } else {
+                this.deleteReply();
             }
         },
         deleteComment() {
@@ -155,7 +168,22 @@ export default {
                     state: POST_STATE.deleted
                 })
                 .then(() => {
-                    this.$emit("commentDeleted");
+                    this.$store.dispatch(
+                        "getComments",
+                        Number(this.$route.params.id)
+                    );
+                });
+        },
+        deleteReply() {
+            axios
+                .patch(`/replies/${this.comment.id}`, {
+                    state: POST_STATE.deleted
+                })
+                .then(() => {
+                    this.$store.dispatch(
+                        "getComments",
+                        Number(this.$route.params.id)
+                    );
                 });
         },
         getAuthorData() {
@@ -205,9 +233,6 @@ export default {
                         this.getLikes();
                     });
             }
-        },
-        addReply() {
-            console.log("Reply");
         }
     }
 };

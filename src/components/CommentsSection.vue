@@ -18,15 +18,16 @@
             </div>
         </div>
 
-        <h4 v-if="comments.length" class="comments--heading mt-5">User comments</h4>
+        <h4 v-if="allComments.length" class="comments--heading mt-5">User comments</h4>
         <hr class="mb-4">
-        <single-comment
-            v-for="comment in orderedComments"
-            :key="comment.id"
-            :comment="comment"
-            @commentDeleted="commentDeleted"
-            @commentUpdated="getComments"
-        />
+        <div v-for="comment in allComments" :key="comment.id">
+            <single-comment
+                :comment="comment"
+                @commentDeleted="commentDeleted"
+                @commentUpdated="getComments"
+            />
+            <comment-reply-list :replies="comment.replies"/>
+        </div>
     </div>
 </template>
 
@@ -36,14 +37,16 @@ import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import { POST_STATE, currentDate } from "../utils/helpers.js";
 
-import SingleComment from "./SingleComment";
 import { commentMixins } from "../utils/mixins.js";
+import SingleComment from "./SingleComment";
+import CommentReplyList from "./CommentReplyList";
 
 export default {
     name: "CommentsSection",
     components: {
         VueEditor,
-        SingleComment
+        SingleComment,
+        CommentReplyList
     },
     mixins: [commentMixins],
     props: {
@@ -59,24 +62,15 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["getUser"]),
-        orderedComments() {
-            return this.comments
-                .filter(comment => comment.state === POST_STATE.published)
-                .reverse();
-        }
+        ...mapGetters(["getUser", "allComments"])
     },
     created() {
-        this.getComments();
+        this.$store.dispatch("getComments", this.postId);
     },
 
     methods: {
         getComments() {
-            axios
-                .get(`/comments?postId=${this.postId}`)
-                .then(({ data: comments }) => {
-                    this.comments = comments;
-                });
+            this.$store.dispatch("getComments", this.postId);
         },
         submitComment() {
             if (this.newCommentBody.length > 0) {
@@ -85,8 +79,7 @@ export default {
                     postId: this.postId,
                     datePublish: currentDate(),
                     userId: this.getUser.id,
-                    state: POST_STATE.published,
-                    replyId: null
+                    state: POST_STATE.published
                 };
 
                 axios
@@ -100,17 +93,15 @@ export default {
         },
         commentCreationResponse(comment) {
             if (Object.keys(comment).length) {
-                this.comments.push(comment);
+                this.getComments();
                 toastr.success("Comment submitted");
                 this.newCommentBody = "";
-                this.$emit("commentsChanged");
             } else {
                 toastr.error("Please try again", "Error creating comment");
             }
         },
         commentDeleted() {
-            this.getComments();
-            this.$emit("commentsChanged");
+            this.$store.dispatch("getComments", this.postId);
         }
     }
 };

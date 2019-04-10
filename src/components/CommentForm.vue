@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="comment-form--header edit-comment--header card-header">
-            <slot></slot>
+            <slot/>
         </div>
         <div class="comment-form--container card-body p-0">
             <vue-editor

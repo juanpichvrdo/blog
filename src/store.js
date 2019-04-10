@@ -12,13 +12,15 @@ export default new Vuex.Store({
         search: {
             searhTerm: "",
             searchBy: "title"
-        }
+        },
+        comments: []
     },
     getters: {
         isAuthenticated: state => state.cookie || Object.keys(state.user).length,
         allPosts: state => state.posts,
         getUser: state => state.user,
-        getSearchTerm: state => state.search
+        getSearchTerm: state => state.search,
+        allComments: state => state.comments
     },
     mutations: {
         logoutUser(state) {
@@ -33,6 +35,9 @@ export default new Vuex.Store({
         },
         setSearch(state, search) {
             state.search = search;
+        },
+        setComments(state, comments) {
+            state.comments = comments;
         }
     },
     actions: {
@@ -46,6 +51,15 @@ export default new Vuex.Store({
                     }
                 });
             }
+        },
+        getComments({ commit }, postId) {
+            axios
+                .get(
+                    `comments/?state=1&postId=${postId}&_sort=datePublish&_order=desc&_embed=replies`
+                )
+                .then(({ data: comments }) => {
+                    commit("setComments", comments);
+                });
         },
         authenticateUser({ commit }, user) {
             commit("setUser", user);
