@@ -1,17 +1,12 @@
 <template>
     <div v-if="orderedReplies.length" class="reply-list">
-        <single-comment
-            v-for="comment in orderedReplies"
-            :key="comment.id"
-            :comment="comment"
-            @commentDeleted="$emit('commentDeleted')"
-        />
+        <single-comment v-for="comment in orderedReplies" :key="comment.id" :comment="comment"/>
     </div>
 </template>
 
 <script>
 import SingleComment from "./SingleComment";
-// import { POST_STATE } from "../utils/helpers.js";
+import { POST_STATE } from "../utils/helpers.js";
 
 export default {
     name: "CommentReplyList",
@@ -26,25 +21,11 @@ export default {
     },
     computed: {
         orderedReplies() {
-            return this.replies.reverse();
+            return this.replies
+                .filter(reply => reply.state === POST_STATE.published)
+                .reverse();
         }
     }
-    // created() {
-    //     this.getCommentReplies();
-    // },
-    // methods: {
-    //     getCommentReplies() {
-    //         axios
-    //             .get(
-    //                 `comments/${this.commentId}?state=1&postId=${
-    //                     this.postId
-    //                 }&_sort=datePublish&_order=desc&_embed=replies`
-    //             )
-    //             .then(({ data }) => {
-    //                 this.commentReplies = data.replies.reverse();
-    //             });
-    //     }
-    // }
 };
 </script>
 
@@ -52,7 +33,6 @@ export default {
 .reply-list {
     margin-left: 55px;
     padding: 15px;
-    margin-top: -20px;
-    border-left: solid 1px rgba($color: #000000, $alpha: 0.2);
+    margin-top: -40px;
 }
 </style>

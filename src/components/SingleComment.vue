@@ -31,7 +31,7 @@
             <div v-if="showEditForm" class="card comment-form edit-comment ml-5 mt-3">
                 <comment-form
                     :body="comment.body"
-                    @submitComment="updateComment"
+                    @submitComment="update"
                     @closeForm="showEditForm = false"
                 >Edit Comment</comment-form>
             </div>
@@ -51,7 +51,6 @@
                             @click="toggleLike"
                         />
                     </span>
-                    <!-- <font-awesome-icon class="ml-1" icon="comment"/> -->
                     <font-awesome-icon
                         v-if="!comment.commentId"
                         class="comment--body--reply ml-2"
@@ -65,7 +64,6 @@
             v-if="addingReply"
             :comment-id="comment.id"
             @closeReply="addingReply = false"
-            @replyAdded="$emit('commentUpdated')"
         />
     </div>
 </template>
@@ -100,7 +98,8 @@ export default {
             userLike: null,
             likes: null,
             showEditForm: false,
-            addingReply: false
+            addingReply: false,
+            postId: Number(this.$route.params.id)
         };
     },
     computed: {
@@ -133,6 +132,13 @@ export default {
                 }
             });
         },
+        update(updatedBody) {
+            if (!this.comment.commentId) {
+                this.updateComment(updatedBody);
+            } else {
+                this.updateReply(updatedBody);
+            }
+        },
         updateComment(updatedBody) {
             if (updatedBody) {
                 axios
@@ -146,9 +152,22 @@ export default {
                 toastr.warning("Comment needs content");
             }
         },
+        updateReply(updatedBody) {
+            if (updatedBody) {
+                axios
+                    .patch(`/replies/${this.comment.id}`, {
+                        body: updatedBody
+                    })
+                    .then(({ data: comment }) => {
+                        this.updateCommentResponse(comment);
+                    });
+            } else {
+                toastr.warning("Comment needs content");
+            }
+        },
         updateCommentResponse(comment) {
             if (Object.keys(comment).length) {
-                this.$emit("commentUpdated");
+                this.$store.dispatch("getComments", this.postId);
                 toastr.success("Comment updated");
                 this.showEditForm = false;
             } else {
@@ -168,10 +187,7 @@ export default {
                     state: POST_STATE.deleted
                 })
                 .then(() => {
-                    this.$store.dispatch(
-                        "getComments",
-                        Number(this.$route.params.id)
-                    );
+                    this.$store.dispatch("getComments", this.postId);
                 });
         },
         deleteReply() {
@@ -180,10 +196,7 @@ export default {
                     state: POST_STATE.deleted
                 })
                 .then(() => {
-                    this.$store.dispatch(
-                        "getComments",
-                        Number(this.$route.params.id)
-                    );
+                    this.$store.dispatch("getComments", this.postId);
                 });
         },
         getAuthorData() {

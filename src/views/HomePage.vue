@@ -53,9 +53,5 @@ export default {
             font-weight: 700;
         }
     }
-
-    aside {
-        background-color: #ebeef1;
-    }
 }
 </style>

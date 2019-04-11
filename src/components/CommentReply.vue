@@ -24,6 +24,11 @@ export default {
             default: null
         }
     },
+    data() {
+        return {
+            postId: Number(this.$route.params.id)
+        };
+    },
     computed: {
         ...mapGetters(["getUser"])
     },
@@ -32,7 +37,7 @@ export default {
             if (body.length > 0) {
                 const commentData = {
                     body,
-                    postId: Number(this.$route.params.id),
+                    postId: this.postId,
                     datePublish: currentDate(),
                     userId: this.getUser.id,
                     state: POST_STATE.published,
@@ -42,22 +47,19 @@ export default {
                 axios
                     .post("/replies", commentData)
                     .then(({ data: comment }) => {
-                        if (Object.keys(comment).length) {
-                            this.$store.dispatch(
-                                "getComments",
-                                Number(this.$route.params.id)
-                            );
-                            toastr.success("Reply send");
-                        } else {
-                            toastr.error(
-                                "Error sending reply",
-                                "Please try again"
-                            );
-                        }
-                        // this.commentCreationResponse(comment);
+                        this.afterSubmitResponse(comment);
                     });
             } else {
                 toastr.warning("Comment needs content");
+            }
+        },
+        afterSubmitResponse(comment) {
+            if (Object.keys(comment).length) {
+                this.$store.dispatch("getComments", this.postId);
+                toastr.success("Reply send");
+                this.$emit("closeReply");
+            } else {
+                toastr.error("Error sending reply", "Please try again");
             }
         }
     }
@@ -65,17 +67,8 @@ export default {
 </script>
 
 <style lang="scss">
-.edit-comment {
-    &--header {
-        padding: 0.4rem 0.8rem;
-    }
-
-    &--buttons {
-        margin-bottom: 10px;
-    }
-}
-
-.comments .comment-form {
-    width: inherit !important;
+.comment-reply {
+    margin-left: 65px;
+    margin-bottom: 40px;
 }
 </style>

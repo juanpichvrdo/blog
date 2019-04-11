@@ -21,11 +21,7 @@
         <h4 v-if="allComments.length" class="comments--heading mt-5">User comments</h4>
         <hr class="mb-4">
         <div v-for="comment in allComments" :key="comment.id">
-            <single-comment
-                :comment="comment"
-                @commentDeleted="commentDeleted"
-                @commentUpdated="getComments"
-            />
+            <single-comment :comment="comment"/>
             <comment-reply-list :replies="comment.replies"/>
         </div>
     </div>
@@ -99,9 +95,6 @@ export default {
             } else {
                 toastr.error("Please try again", "Error creating comment");
             }
-        },
-        commentDeleted() {
-            this.$store.dispatch("getComments", this.postId);
         }
     }
 };
