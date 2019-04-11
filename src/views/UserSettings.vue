@@ -165,7 +165,7 @@ export default {
                         this.description = user.description;
                         this.publicProfile = user.publicProfile;
                     } else {
-                        this.$router.push(`/`);
+                        this.$router.replace(`/`);
                     }
                 }
             });

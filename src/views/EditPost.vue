@@ -199,7 +199,7 @@ export default {
                     state: POST_STATE.deleted
                 })
                 .then(() => {
-                    this.$router.push("/");
+                    this.$router.replace("/");
                 });
         }
     }

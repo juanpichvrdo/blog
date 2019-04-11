@@ -66,7 +66,7 @@ export default {
             axios.get(`/users/${this.userID}`).then(({ data: user }) => {
                 if (Object.keys(user).length) {
                     if (this.getUser.id !== user.id) {
-                        this.$router.push(`/`);
+                        this.$router.replace(`/`);
                     }
                 }
             });

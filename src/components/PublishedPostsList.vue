@@ -3,19 +3,10 @@
         <h3 class="mb-4 text-center">Published Posts</h3>
         <div class="table-responsive">
             <table class="table">
-                <thead class="published-posts--thead text-white">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Comments</th>
-                        <th scope="col">Likes</th>
-                        <th scope="col">Created Date</th>
-                        <th scope="col">Publish Date</th>
-                    </tr>
-                </thead>
+                <table-head @changeSort="methodOfSorting => sortBy = methodOfSorting"/>
                 <tbody>
                     <post-row
-                        v-for="(post, index) in posts"
+                        v-for="(post, index) in sortedPosts"
                         :key="post.id"
                         :post="post"
                         :index="index + 1"
@@ -27,21 +18,27 @@
 </template>
 
 <script>
-import SinglePost from "./SinglePost";
 import PostRow from "./PostRow";
+import TableHead from "./TableHead";
 
 export default {
     name: "PublishedPostList",
     components: {
-        SinglePost,
-        PostRow
+        PostRow,
+        TableHead
     },
     data() {
         return {
             userID: this.$route.params.id,
-            activeTab: "created",
-            posts: []
+            posts: [],
+            sortBy: "number",
+            order: "desc"
         };
+    },
+    computed: {
+        sortedPosts() {
+            return _.orderBy(this.posts, [this.sortBy], [this.order]);
+        }
     },
     created() {
         this.getUserPosts();
@@ -56,14 +53,12 @@ export default {
                     }
                 });
         }
+        // changeSort(sortBy) {
+        //     console.log(sortBy);
+        // }
     }
 };
 </script>
 
 <style lang="scss">
-.published-posts {
-    &--thead {
-        background-color: $navy-color;
-    }
-}
 </style>

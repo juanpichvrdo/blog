@@ -3,13 +3,10 @@
         <h3 class="mb-4 text-center">Drafted Posts</h3>
         <div class="table-responsive">
             <table class="table">
-                <thead class="drafted-posts--thead text-white">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Created Date</th>
-                    </tr>
-                </thead>
+                <table-head
+                    :draft="false"
+                    @changeSort="methodOfSorting => sortBy = methodOfSorting"
+                />
                 <tbody>
                     <post-row
                         v-for="(post, index) in posts"
@@ -26,21 +23,28 @@
 <script>
 import SinglePost from "./SinglePost";
 import PostRow from "./PostRow";
+import TableHead from "./TableHead";
 
 export default {
     name: "DraftedPostList",
     components: {
         SinglePost,
-        PostRow
+        PostRow,
+        TableHead
     },
     data() {
         return {
             userID: this.$route.params.id,
-            activeTab: "created",
-            posts: []
+            posts: [],
+            sortBy: "number",
+            order: "desc"
         };
     },
-
+    computed: {
+        sortedPosts() {
+            return _.orderBy(this.posts, [this.sortBy], [this.order]);
+        }
+    },
     created() {
         this.getUserPosts();
     },
@@ -53,15 +57,13 @@ export default {
                         this.posts = posts.reverse();
                     }
                 });
+        },
+        changeSort(sortBy) {
+            console.log(sortBy);
         }
     }
 };
 </script>
 
 <style lang="scss">
-.drafted-posts {
-    &--thead {
-        background-color: $navy-color;
-    }
-}
 </style>

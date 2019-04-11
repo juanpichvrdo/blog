@@ -154,7 +154,7 @@ export default {
                     this.post = post[0];
                     this.getAuthor();
                 } else {
-                    this.$router.push("/404");
+                    this.$router.replace("/404");
                 }
             });
         },
@@ -227,7 +227,7 @@ export default {
                     state: this.POST_STATE.deleted
                 })
                 .then(() => {
-                    this.$router.push("/");
+                    this.$router.replace("/");
                 });
         }
     },

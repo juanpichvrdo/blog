@@ -52,7 +52,7 @@ export default {
                         this.user = user;
                     }
                 })
-                .catch(() => this.$router.push("/404"));
+                .catch(() => this.$router.replace("/404"));
         }
     }
 };

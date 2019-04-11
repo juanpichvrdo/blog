@@ -13,7 +13,9 @@ import {
     faHeart,
     faComment,
     faThumbsUp,
-    faReply
+    faReply,
+    faSortAmountUp,
+    faSortAmountDown
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import VeeValidate from "vee-validate";
@@ -29,20 +31,8 @@ import "./config";
 
 toastr.options = {
     closeButton: true,
-    debug: false,
     newestOnTop: false,
-    progressBar: false,
-    positionClass: "toast-top-right",
-    preventDuplicates: true,
-    onclick: null,
-    showDuration: "300",
-    hideDuration: "1000",
-    timeOut: "5000",
-    extendedTimeOut: "1000",
-    showEasing: "swing",
-    hideEasing: "linear",
-    showMethod: "fadeIn",
-    hideMethod: "fadeOut"
+    preventDuplicates: true
 };
 
 library.add(faSearch);
@@ -53,6 +43,8 @@ library.add(faHeart);
 library.add(faComment);
 library.add(faThumbsUp);
 library.add(faReply);
+library.add(faSortAmountUp);
+library.add(faSortAmountDown);
 
 Vue.filter("formatDate", formatDate);
 
