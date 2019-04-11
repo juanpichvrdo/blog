@@ -1,22 +1,6 @@
 <template>
     <div class="comments">
-        <div class="card comment-form">
-            <div class="comment-form--header card-header">Leave a comment</div>
-            <div class="comment-form--container card-body p-0">
-                <vue-editor
-                    v-model="newCommentBody"
-                    :editor-toolbar="customToolbar"
-                    class="comment-form--editor"
-                    name="content"
-                />
-                <div class="comment-form--buttons d-flex justify-content-end align-items-center">
-                    <button
-                        class="comment-form--add-comment btn btn-success mr-3"
-                        @click="submitComment"
-                    >Submit</button>
-                </div>
-            </div>
-        </div>
+        <comment-form :show-cancel="false" @submitComment="submitComment">Leave a comment</comment-form>
 
         <h4 v-if="allComments.length" class="comments--heading mt-5">User comments</h4>
         <hr class="mb-4">
@@ -36,13 +20,15 @@ import { POST_STATE, currentDate } from "../utils/helpers.js";
 import { commentMixins } from "../utils/mixins.js";
 import SingleComment from "./SingleComment";
 import CommentReplyList from "./CommentReplyList";
+import CommentForm from "./CommentForm";
 
 export default {
     name: "CommentsSection",
     components: {
         VueEditor,
         SingleComment,
-        CommentReplyList
+        CommentReplyList,
+        CommentForm
     },
     mixins: [commentMixins],
     props: {
@@ -53,8 +39,7 @@ export default {
     },
     data() {
         return {
-            comments: [],
-            newCommentBody: ""
+            comments: []
         };
     },
     computed: {
@@ -68,10 +53,10 @@ export default {
         getComments() {
             this.$store.dispatch("getComments", this.postId);
         },
-        submitComment() {
-            if (this.newCommentBody.length > 0) {
+        submitComment(body) {
+            if (body.length > 0) {
                 const commentData = {
-                    body: this.newCommentBody,
+                    body,
                     postId: this.postId,
                     datePublish: currentDate(),
                     userId: this.getUser.id,
@@ -91,7 +76,6 @@ export default {
             if (Object.keys(comment).length) {
                 this.getComments();
                 toastr.success("Comment submitted");
-                this.newCommentBody = "";
             } else {
                 toastr.error("Please try again", "Error creating comment");
             }
@@ -101,64 +85,9 @@ export default {
 </script>
 
 <style lang="scss">
-.quillWrapper {
-    #quill-container {
-        padding: 5px 20px 1.3rem;
-
-        .ql-editor {
-            border: solid 1px rgba(0, 0, 0, 0.158);
-        }
-    }
-    .ql-toolbar.ql-snow,
-    .ql-container.ql-snow {
-        border: none;
-    }
-    .ql-toolbar.ql-snow {
-        padding: 8px 15px;
-    }
-
-    .ql-editor {
-        min-height: 140px;
-    }
-
-    .ql-snow .ql-color-picker .ql-picker-label,
-    .ql-snow .ql-icon-picker .ql-picker-label {
-        padding: 0;
-        padding-left: 3px;
-    }
-}
 .comments {
     background-color: $white-color;
     margin-bottom: 100px;
-
-    .comment-form {
-        width: 100%;
-        margin: 0 auto;
-
-        @media only screen and (max-width: 950px) {
-            // width: 100%;
-        }
-
-        &--header {
-            background-color: $light-blue-color;
-            color: $white-color;
-            font-size: 1.1rem;
-        }
-
-        &--add-comment {
-            background-color: $navy-color;
-            padding: 10px 80px;
-        }
-
-        &--cancel {
-            color: #707070;
-            cursor: pointer;
-        }
-
-        &--buttons {
-            margin-bottom: 35px;
-        }
-    }
 
     &--heading {
         font-family: Georgia, "Times New Roman", Times, serif;
