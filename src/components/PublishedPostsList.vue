@@ -56,9 +56,6 @@ export default {
                     }
                 });
         }
-        // changeSort(sortBy) {
-        //     console.log(sortBy);
-        // }
     }
 };
 </script>

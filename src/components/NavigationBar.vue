@@ -121,6 +121,10 @@ export default {
     &--brand {
         color: $white-color;
 
+        &:visited {
+            color: $white-color;
+        }
+
         &:hover {
             color: #e3e4eb;
         }

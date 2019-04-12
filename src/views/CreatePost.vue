@@ -129,7 +129,6 @@ export default {
                 publishDate: null,
                 createdDate: currentDate(),
                 userId: this.getUser.id,
-                likes: 0,
                 edited: false,
                 state: state
             };

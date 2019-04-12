@@ -10,9 +10,9 @@
                 >Create Post</router-link>
             </div>
             <hr>
-            <div v-if="publishedPosts.length">
+            <div v-if="allPosts.length">
                 <single-post
-                    v-for="post in publishedPosts"
+                    v-for="post in allPosts"
                     :key="post.id"
                     :post="post"
                     @postDeleted="getPosts"
@@ -22,6 +22,12 @@
                 <h4 class="text-center mt-5">There are no posts</h4>
             </div>
         </div>
+
+        <pagination-component
+            :per-page="perPage"
+            :number-of-pages="numberOfPages"
+            @pageChanged="onPageChange"
+        />
     </div>
 </template>
 
@@ -29,31 +35,52 @@
 import { mapGetters } from "vuex";
 
 import SinglePost from "./SinglePost";
-import { POST_STATE } from "../utils/helpers.js";
+import PaginationComponent from "./PaginationComponent";
 
 export default {
     name: "PostList",
     components: {
-        SinglePost
+        SinglePost,
+        PaginationComponent
+    },
+    data() {
+        return {
+            activePage: 1,
+            perPage: 3,
+            numberOfPages: 0
+            // disablePrev: true,
+            // disableNext: false
+        };
     },
     computed: {
-        ...mapGetters(["isAuthenticated", "allPosts"]),
-        publishedPosts() {
-            return this.allPosts
-                .filter(post => post.state === POST_STATE.published)
-                .reverse();
-        }
+        ...mapGetters(["isAuthenticated", "allPosts"])
     },
     created() {
         this.getPosts();
     },
     methods: {
         getPosts() {
-            axios.get("/posts").then(({ data: posts }) => {
-                if (posts.length) {
-                    this.$store.dispatch("setPosts", posts);
-                }
-            });
+            axios
+                .get(
+                    `/posts?state=1&_page=${
+                        this.activePage
+                    }&_limit=3&_order=desc&_sort=createdDate`
+                )
+                .then(result => {
+                    if (result.data.length) {
+                        const totalPosts = Number(
+                            result.headers["x-total-count"]
+                        );
+                        this.numberOfPages = Math.ceil(
+                            totalPosts / this.perPage
+                        );
+                        this.$store.dispatch("setPosts", result.data);
+                    }
+                });
+        },
+        onPageChange(page) {
+            this.activePage = page;
+            this.getPosts();
         }
     }
 };

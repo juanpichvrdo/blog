@@ -25,29 +25,8 @@
                     </span>
                 </div>
             </th>
-            <th
-                v-if="draft"
-                :class="{'activeColumnHead': activeColumn === 'likes'}"
-                scope="col"
-                @click="changeActiveColumn('likes')"
-            >
-                <div class="d-flex align-items-center justify-content-between">
-                    Likes
-                    <span v-if="activeColumn === 'likes'">
-                        <font-awesome-icon
-                            v-if="order === 'asc'"
-                            class="table-head--icon ml-2"
-                            icon="sort-amount-up"
-                            @click="changeOrder('desc')"
-                        />
-                        <font-awesome-icon
-                            v-if="order === 'desc'"
-                            class="table-head--icon ml-2"
-                            icon="sort-amount-down"
-                            @click="changeOrder('asc')"
-                        />
-                    </span>
-                </div>
+            <th v-if="draft" scope="col">
+                <div class="d-flex align-items-center justify-content-between">Likes</div>
             </th>
             <th v-if="draft" scope="col">
                 <div class="d-flex align-items-center justify-content-between">Comments</div>
@@ -153,11 +132,12 @@ export default {
             cursor: pointer;
         }
 
-        &:nth-child(4):hover,
-        &:nth-child(1):hover {
-            background-color: $navy-color;
-            cursor: default;
-        }
+        // &:nth-child(4):hover,
+        // &:nth-child(3):hover,
+        // &:nth-child(1):hover {
+        //     background-color: $navy-color;
+        //     cursor: default;
+        // }
     }
 }
 .activeColumnHead {

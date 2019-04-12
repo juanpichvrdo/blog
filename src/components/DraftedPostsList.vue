@@ -6,10 +6,11 @@
                 <table-head
                     :draft="false"
                     @changeSort="methodOfSorting => sortBy = methodOfSorting"
+                    @orderChanged="newOrder => order = newOrder"
                 />
                 <tbody>
                     <post-row
-                        v-for="(post, index) in posts"
+                        v-for="(post, index) in sortedPosts"
                         :key="post.id"
                         :post="post"
                         :index="index + 1"
@@ -57,9 +58,6 @@ export default {
                         this.posts = posts.reverse();
                     }
                 });
-        },
-        changeSort(sortBy) {
-            console.log(sortBy);
         }
     }
 };
