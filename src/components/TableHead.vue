@@ -1,74 +1,103 @@
 <template>
     <thead class="table-head text-white">
         <tr>
-            <th
-                :class="{'activeColumnHead': activeColumn === '#'}"
-                scope="col"
-                @click="activeColumn = '#'; $emit('changeSort', 'number')"
-            >
-                #
-                <span v-if="activeColumn === '#'">
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-up"/>
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-down"/>
-                </span>
-            </th>
+            <th scope="col">#</th>
             <th
                 :class="{'activeColumnHead': activeColumn === 'title'}"
                 scope="col"
-                @click="activeColumn = 'title'; $emit('changeSort', 'title')"
+                @click="changeActiveColumn('title')"
             >
-                Title
-                <span v-if="activeColumn === 'title'">
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-up"/>
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-down"/>
-                </span>
+                <div class="d-flex align-items-center justify-content-between">
+                    Title
+                    <span v-if="activeColumn === 'title'">
+                        <font-awesome-icon
+                            v-if="order === 'asc'"
+                            class="table-head--icon ml-2"
+                            icon="sort-amount-up"
+                            @click="changeOrder('desc')"
+                        />
+                        <font-awesome-icon
+                            v-if="order === 'desc'"
+                            class="table-head--icon ml-2"
+                            icon="sort-amount-down"
+                            @click="changeOrder('asc')"
+                        />
+                    </span>
+                </div>
             </th>
             <th
                 v-if="draft"
                 :class="{'activeColumnHead': activeColumn === 'likes'}"
                 scope="col"
-                @click="activeColumn = 'likes'; $emit('changeSort', 'likes')"
+                @click="changeActiveColumn('likes')"
             >
-                Likes
-                <span v-if="activeColumn === 'likes'">
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-up"/>
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-down"/>
-                </span>
+                <div class="d-flex align-items-center justify-content-between">
+                    Likes
+                    <span v-if="activeColumn === 'likes'">
+                        <font-awesome-icon
+                            v-if="order === 'asc'"
+                            class="table-head--icon ml-2"
+                            icon="sort-amount-up"
+                            @click="changeOrder('desc')"
+                        />
+                        <font-awesome-icon
+                            v-if="order === 'desc'"
+                            class="table-head--icon ml-2"
+                            icon="sort-amount-down"
+                            @click="changeOrder('asc')"
+                        />
+                    </span>
+                </div>
+            </th>
+            <th v-if="draft" scope="col">
+                <div class="d-flex align-items-center justify-content-between">Comments</div>
+            </th>
+            <th
+                :class="{'activeColumnHead': activeColumn === 'createdDate'}"
+                scope="col"
+                @click="changeActiveColumn('createdDate')"
+            >
+                <div class="d-flex align-items-center justify-content-between">
+                    Created Date
+                    <span v-if="activeColumn === 'createdDate'">
+                        <font-awesome-icon
+                            v-if="order === 'asc'"
+                            class="table-head--icon ml-2"
+                            icon="sort-amount-up"
+                            @click="changeOrder('desc')"
+                        />
+                        <font-awesome-icon
+                            v-if="order === 'desc'"
+                            class="table-head--icon ml-2"
+                            icon="sort-amount-down"
+                            @click="changeOrder('asc')"
+                        />
+                    </span>
+                </div>
             </th>
             <th
                 v-if="draft"
-                :class="{'activeColumnHead': activeColumn === 'comments'}"
+                :class="{'activeColumnHead': activeColumn === 'publishDate'}"
                 scope="col"
-                @click="activeColumn = 'comments'; $emit('changeSort', 'comments')"
+                @click="changeActiveColumn('publishDate')"
             >
-                Comments
-                <span v-if="activeColumn === 'comments'">
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-up"/>
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-down"/>
-                </span>
-            </th>
-            <th
-                :class="{'activeColumnHead': activeColumn === 'created'}"
-                scope="col"
-                @click="activeColumn = 'created'; $emit('changeSort', 'createdDate')"
-            >
-                Created Date
-                <span v-if="activeColumn === 'created'">
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-up"/>
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-down"/>
-                </span>
-            </th>
-            <th
-                v-if="draft"
-                :class="{'activeColumnHead': activeColumn === 'publish'}"
-                scope="col"
-                @click="activeColumn = 'publish'; $emit('changeSort', 'publishDate')"
-            >
-                Publish Date
-                <span v-if="activeColumn === 'publish'">
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-up"/>
-                    <font-awesome-icon class="table-head--icon ml-2" icon="sort-amount-down"/>
-                </span>
+                <div class="d-flex align-items-center justify-content-between">
+                    Publish Date
+                    <span v-if="activeColumn === 'publishDate'">
+                        <font-awesome-icon
+                            v-if="order === 'asc'"
+                            class="table-head--icon ml-2"
+                            icon="sort-amount-up"
+                            @click="changeOrder('desc')"
+                        />
+                        <font-awesome-icon
+                            v-if="order === 'desc'"
+                            class="table-head--icon ml-2"
+                            icon="sort-amount-down"
+                            @click="changeOrder('asc')"
+                        />
+                    </span>
+                </div>
             </th>
         </tr>
     </thead>
@@ -86,8 +115,23 @@ export default {
     },
     data() {
         return {
-            activeColumn: "#"
+            activeColumn: "createdDate",
+            order: "desc"
         };
+    },
+    methods: {
+        changeActiveColumn(column) {
+            if (column !== this.activeColumn) {
+                this.order = "desc";
+            }
+
+            this.activeColumn = column;
+            this.$emit("changeSort", column);
+        },
+        changeOrder(order) {
+            this.order = order;
+            this.$emit("orderChanged", order);
+        }
     }
 };
 </script>
@@ -98,14 +142,22 @@ export default {
 
     &--icon {
         font-size: 2rem;
-
-        &:hover {
-            cursor: pointer;
-        }
     }
 
     tr th {
         padding: 10px;
+        transition: all 0.1s;
+
+        &:hover {
+            background-color: $light-blue-color;
+            cursor: pointer;
+        }
+
+        &:nth-child(4):hover,
+        &:nth-child(1):hover {
+            background-color: $navy-color;
+            cursor: default;
+        }
     }
 }
 .activeColumnHead {

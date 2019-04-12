@@ -3,7 +3,10 @@
         <h3 class="mb-4 text-center">Published Posts</h3>
         <div class="table-responsive">
             <table class="table">
-                <table-head @changeSort="methodOfSorting => sortBy = methodOfSorting"/>
+                <table-head
+                    @changeSort="methodOfSorting => sortBy = methodOfSorting"
+                    @orderChanged="newOrder => order = newOrder"
+                />
                 <tbody>
                     <post-row
                         v-for="(post, index) in sortedPosts"
