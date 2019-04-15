@@ -6,7 +6,7 @@
         <hr class="mb-4">
         <div v-for="comment in allComments" :key="comment.id">
             <single-comment :comment="comment"/>
-            <!-- <comment-reply-list :replies="comment.replies"/> -->
+            <comment-reply-list :replies="comment.replies"/>
         </div>
 
         <pagination-component

@@ -8,7 +8,7 @@
 import toastr from "toastr";
 import { mapGetters } from "vuex";
 import { commentMixins } from "../utils/mixins.js";
-import { POST_STATE, currentDate } from "../utils/helpers.js";
+import { POST_STATE, currentDate, MAX_LIST_SIZE } from "../utils/helpers.js";
 import CommentForm from "./CommentForm";
 
 export default {
@@ -55,7 +55,11 @@ export default {
         },
         afterSubmitResponse(comment) {
             if (Object.keys(comment).length) {
-                this.$store.dispatch("getComments", this.postId);
+                this.$store.dispatch("getComments", {
+                    postId: this.postId,
+                    activePage: undefined,
+                    listSize: MAX_LIST_SIZE
+                });
                 toastr.success("Reply send");
                 this.$emit("closeReply");
             } else {

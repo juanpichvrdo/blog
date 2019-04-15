@@ -60,7 +60,7 @@ export default new Vuex.Store({
         getComments({ commit }, { postId, activePage, listSize }) {
             axios
                 .get(
-                    `/comments?&postId=${postId}&state=1&_page=${activePage}&_limit=${listSize}&_order=desc&_sort=datePublish`
+                    `/comments?&postId=${postId}&state=1&_page=${activePage}&_limit=${listSize}&_order=desc&_sort=datePublish&_embed=replies`
                 )
                 .then(result => {
                     if (result.data.length) {

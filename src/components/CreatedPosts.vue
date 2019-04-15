@@ -1,41 +1,65 @@
 <template>
     <div class="container px-5">
-        <div v-if="publishedPosts.length">
-            <single-post v-for="post in publishedPosts" :key="post.id" :post="post"/>
+        <div v-if="posts.length">
+            <single-post v-for="post in posts" :key="post.id" :post="post"/>
         </div>
+
+        <pagination-component
+            :per-page="MAX_LIST_SIZE"
+            :number-of-pages="numberOfPages"
+            @pageChanged="onPageChange"
+        />
     </div>
 </template>
 
 <script>
-import SinglePost from "../components/SinglePost";
-import { POST_STATE } from "../utils/helpers.js";
+import { MAX_LIST_SIZE } from "../utils/helpers.js";
+import SinglePost from "./SinglePost";
+import PaginationComponent from "./PaginationComponent";
 
 export default {
     name: "CreatedPosts",
     components: {
-        SinglePost
+        SinglePost,
+        PaginationComponent
     },
     data() {
         return {
             userID: this.$route.params.id,
-            posts: []
+            posts: [],
+            activePage: 1,
+            numberOfPages: 0,
+            MAX_LIST_SIZE
         };
     },
-    computed: {
-        publishedPosts() {
-            return this.posts.filter(
-                post => post.state === POST_STATE.published
-            );
-        }
-    },
+    computed: {},
     created() {
         this.getCreatedPosts();
     },
     methods: {
         getCreatedPosts() {
             axios
-                .get(`/users/${this.userID}/posts`)
-                .then(({ data: posts }) => (this.posts = posts));
+                .get(
+                    `/users/${this.userID}/posts?state=1&_page=${
+                        this.activePage
+                    }&_limit=${MAX_LIST_SIZE}&_order=desc&_sort=publishDate`
+                )
+                .then(result => {
+                    if (result.data.length) {
+                        this.posts = result.data;
+
+                        const totalPosts = Number(
+                            result.headers["x-total-count"]
+                        );
+                        this.numberOfPages = Math.ceil(
+                            totalPosts / MAX_LIST_SIZE
+                        );
+                    }
+                });
+        },
+        onPageChange(page) {
+            this.activePage = page;
+            this.getCreatedPosts();
         }
     }
 };

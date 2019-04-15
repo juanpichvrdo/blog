@@ -1,7 +1,7 @@
 <template>
     <nav class="d-flex justify-content-center mb-5">
         <ul class="pagination pagination-lg">
-            <li v-if="activePage !== 1" class="page-item" @click="movePrev">
+            <li v-if="activePage !== 1" class="page-item" @click.prevent="movePrev">
                 <a class="page-link" href="#" tabindex="-1">Previous</a>
             </li>
 
@@ -15,7 +15,7 @@
                 </li>
             </div>
 
-            <li v-if="activePage < numberOfPages" class="page-item" @click="moveNext">
+            <li v-if="activePage < numberOfPages" class="page-item" @click.prevent="moveNext">
                 <a class="page-link" href="#">Next</a>
             </li>
         </ul>
