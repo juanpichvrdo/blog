@@ -17,25 +17,37 @@
                 </tbody>
             </table>
         </div>
+
+        <pagination-component
+            :per-page="MAX_LIST_SIZE"
+            :number-of-pages="numberOfPages"
+            @pageChanged="onPageChange"
+        />
     </div>
 </template>
 
 <script>
-import PostRow from "./PostRow";
+import { MAX_LIST_SIZE } from "../utils/helpers.js";
 import TableHead from "./TableHead";
+import PostRow from "./PostRow";
+import PaginationComponent from "./PaginationComponent";
 
 export default {
     name: "PublishedPostList",
     components: {
+        TableHead,
         PostRow,
-        TableHead
+        PaginationComponent
     },
     data() {
         return {
             userID: this.$route.params.id,
             posts: [],
-            sortBy: "number",
-            order: "desc"
+            sortBy: "createdDate",
+            order: "desc",
+            MAX_LIST_SIZE,
+            activePage: 1,
+            numberOfPages: 0
         };
     },
     computed: {
@@ -49,12 +61,29 @@ export default {
     methods: {
         getUserPosts() {
             axios
-                .get(`users/${this.userID}/posts?state=1`)
-                .then(({ data: posts }) => {
-                    if (posts.length) {
-                        this.posts = posts.reverse();
+                .get(
+                    `/users/${this.userID}/posts?state=1&_page=${
+                        this.activePage
+                    }&_limit=${
+                        this.MAX_LIST_SIZE
+                    }&_order=desc&_sort=createdDate`
+                )
+                .then(result => {
+                    if (result.data.length) {
+                        this.posts = result.data.reverse();
+
+                        const totalPosts = Number(
+                            result.headers["x-total-count"]
+                        );
+                        this.numberOfPages = Math.ceil(
+                            totalPosts / MAX_LIST_SIZE
+                        );
                     }
                 });
+        },
+        onPageChange(page) {
+            this.activePage = page;
+            this.getUserPosts();
         }
     }
 };
