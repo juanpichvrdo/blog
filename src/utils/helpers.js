@@ -11,3 +11,5 @@ export function formatDate(date) {
 export function currentDate() {
     return moment().format("YYYY-MM-DD HH:mm:ss");
 }
+
+export const MAX_LIST_SIZE = 25;

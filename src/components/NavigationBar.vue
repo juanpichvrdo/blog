@@ -76,7 +76,7 @@ export default {
     },
     methods: {
         onLogout() {
-            this.$store.dispatch("logoutUser");
+            this.$store.dispatch("LOGOUT_USER");
             router.push("/login");
         }
     }

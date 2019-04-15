@@ -95,7 +95,7 @@
                             <hr>
                             <CommentsSection :post-id="post.id" @commentsChanged="getComments()"/>
                         </div>
-                        <div v-else class="text-center my-5">
+                        <div v-if="!isAuthenticated && post.allowComments" class="text-center my-5">
                             <router-link to="/login">Login to comment</router-link>
                         </div>
                     </div>

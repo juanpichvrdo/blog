@@ -30,7 +30,7 @@ export default {
     methods: {
         searchPost() {
             if (this.searchTerm) {
-                this.$store.dispatch("setSearch", {
+                this.$store.dispatch("SET_SEARCH", {
                     searchTerm: this.searchTerm,
                     searchBy: "title"
                 });

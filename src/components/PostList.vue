@@ -24,7 +24,7 @@
         </div>
 
         <pagination-component
-            :per-page="perPage"
+            :per-page="MAX_LIST_SIZE"
             :number-of-pages="numberOfPages"
             @pageChanged="onPageChange"
         />
@@ -33,6 +33,8 @@
 
 <script>
 import { mapGetters } from "vuex";
+
+import { MAX_LIST_SIZE } from "../utils/helpers.js";
 
 import SinglePost from "./SinglePost";
 import PaginationComponent from "./PaginationComponent";
@@ -46,10 +48,8 @@ export default {
     data() {
         return {
             activePage: 1,
-            perPage: 3,
+            MAX_LIST_SIZE,
             numberOfPages: 0
-            // disablePrev: true,
-            // disableNext: false
         };
     },
     computed: {
@@ -64,7 +64,7 @@ export default {
                 .get(
                     `/posts?state=1&_page=${
                         this.activePage
-                    }&_limit=3&_order=desc&_sort=createdDate`
+                    }&_limit=${MAX_LIST_SIZE}&_order=desc&_sort=publishDate`
                 )
                 .then(result => {
                     if (result.data.length) {
@@ -72,9 +72,9 @@ export default {
                             result.headers["x-total-count"]
                         );
                         this.numberOfPages = Math.ceil(
-                            totalPosts / this.perPage
+                            totalPosts / MAX_LIST_SIZE
                         );
-                        this.$store.dispatch("setPosts", result.data);
+                        this.$store.dispatch("SET_POSTS", result.data);
                     }
                 });
         },

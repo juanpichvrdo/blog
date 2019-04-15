@@ -13,31 +13,36 @@ export default new Vuex.Store({
             searhTerm: "",
             searchBy: "title"
         },
-        comments: []
+        comments: [],
+        numberOfPages: 0
     },
     getters: {
         isAuthenticated: state => state.cookie || Object.keys(state.user).length,
         allPosts: state => state.posts,
         getUser: state => state.user,
         getSearchTerm: state => state.search,
-        allComments: state => state.comments
+        allComments: state => state.comments,
+        getNumberOfPages: state => state.numberOfPages
     },
     mutations: {
-        logoutUser(state) {
+        LOGOUT_USER(state) {
             state.user = {};
             state.cookie = null;
         },
-        setUser(state, user) {
+        SET_USER(state, user) {
             state.user = user;
         },
-        setPosts(state, posts) {
+        SET_POSTS(state, posts) {
             state.posts = posts;
         },
-        setSearch(state, search) {
+        SET_SEARCH(state, search) {
             state.search = search;
         },
-        setComments(state, comments) {
+        SET_COMMENTS(state, comments) {
             state.comments = comments;
+        },
+        SET_PAGES(state, numberOfPages) {
+            state.numberOfPages = numberOfPages;
         }
     },
     actions: {
@@ -47,32 +52,38 @@ export default new Vuex.Store({
                 axios.get(`/users/?id=${id}`).then(({ data }) => {
                     const user = data[0];
                     if (Object.keys(user).length) {
-                        commit("setUser", user);
+                        commit("SET_USER", user);
                     }
                 });
             }
         },
-        getComments({ commit }, postId) {
+        getComments({ commit }, { postId, activePage, listSize }) {
             axios
                 .get(
-                    `comments/?state=1&postId=${postId}&_sort=datePublish&_order=desc&_embed=replies`
+                    `/comments?&postId=${postId}&state=1&_page=${activePage}&_limit=${listSize}&_order=desc&_sort=datePublish`
                 )
-                .then(({ data: comments }) => {
-                    commit("setComments", comments);
+                .then(result => {
+                    if (result.data.length) {
+                        const totalComments = Number(result.headers["x-total-count"]);
+                        const numberOfPages = Math.ceil(totalComments / listSize);
+
+                        commit("SET_COMMENTS", result.data);
+                        commit("SET_PAGES", numberOfPages);
+                    }
                 });
         },
         authenticateUser({ commit }, user) {
-            commit("setUser", user);
+            commit("SET_USER", user);
         },
-        logoutUser({ commit }) {
+        LOGOUT_USER({ commit }) {
             Cookies.remove("id");
-            commit("logoutUser");
+            commit("LOGOUT_USER");
         },
-        setPosts({ commit }, posts) {
-            commit("setPosts", posts);
+        SET_POSTS({ commit }, posts) {
+            commit("SET_POSTS", posts);
         },
-        setSearch({ commit }, search) {
-            commit("setSearch", search);
+        SET_SEARCH({ commit }, search) {
+            commit("SET_SEARCH", search);
         }
     }
 });

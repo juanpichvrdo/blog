@@ -6,8 +6,14 @@
         <hr class="mb-4">
         <div v-for="comment in allComments" :key="comment.id">
             <single-comment :comment="comment"/>
-            <comment-reply-list :replies="comment.replies"/>
+            <!-- <comment-reply-list :replies="comment.replies"/> -->
         </div>
+
+        <pagination-component
+            :per-page="MAX_LIST_SIZE"
+            :number-of-pages="getNumberOfPages"
+            @pageChanged="onPageChange"
+        />
     </div>
 </template>
 
@@ -15,12 +21,14 @@
 import toastr from "toastr";
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
-import { POST_STATE, currentDate } from "../utils/helpers.js";
+
+import { POST_STATE, currentDate, MAX_LIST_SIZE } from "../utils/helpers.js";
 
 import { commentMixins } from "../utils/mixins.js";
 import SingleComment from "./SingleComment";
 import CommentReplyList from "./CommentReplyList";
 import CommentForm from "./CommentForm";
+import PaginationComponent from "./PaginationComponent";
 
 export default {
     name: "CommentsSection",
@@ -28,7 +36,8 @@ export default {
         VueEditor,
         SingleComment,
         CommentReplyList,
-        CommentForm
+        CommentForm,
+        PaginationComponent
     },
     mixins: [commentMixins],
     props: {
@@ -39,19 +48,25 @@ export default {
     },
     data() {
         return {
-            comments: []
+            comments: [],
+            MAX_LIST_SIZE,
+            activePage: 1,
+            numberOfPages: 0
         };
     },
     computed: {
-        ...mapGetters(["getUser", "allComments"])
+        ...mapGetters(["getUser", "allComments", "getNumberOfPages"])
     },
     created() {
-        this.$store.dispatch("getComments", this.postId);
+        this.getComments();
     },
-
     methods: {
         getComments() {
-            this.$store.dispatch("getComments", this.postId);
+            this.$store.dispatch("getComments", {
+                postId: this.postId,
+                activePage: this.activePage,
+                listSize: MAX_LIST_SIZE
+            });
         },
         submitComment(body) {
             if (body.length > 0) {
@@ -79,6 +94,10 @@ export default {
             } else {
                 toastr.error("Please try again", "Error creating comment");
             }
+        },
+        onPageChange(page) {
+            this.activePage = page;
+            this.getComments();
         }
     }
 };
