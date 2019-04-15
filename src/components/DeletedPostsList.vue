@@ -1,7 +1,7 @@
 <template>
     <div class="deleted-posts">
         <h3 class="mb-4 text-center">Deleted Posts</h3>
-        <div class="table-responsive">
+        <div class="table-responsive mb-5">
             <table class="table">
                 <table-head
                     @changeSort="methodOfSorting => sortBy = methodOfSorting"
@@ -72,7 +72,7 @@ export default {
                 )
                 .then(result => {
                     if (result.data.length) {
-                        this.posts = result.data.reverse();
+                        this.posts = result.data;
 
                         const totalPosts = Number(
                             result.headers["x-total-count"]

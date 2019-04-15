@@ -51,37 +51,43 @@
                     </div>
                 </div>
             </form>
-            <div v-if="publishedPosts.length" class="mt-3">
-                <single-post v-for="post in publishedPosts" :key="post.id" :post="post"/>
+            <div v-if="searchResults.length" class="mt-3">
+                <single-post v-for="post in searchResults" :key="post.id" :post="post"/>
             </div>
+
+            <pagination-component
+                :per-page="MAX_LIST_SIZE"
+                :number-of-pages="numberOfPages"
+                @pageChanged="onPageChange"
+            />
         </div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { POST_STATE } from "../utils/helpers.js";
+import { MAX_LIST_SIZE } from "../utils/helpers.js";
 import SinglePost from "../components/SinglePost";
+import PaginationComponent from "../components/PaginationComponent";
 
 export default {
     name: "SearchPage",
     components: {
-        SinglePost
+        SinglePost,
+        PaginationComponent
     },
     data() {
         return {
             searchTerm: "",
             searchBy: "title",
-            searchResults: []
+            searchResults: [],
+            MAX_LIST_SIZE,
+            activePage: 1,
+            numberOfPages: 0
         };
     },
     computed: {
-        ...mapGetters(["getSearchTerm"]),
-        publishedPosts() {
-            return this.searchResults
-                .filter(post => post.state === POST_STATE.published)
-                .reverse();
-        }
+        ...mapGetters(["getSearchTerm"])
     },
     created() {
         this.searchTerm = this.getSearchTerm.searchTerm;
@@ -91,8 +97,29 @@ export default {
     methods: {
         searchPost() {
             axios
-                .get(`/posts?${this.searchBy}_like=${this.searchTerm}`)
-                .then(({ data: posts }) => (this.searchResults = posts));
+                .get(
+                    `/posts?${this.searchBy}_like=${
+                        this.searchTerm
+                    }&state=1&_page=${this.activePage}&_limit=${
+                        this.MAX_LIST_SIZE
+                    }&_order=desc&_sort=publishDate`
+                )
+                .then(result => {
+                    if (result.data.length) {
+                        this.searchResults = result.data;
+
+                        const totalPosts = Number(
+                            result.headers["x-total-count"]
+                        );
+                        this.numberOfPages = Math.ceil(
+                            totalPosts / MAX_LIST_SIZE
+                        );
+                    }
+                });
+        },
+        onPageChange(page) {
+            this.activePage = page;
+            this.searchPost();
         }
     }
 };
