@@ -2,13 +2,15 @@
     <div class="container px-5">
         <div v-if="posts.length">
             <single-post v-for="post in posts" :key="post.id" :post="post"/>
+
+            <pagination-component
+                :per-page="MAX_LIST_SIZE"
+                :number-of-pages="numberOfPages"
+                @pageChanged="onPageChange"
+            />
         </div>
 
-        <pagination-component
-            :per-page="MAX_LIST_SIZE"
-            :number-of-pages="numberOfPages"
-            @pageChanged="onPageChange"
-        />
+        <h4 v-else class="text-center">User doesn't have any created posts</h4>
     </div>
 </template>
 

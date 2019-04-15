@@ -1,6 +1,6 @@
 <template>
     <nav class="d-flex justify-content-center mb-5">
-        <ul class="pagination pagination-lg">
+        <ul class="pagination">
             <li v-if="activePage !== 1" class="page-item" @click.prevent="movePrev">
                 <a class="page-link" href="#" tabindex="-1">Previous</a>
             </li>
@@ -25,7 +25,6 @@
 <script>
 export default {
     name: "PaginationComponent",
-
     props: {
         perPage: {
             type: Number,
@@ -41,6 +40,12 @@ export default {
             activePage: 1
         };
     },
+    // computed: {
+    //     rangeOfPagination() {
+    //         return _.range(this.activePage - 5, this.activePage + 5);
+    //     }
+    // },
+
     methods: {
         changePage(page) {
             this.activePage = page;
