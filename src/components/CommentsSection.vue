@@ -10,6 +10,7 @@
         </div>
 
         <pagination-component
+            v-if="allComments.length >= MAX_LIST_SIZE"
             :per-page="MAX_LIST_SIZE"
             :number-of-pages="getNumberOfPages"
             @pageChanged="onPageChange"

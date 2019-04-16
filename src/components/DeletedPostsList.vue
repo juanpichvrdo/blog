@@ -19,6 +19,7 @@
         </div>
 
         <pagination-component
+            v-if="sortedPosts.length >= MAX_LIST_SIZE"
             :per-page="MAX_LIST_SIZE"
             :number-of-pages="numberOfPages"
             @pageChanged="onPageChange"

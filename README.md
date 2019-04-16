@@ -1,14 +1,21 @@
 # blog
 
-## Project setup
+## 1- Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 2- Run json server to access API
+```
+npm run json-server
+```
+
+### 3- Compiles and hot-reloads for development
 ```
 npm run serve
 ```
+
+----------------------------------------------------------
 
 ### Compiles and minifies for production
 ```

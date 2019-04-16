@@ -61,6 +61,7 @@
             </div>
 
             <pagination-component
+                v-if="searchResults.length >= MAX_LIST_SIZE"
                 :per-page="MAX_LIST_SIZE"
                 :number-of-pages="numberOfPages"
                 @pageChanged="onPageChange"
