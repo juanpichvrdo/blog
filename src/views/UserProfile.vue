@@ -1,19 +1,29 @@
 <template>
     <div class="user-profile container mt-5">
-        <div class="user-profile--info d-flex justify-content-center align-items-center">
-            <img
-                src="../assets/profile-placeholder.png"
-                alt="User image"
-                class="user-profile--image"
-            >
-            <div class="d-flex flex-column ml-5">
-                <h1 class="user-profile--name">{{ `${user.username}` }}</h1>
-                <p class="user-profile--description mb-2">{{ user.name }} {{ user.lastName }}</p>
-                <p
-                    v-if="user.publicProfile || user.id === getUser.id"
-                    class="user-profile--description"
-                >{{ user.description }}</p>
+        <div class="justify-content-center d-flex align-items-center">
+            <div class="user-profile--info d-flex justify-content-center align-items-center">
+                <img
+                    src="../assets/profile-placeholder.png"
+                    alt="User image"
+                    class="user-profile--image"
+                >
+                <div class="d-flex flex-column ml-5">
+                    <h1 class="user-profile--name">{{ `${user.username}` }}</h1>
+                    <p class="user-profile--description mb-2">{{ user.name }} {{ user.lastName }}</p>
+                    <p
+                        v-if="user.publicProfile || user.id === getUser.id"
+                        class="user-profile--description"
+                    >{{ user.description }}</p>
+                </div>
             </div>
+
+            <router-link
+                v-if="user.id === getUser.id"
+                :to="`/user-settings/${getUser.id}`"
+                class="ml-5"
+            >
+                <font-awesome-icon class="user-profile--edit" icon="edit"/>
+            </router-link>
         </div>
 
         <profile-activity v-if="user.publicProfile || user.id === getUser.id"/>
@@ -85,6 +95,11 @@ export default {
     &--private {
         color: $navy-color;
         margin-top: 70px;
+    }
+
+    &--edit {
+        font-size: 2.5rem;
+        color: #676767;
     }
 }
 </style>
