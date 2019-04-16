@@ -52,7 +52,12 @@
                 </div>
             </form>
             <div v-if="searchResults.length" class="mt-3">
-                <single-post v-for="post in searchResults" :key="post.id" :post="post"/>
+                <single-post
+                    v-for="post in searchResults"
+                    :key="post.id"
+                    :post="post"
+                    @postDeleted="searchPost()"
+                />
             </div>
 
             <pagination-component
@@ -87,7 +92,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["getSearchTerm"])
+        ...mapGetters({ getSearchTerm: "App/getSearchTerm" })
     },
     created() {
         this.searchTerm = this.getSearchTerm.searchTerm;

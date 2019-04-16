@@ -135,7 +135,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["getUser"])
+        ...mapGetters({ getUser: "User/getUser" })
     },
     created() {
         this.getUserProfile();
@@ -198,7 +198,7 @@ export default {
                 })
                 .then(({ data }) => {
                     if (data) {
-                        this.$store.dispatch("getUser");
+                        this.$store.dispatch("User/setUser");
 
                         toastr.success("Profile updated successfully");
                     } else {
@@ -216,7 +216,7 @@ export default {
                 })
                 .then(({ data }) => {
                     if (data) {
-                        this.$store.dispatch("getUser");
+                        this.$store.dispatch("User/setUser");
                         toastr.success("Password updated successfully");
                     } else {
                         toastr.error(

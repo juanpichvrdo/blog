@@ -5,7 +5,7 @@
         <h4 v-if="allComments.length" class="comments--heading mt-5">User comments</h4>
         <hr class="mb-4">
         <div v-for="comment in allComments" :key="comment.id">
-            <single-comment :comment="comment"/>
+            <single-comment :comment="comment" :active-page="activePage"/>
             <comment-reply-list :replies="comment.replies"/>
         </div>
 
@@ -55,14 +55,18 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["getUser", "allComments", "getNumberOfPages"])
+        ...mapGetters({
+            getUser: "User/getUser",
+            allComments: "Comments/allComments",
+            getNumberOfPages: "Comments/getNumberOfPages"
+        })
     },
     created() {
         this.getComments();
     },
     methods: {
         getComments() {
-            this.$store.dispatch("getComments", {
+            this.$store.dispatch("Comments/getComments", {
                 postId: this.postId,
                 activePage: this.activePage,
                 listSize: MAX_LIST_SIZE

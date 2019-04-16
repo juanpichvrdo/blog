@@ -154,10 +154,9 @@ export default {
             };
             axios.post("/users", userData).then(response => {
                 const user = response.data;
-                console.log(user);
                 if (user) {
                     Cookies.set("id", user.id);
-                    this.$store.dispatch("authenticateUser", user);
+                    this.$store.dispatch("User/authenticateUser", user);
                     toastr.success("Sign up succesfully!");
                     router.push("/");
                 } else {

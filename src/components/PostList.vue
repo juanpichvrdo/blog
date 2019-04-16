@@ -53,7 +53,10 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["isAuthenticated", "allPosts"])
+        ...mapGetters({
+            isAuthenticated: "User/isAuthenticated",
+            allPosts: "Posts/allPosts"
+        })
     },
     created() {
         this.getPosts();
@@ -74,7 +77,7 @@ export default {
                         this.numberOfPages = Math.ceil(
                             totalPosts / MAX_LIST_SIZE
                         );
-                        this.$store.dispatch("SET_POSTS", result.data);
+                        this.$store.dispatch("Posts/setPosts", result.data);
                     }
                 });
         },

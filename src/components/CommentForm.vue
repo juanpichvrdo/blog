@@ -18,7 +18,7 @@
                 >Cancel</a>
                 <button
                     class="comment-form--add-comment btn btn-success mr-3"
-                    @click="$emit('submitComment', newBody)"
+                    @click="onSubmit"
                 >Submit</button>
             </div>
         </div>
@@ -53,6 +53,12 @@ export default {
     },
     created() {
         this.newBody = this.body;
+    },
+    methods: {
+        onSubmit() {
+            this.$emit("submitComment", this.newBody);
+            this.newBody = "";
+        }
     }
 };
 </script>

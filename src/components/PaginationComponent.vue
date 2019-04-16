@@ -40,12 +40,6 @@ export default {
             activePage: 1
         };
     },
-    // computed: {
-    //     rangeOfPagination() {
-    //         return _.range(this.activePage - 5, this.activePage + 5);
-    //     }
-    // },
-
     methods: {
         changePage(page) {
             this.activePage = page;

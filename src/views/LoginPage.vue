@@ -87,7 +87,7 @@ export default {
                     if (Object.keys(user).length) {
                         this.rememberUser(this.rememberMe);
                         Cookies.set("id", user.id);
-                        this.$store.dispatch("authenticateUser", user);
+                        this.$store.dispatch("User/authenticateUser", user);
 
                         router.push("/");
                     } else {

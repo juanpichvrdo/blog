@@ -30,7 +30,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["getUser"])
+        ...mapGetters({ getUser: "User/getUser" })
     },
     methods: {
         submitComment(body) {
@@ -55,7 +55,7 @@ export default {
         },
         afterSubmitResponse(comment) {
             if (Object.keys(comment).length) {
-                this.$store.dispatch("getComments", {
+                this.$store.dispatch("Comments/getComments", {
                     postId: this.postId,
                     activePage: undefined,
                     listSize: MAX_LIST_SIZE

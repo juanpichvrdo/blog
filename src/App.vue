@@ -14,7 +14,7 @@ export default {
         NavigationBar
     },
     created() {
-        this.$store.dispatch("getUser");
+        this.$store.dispatch("User/setUser");
     }
 };
 </script>

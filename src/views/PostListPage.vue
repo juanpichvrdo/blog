@@ -56,7 +56,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["getUser"])
+        ...mapGetters({ getUser: "User/getUser" })
     },
     created() {
         this.checkUserProfile();

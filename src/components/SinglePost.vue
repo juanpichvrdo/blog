@@ -1,5 +1,5 @@
 <template>
-    <div class="single-post pb-4">
+    <div v-if="!postDeleted" class="single-post pb-4">
         <div class="container-fluid px-4 py-3 mb-2">
             <div class="d-flex justify-content-between align-items-start">
                 <h2 class="single-post--heading mb-3 mb-lg-5">
@@ -85,11 +85,12 @@ export default {
         return {
             likes: 0,
             comments: 0,
-            author: ""
+            author: "",
+            postDeleted: false
         };
     },
     computed: {
-        ...mapGetters(["getUser"]),
+        ...mapGetters({ getUser: "User/getUser" }),
         resumedBody() {
             return truncate(this.post.content, 200);
         },
@@ -114,6 +115,7 @@ export default {
                     state: POST_STATE.deleted
                 })
                 .then(() => {
+                    this.postDeleted = true;
                     this.$emit("postDeleted");
                 });
         }

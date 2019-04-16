@@ -132,7 +132,10 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["isAuthenticated", "getUser"]),
+        ...mapGetters({
+            isAuthenticated: "User/isAuthenticated",
+            getUser: "User/getUser"
+        }),
         isAuthor() {
             return this.getUser.id === this.post.userId;
         }

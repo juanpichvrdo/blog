@@ -106,7 +106,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["getUser"])
+        ...mapGetters({ getUser: "User/getUser" })
     },
     methods: {
         validateForm(state) {

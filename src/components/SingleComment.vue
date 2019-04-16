@@ -72,7 +72,7 @@
 import toastr from "toastr";
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
-import { POST_STATE } from "../utils/helpers.js";
+import { POST_STATE, MAX_LIST_SIZE } from "../utils/helpers.js";
 import { commentMixins } from "../utils/mixins.js";
 import CommentReply from "./CommentReply";
 import CommentForm from "./CommentForm";
@@ -89,6 +89,11 @@ export default {
         comment: {
             type: Object,
             required: true
+        },
+        activePage: {
+            type: Number,
+            required: false,
+            default: 1
         }
     },
     data() {
@@ -103,7 +108,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["getUser"]),
+        ...mapGetters({ getUser: "User/getUser" }),
         isAuthor() {
             return this.getUser.id === this.comment.userId;
         }
@@ -167,7 +172,11 @@ export default {
         },
         updateCommentResponse(comment) {
             if (Object.keys(comment).length) {
-                this.$store.dispatch("getComments", this.postId);
+                this.$store.dispatch("Comments/getComments", {
+                    postId: this.postId,
+                    activePage: this.activePage,
+                    listSize: MAX_LIST_SIZE
+                });
                 toastr.success("Comment updated");
                 this.showEditForm = false;
             } else {
@@ -187,7 +196,11 @@ export default {
                     state: POST_STATE.deleted
                 })
                 .then(() => {
-                    this.$store.dispatch("getComments", this.postId);
+                    this.$store.dispatch("Comments/getComments", {
+                        postId: this.postId,
+                        activePage: this.activePage,
+                        listSize: MAX_LIST_SIZE
+                    });
                 });
         },
         deleteReply() {
@@ -196,7 +209,11 @@ export default {
                     state: POST_STATE.deleted
                 })
                 .then(() => {
-                    this.$store.dispatch("getComments", this.postId);
+                    this.$store.dispatch("Comments/getComments", {
+                        postId: this.postId,
+                        activePage: this.activePage,
+                        listSize: MAX_LIST_SIZE
+                    });
                 });
         },
         getAuthorData() {

@@ -72,11 +72,14 @@ export default {
         SearchPosts
     },
     computed: {
-        ...mapGetters(["getUser", "isAuthenticated"])
+        ...mapGetters({
+            getUser: "User/getUser",
+            isAuthenticated: "User/isAuthenticated"
+        })
     },
     methods: {
         onLogout() {
-            this.$store.dispatch("LOGOUT_USER");
+            this.$store.dispatch("User/logoutUser");
             router.push("/login");
         }
     }

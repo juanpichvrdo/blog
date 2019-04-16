@@ -23,9 +23,10 @@ import "toastr/build/toastr.css";
 import toastr from "toastr";
 import Navbar from "bootstrap-vue/es/components/navbar";
 
-import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+
+import App from "./App.vue";
 import { formatDate } from "./utils/helpers";
 import "./config";
 
@@ -34,6 +35,8 @@ toastr.options = {
     newestOnTop: false,
     preventDuplicates: true
 };
+
+console.log(store);
 
 library.add(faSearch);
 library.add(faArrowRight);
